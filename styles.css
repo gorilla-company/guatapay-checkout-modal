@@ -1,0 +1,145 @@
+
+body { 
+    background-color: rgb(247, 119, 119);
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 20px;
+    padding-top: 10vh;
+    padding-bottom: 25px;
+}
+
+.overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 995;
+    background: rgba(0,0,0,0.85);
+  }
+
+header {
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+p {
+    margin: 0;
+}
+
+.modal-header-wrapper {
+    border-bottom: 1px solid #dfdfdf;
+    width: 90%;
+    text-align: center;
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-header-wrapper img{
+    width: 200px;
+    position: relative;
+    left: 79px;
+} 
+
+.modal-header-wrapper button {
+        border: none;
+        background: transparent;
+        color: gray;
+    }
+
+.modal-body-wrapper {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.modal-body-qr-wrapper {
+    width: 200px;
+    height: 200px;
+    margin: 20px 0;
+    background-color: white;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 1px 12px -4px rgba(0,0,0,0.49);
+    -webkit-box-shadow: 0px 1px 12px -4px rgba(0,0,0,0.49);
+    -moz-box-shadow: 0px 1px 12px -4px rgba(0,0,0,0.49);
+}
+
+
+.modal-wrapper {
+    background-color: #f8f8f8;
+    width: 400px;
+    min-height: 400px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: initial;
+    align-items: center;
+    flex-direction: column;
+} 
+
+/* nav */
+
+.modal-nav-ball {
+    width: 6px;
+    height: 6px;
+    margin-left: 13px;
+    background-color: #cecece;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.modal-nav-ball-selected {
+    background-color: #00d6c1;
+    position: absolute;
+    margin-right: 57px;
+    border-radius: 25px;
+    transition: all 0.3s ease-out;
+}
+
+.modal-nav-ball-selected-step-1 {  
+    width: 6px;
+}
+
+.modal-nav-ball-selected-step-2 {
+    width: 25px; 
+}
+
+.modal-nav-ball-selected-step-3 {
+    width: 44px;
+}
+
+.modal-nav-ball-selected-step-4 { 
+    width: 64px;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: flex;
+}

@@ -3,14 +3,21 @@ let initialized = false;
 let currentStatus = 'IDLE'
 
 function buildHtml(qrCode) {
+  var link = document.createElement('link');
+  link.rel = 'stylesheet'; 
+  link.type = 'text/css';
+  link.href = './styles.css';
+  document.head.appendChild(link);
+
   // Section
   let section = createElementWithClass("section", "modal-wrapper");
+  section.id="main_modal";
   let header = document.createElement("header");
   let divWrapper = createElementWithClass("div", "modal-header-wrapper");
   divWrapper.innerHTML = '<img src="./img/logo.jpg" alt="logo">';
   let closeButton = document.createElement("button");
   closeButton.innerHTML = 'X';
-  closeButton.onclick = function () { console.log('hola') };
+  closeButton.onclick = () => closeModal();
   divWrapper.appendChild(closeButton);
 
   // create navbar
@@ -67,7 +74,6 @@ function buildHtml(qrCode) {
   section.appendChild(step4Div);
 
   document.body.appendChild(section);
-
 }
 
 function createElementWithClass(elementName, className) {
@@ -94,6 +100,13 @@ function handleClick(stepNum) {
   const stepsToHide = removeSelectedStep(stepNum);
   stepsToHide.forEach(element => document.getElementById("step-" + element).className = "modal-body-wrapper hide");
   document.getElementById("step-" + stepNum).className = "modal-body-wrapper show";
+}
+
+function closeModal() {
+  clearAsyncInterval();
+  let modal = document.getElementById('main_modal');
+  document.body.removeChild(modal);
+  initialized = false; 
 }
 
 
@@ -150,9 +163,13 @@ const setAsyncInterval = (cb, interval) => {
   }
 };
 
-const clearAsyncInterval = (intervalIndex) => {
-  if (asyncIntervals[intervalIndex]) {
-    asyncIntervals[intervalIndex] = false;
+const clearAsyncInterval = () => {
+  if(asyncIntervals.length > 0) {
+    asyncIntervals.forEach((item, index) => {
+      if (asyncIntervals[index]) {
+        asyncIntervals[index] = false;
+      }
+    })
   }
 };
 

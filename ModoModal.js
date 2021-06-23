@@ -3,7 +3,7 @@ let initialized = false;
 let currentStatus = 'IDLE'
 
 function buildHtml(qrCode) {
-  var link = document.createElement('link');
+  let link = document.createElement('link');
   link.rel = 'stylesheet'; 
   link.type = 'text/css';
   link.href = './styles.css';
@@ -110,7 +110,7 @@ function closeModal() {
 }
 
 
-var openModal = function (modalObject) {
+let openModal = function (modalObject) {
   //   The modal object must have the following properties
   //   checkoutId
   //   QRBase64

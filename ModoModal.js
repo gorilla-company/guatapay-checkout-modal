@@ -2,6 +2,7 @@
 let initialized = false;
 let mockStatus = 'STARTED';
 let currentStatus = 'STARTED';
+let modalProperties = {};
 
 function buildHtml(qrCode) {
   let link = document.createElement('link');
@@ -40,8 +41,44 @@ function buildHtml(qrCode) {
   
   // STEP 1
 
+  let step1Div = createStep1(qrCode);
+
+  // STEP 2
+
+  let step2Div = createStep2();
+
+  // STEP 3
+
+  let step3Div = createStep3();
+
+  // STEP 4
+
+  let step4Div = createStep4();
+
+  let stepPaymentError = createStepPaymentError();
+  let stepError = createStepError();
+  let stepExpired = createStepExpired();
+
+  // append items to hierarchy
+  header.appendChild(divWrapper);
+  section.appendChild(header);
+  section.appendChild(navBar);
+  section.appendChild(step1Div);
+  section.appendChild(step2Div);
+  section.appendChild(step3Div);
+  section.appendChild(step4Div);
+
+  section.appendChild(stepPaymentError);
+  section.appendChild(stepError);
+  section.appendChild(stepExpired);
+
+
+  document.body.appendChild(section);
+}
+
+function createStep1(qrCode) {
   let step1Div = createElementWithClass("div", "modal-body-wrapper");
-  step1Div.id = "step-1";
+  step1Div.id = "step-STARTED";
   step1Title = document.createElement("p");
   step1Title.innerHTML = "Escanea el c\u00F3digo QR <br> Con la App MODO o desde tu App bancaria preferida";
 
@@ -52,12 +89,13 @@ function buildHtml(qrCode) {
   step1Div.appendChild(step1Title);
   step1Div.appendChild(qrContainer);
   step1Div.appendChild(disclaimerQuestion);
+  return step1Div;
+}
 
-  // STEP 2
-
+function createStep2() {
   let step2Div = createElementWithClass("div", "modal-body-wrapper");
   step2Div.classList.add("hide");
-  step2Div.id = "step-2";
+  step2Div.id = "step-PROCESSING";
 
   step2Title = document.createElement("p");
   step2Title.innerHTML = "Estamos esperando confirmaci\u00F3n";
@@ -71,12 +109,13 @@ function buildHtml(qrCode) {
   step2Div.appendChild(step2Title);
   step2Div.appendChild(divLoading);
   step2Div.appendChild(step2Text);
+  return step2Div;
+}
 
-  // STEP 3
-
+function createStep3() {
   let step3Div = createElementWithClass("div", "modal-body-wrapper");
   step3Div.classList.add("hide");
-  step3Div.id = "step-3";
+  step3Div.id = "step-PAYING";
 
   let step3Text = document.createElement("p");
   step3Text.innerHTML = "Pago en proceso"
@@ -94,12 +133,13 @@ function buildHtml(qrCode) {
   step3Div.appendChild(divLoadingStep3);
   step3Div.appendChild(step3TextUpper);
   step3Div.appendChild(step3TextLower);
+  return step3Div;
+}
 
-  // STEP 4
-
+function createStep4() {
   let step4Div = createElementWithClass("div", "modal-body-wrapper");
   step4Div.classList.add("hide");
-  step4Div.id = "step-4";
+  step4Div.id = "step-PAYMENT_READY";
 
   let step4Title = document.createElement("p");
   step4Title.innerHTML = "\u00A1Listo!"
@@ -108,18 +148,52 @@ function buildHtml(qrCode) {
 
   step4Div.appendChild(step4Title);
   step4Div.appendChild(divImgStep4);
-
-  // append items to hierarchy
-  header.appendChild(divWrapper);
-  section.appendChild(header);
-  section.appendChild(navBar);
-  section.appendChild(step1Div);
-  section.appendChild(step2Div);
-  section.appendChild(step3Div);
-  section.appendChild(step4Div);
-
-  document.body.appendChild(section);
+  return step4Div;
 }
+
+function createStepPaymentError() {
+  let step = createElementWithClass("div", "modal-body-wrapper");
+  step.classList.add("hide");
+  step.id = "step-PAYMENT_DENIED";
+  return step;
+}
+
+function createStepError() {
+  let step = createElementWithClass("div", "modal-body-wrapper");
+  step.classList.add("hide");
+  step.id = "step-ERROR";
+  return step;
+}
+
+function createStepExpired() {
+  let step = createElementWithClass("div", "modal-body-wrapper");
+  step.classList.add("hide");
+  step.id = "step-EXPIRED";
+  let stepTitle = document.createElement("p");
+  stepTitle.innerHTML = "C\u00F3digo QR Expirado"
+
+  let stepTextUpper = document.createElement("p");
+  stepTextUpper.classList.add('bold');
+  stepTextUpper.innerHTML = "Por favor gener\u00E1 un nuevo QR"
+  let stepTextLower = document.createElement("p");
+  stepTextLower.innerHTML = "para poder pagar"
+
+  let stepImg = document.createElement('div')
+  stepImg.innerHTML = '<img src="./img/expired_qr.png" alt="qr">';
+
+  let stepButton = document.createElement('button');
+  stepButton.innerHTML = 'Generar nuevo QR';
+  stepButton.onclick = () => refreshQr();
+
+  step.appendChild(stepTitle);
+  step.appendChild(stepImg);
+  step.appendChild(stepTextUpper);
+  step.appendChild(stepTextLower);
+  step.appendChild(stepButton);
+
+  return step;
+}
+
 
 function createElementWithClass(elementName, className) {
   let element = document.createElement(elementName);
@@ -127,24 +201,23 @@ function createElementWithClass(elementName, className) {
   return element;
 }
 
-function removeSelectedStep(stepNum) {
-  let arr = [1, 2, 3, 4];
-
+function removeSelectedStep(status) {
+  let arr = ['STARTED', 'PROCESSING', 'PAYING', 'PAYMENT_READY', 'PAYMENT_DENIED', 'ERROR', 'EXPIRED'];
   arr = arr.filter(function (item) {
-    return item !== stepNum
+    return item !== status
   });
 
   return arr;
 }
 
-function handleClick(stepNum) {
-  const newClass = "modal-nav-ball modal-nav-ball-selected modal-nav-ball-selected-step-" + stepNum;
+function handleStatusChange(status) {
+  const newClass = "modal-nav-ball modal-nav-ball-selected modal-nav-ball-selected-step-" + status;
   document.getElementById("selected-step").className = newClass;
 
 
-  const stepsToHide = removeSelectedStep(stepNum);
+  const stepsToHide = removeSelectedStep(status);
   stepsToHide.forEach(element => document.getElementById("step-" + element).className = "modal-body-wrapper hide");
-  document.getElementById("step-" + stepNum).className = "modal-body-wrapper show";
+  document.getElementById("step-" + status).className = "modal-body-wrapper show";
 }
 
 function closeModal() {
@@ -152,6 +225,12 @@ function closeModal() {
   let modal = document.getElementById('main_modal');
   document.body.removeChild(modal);
   initialized = false;
+  modalProperties?.onClose();
+}
+
+function refreshQr() {
+  closeModal();
+  openModal(modalProperties);
 }
 
 
@@ -165,11 +244,11 @@ let openModal = function (modalObject) {
   //   onClose
   //   onCancel
   //   callbackURL
-  console.log(modalObject.checkoutId);
   if (!initialized) {
+    modalProperties = modalObject;
     initialized = true;
     buildHtml(modalObject.QRBase64);
-    setAsyncInterval(getStatus, 3000);
+    // setAsyncInterval(getStatus, 3000);
   }
 }
 
@@ -231,16 +310,16 @@ const setModalStatus = (status) => {
   currentStatus = status;
   switch (status) {
     case 'STARTED':
-      handleClick(1);
+      handleStatusChange(1);
       break;
     case 'PROCESSING':
-      handleClick(2);
+      handleStatusChange(2);
       break;
     case 'PAYING':
-      handleClick(3);
+      handleStatusChange(3);
       break;
     case 'PAYMENT_READY':
-      handleClick(4);
+      handleStatusChange(4);
       break;
     case 'PAYMENT_DENIED':
 

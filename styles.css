@@ -121,19 +121,19 @@ p {
     transition: all 0.3s ease-out;
 }
 
-.modal-nav-ball-selected-step-1 {  
+.modal-nav-ball-selected-step-STARTED {  
     width: 6px;
 }
 
-.modal-nav-ball-selected-step-2 {
+.modal-nav-ball-selected-step-PROCESSING {
     width: 25px; 
 }
 
-.modal-nav-ball-selected-step-3 {
+.modal-nav-ball-selected-step-PAYING {
     width: 44px;
 }
 
-.modal-nav-ball-selected-step-4 { 
+.modal-nav-ball-selected-step-PAYMENT_READY { 
     width: 64px;
 }
 

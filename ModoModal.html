@@ -12,10 +12,15 @@
   <!-- <div class="overlay"></div> -->
   <button onclick="showModal()">Mostrar Modal</button>
 
-  <button onclick="handleClick(1)">Nivel uno</button>
-  <button onclick="handleClick(2)">Nivel dos</button>
-  <button onclick="handleClick(3)">Nivel tres</button>
-  <button onclick="handleClick(4)">Nivel cuatro</button>
+  <button onclick="handleStatusChange('STARTED')">Nivel uno</button>
+  <button onclick="handleStatusChange('PROCESSING')">Nivel dos</button>
+  <button onclick="handleStatusChange('PAYING')">Nivel tres</button>
+  <button onclick="handleStatusChange('PAYMENT_READY')">Nivel cuatro</button>
+
+  <button onclick="handleStatusChange('EXPIRED')">QR Expirado</button>
+  <button onclick="handleStatusChange('PAYMENT_DENIED')">Payment Error</button>
+  <button onclick="handleStatusChange('ERROR')">Error</button>
+
 </body>
 
 </html>

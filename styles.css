@@ -137,6 +137,10 @@ p {
     width: 64px;
 }
 
+.modal-ok-img {
+    height: 80px;
+}
+
 .hide {
     display: none;
 }

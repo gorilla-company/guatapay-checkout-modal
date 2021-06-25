@@ -142,6 +142,11 @@ p {
     background-color: #fd0658;
 }
 
+.modal-nav-ball-selected-step-ERROR { 
+    width: 64px;
+    background-color: #fd0658;
+}
+
 .modal-ok-img {
     height: 80px;
 }

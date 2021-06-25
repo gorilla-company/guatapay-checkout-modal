@@ -53,7 +53,7 @@ function buildHtml(qrCode) {
 
   // STEP 4
 
-  let step4Div = createStep4();
+  let step4Div = createStep4('can & can', 1.650, 1);
 
   let stepPaymentError = createStepPaymentError();
   let stepError = createStepError();
@@ -71,7 +71,6 @@ function buildHtml(qrCode) {
   section.appendChild(stepPaymentError);
   section.appendChild(stepError);
   section.appendChild(stepExpired);
-
 
   document.body.appendChild(section);
 }
@@ -136,25 +135,72 @@ function createStep3() {
   return step3Div;
 }
 
-function createStep4() {
-  let step4Div = createElementWithClass("div", "modal-body-wrapper");
-  step4Div.classList.add("hide");
-  step4Div.id = "step-PAYMENT_READY";
+function createStep4(businessName, price, paymentNumber) {
+  let step = createElementWithClass("div", "modal-body-wrapper");
+  step.classList.add("hide");
+  step.id = "step-PAYMENT_READY";
 
-  let step4Title = document.createElement("p");
-  step4Title.innerHTML = "\u00A1Listo!"
-  let divImgStep4 = document.createElement("div");
-  divImgStep4.innerHTML = '<img class="modal-ok-img" src="./img/ok.png" alt="ok">';
+  let stepTitle = document.createElement("p");
+  stepTitle.innerHTML = "\u00A1Listo!"
+  let divImg = document.createElement("div");
+  divImg.innerHTML = '<img class="modal-ok-img" src="./img/ok.png" alt="ok">';
 
-  step4Div.appendChild(step4Title);
-  step4Div.appendChild(divImgStep4);
-  return step4Div;
+  let paidTo = document.createElement("p");
+  paidTo.innerHTML = "Pagaste a"
+
+  let paidToName = document.createElement("p");
+  paidToName.innerHTML = "{name}".replace('{name}', businessName);
+
+  let paidPrice = document.createElement("p");
+  paidPrice.innerHTML = "$ {price}".replace('{price}', price);
+
+  let paymentNumberDiv = document.createElement("p");
+  paymentNumberDiv.innerHTML = "En {paymentNumber} cuota".replace('{paymentNumber}', paymentNumber);
+
+  step.appendChild(stepTitle);
+  step.appendChild(divImg);
+  step.appendChild(paidTo);
+  step.appendChild(paidToName);
+  step.appendChild(paidPrice);
+  step.appendChild(paymentNumberDiv);
+
+  return step;
 }
 
 function createStepPaymentError() {
   let step = createElementWithClass("div", "modal-body-wrapper");
   step.classList.add("hide");
   step.id = "step-PAYMENT_DENIED";
+
+  let stepTitle = document.createElement("p");
+  stepTitle.innerHTML = "Pago denegado"
+
+  let stepImg = document.createElement('div')
+  stepImg.innerHTML = '<img src="./img/error.png" alt="qr">';
+
+  let stepTextUpper = document.createElement("p");
+  stepTextUpper.innerHTML = "Lo sentimos, tu pago fue denegado"
+  let stepTextMiddle = document.createElement("p");
+  stepTextMiddle.innerHTML = "Por favor gener\u00E1 un nuevo QR"
+  let stepTextLower = document.createElement("p");
+  stepTextLower.innerHTML = "Para volver a intentar"
+
+  let stepButtonRefresh = document.createElement('button');
+  stepButtonRefresh.innerHTML = 'Generar nuevo QR';
+  stepButtonRefresh.onclick = () => refreshQr();
+
+  let stepButtonCancel = document.createElement('button');
+  stepButtonCancel.innerHTML = 'cancelar';
+  stepButtonCancel.onclick = () => closeModal();
+
+  step.appendChild(stepTitle);
+  step.appendChild(stepImg);
+  step.appendChild(stepTextUpper);
+  step.appendChild(stepTextMiddle);
+  step.appendChild(stepTextLower);
+  step.appendChild(stepButtonRefresh);
+  step.appendChild(stepButtonCancel);
+
   return step;
 }
 
@@ -162,6 +208,36 @@ function createStepError() {
   let step = createElementWithClass("div", "modal-body-wrapper");
   step.classList.add("hide");
   step.id = "step-ERROR";
+
+  let stepTitle = document.createElement("p");
+  stepTitle.innerHTML = "Error en el pago"
+
+  let stepImg = document.createElement('div')
+  stepImg.innerHTML = '<img src="./img/error.png" alt="qr">';
+
+  let stepTextUpper = document.createElement("p");
+  stepTextUpper.innerHTML = "No pudimos procesar tu pago"
+  let stepTextMiddle = document.createElement("p");
+  stepTextMiddle.innerHTML = "Por favor gener\u00E1 un nuevo QR"
+  let stepTextLower = document.createElement("p");
+  stepTextLower.innerHTML = "Para volver a intentar"
+
+  let stepButtonRefresh = document.createElement('button');
+  stepButtonRefresh.innerHTML = 'Generar nuevo QR';
+  stepButtonRefresh.onclick = () => refreshQr();
+
+  let stepButtonCancel = document.createElement('button');
+  stepButtonCancel.innerHTML = 'cancelar';
+  stepButtonCancel.onclick = () => closeModal();
+
+  step.appendChild(stepTitle);
+  step.appendChild(stepImg);
+  step.appendChild(stepTextUpper);
+  step.appendChild(stepTextMiddle);
+  step.appendChild(stepTextLower);
+  step.appendChild(stepButtonRefresh);
+  step.appendChild(stepButtonCancel);
+
   return step;
 }
 
@@ -173,7 +249,6 @@ function createStepExpired() {
   stepTitle.innerHTML = "C\u00F3digo QR Expirado"
 
   let stepTextUpper = document.createElement("p");
-  stepTextUpper.classList.add('bold');
   stepTextUpper.innerHTML = "Por favor gener\u00E1 un nuevo QR"
   let stepTextLower = document.createElement("p");
   stepTextLower.innerHTML = "para poder pagar"
@@ -225,6 +300,7 @@ function closeModal() {
   let modal = document.getElementById('main_modal');
   document.body.removeChild(modal);
   initialized = false;
+  currentStatus = 'STARTED';
   modalProperties?.onClose();
 }
 
@@ -253,8 +329,7 @@ let openModal = function (modalObject) {
 }
 
 async function getData(url = '', data = {}) {
-
-  const response = await fetch(url, {
+  const params = {
     method: 'GET',
     mode: 'cors',
     cache: 'no-cache',
@@ -264,11 +339,27 @@ async function getData(url = '', data = {}) {
     },
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
-  });
-  return response.json();
+  }
+  
+  // const response = await fetch(url, params);
+  // return response.json();
+
+
+	let result = await fetch(url, params).then(function (response) {
+		if (response.ok) {
+			return response.json();
+		} else {
+			return Promise.reject(response);
+		}
+	}).catch(function (err) {
+		setModalStatus('ERROR');
+	});
+
+	// If there's no post, warn
+	if (!result) return;
+
+  return result;
 }
-
-
 
 const asyncIntervals = [];
 
@@ -306,9 +397,11 @@ const clearAsyncInterval = () => {
 };
 
 const getStatus = async () => {
-  let response = await getData('http://localhost:3001/api/productss?page=1&limit=12&colorss=shinny-f'
+  let response = await getData('https://api.develop.playdigital.com.ar/ecommerce/payment-intention/c529ce02-3b55-4e1b-b63b-55b5f94169a6?mocked_status={status}'
     .replace('{status}', mockStatus));
-  setModalStatus(response.status);
+  if(response) {
+    setModalStatus(response.status);
+  }
 }
 
 const setModalStatus = (status) => {

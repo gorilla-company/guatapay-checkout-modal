@@ -38,7 +38,7 @@ function buildHtml(qrCode) {
   navBar.appendChild(step5Ball);
 
   // create steps containers
-  
+
   // STEP 1
 
   let step1Div = createStep1(qrCode);
@@ -248,11 +248,12 @@ let openModal = function (modalObject) {
     modalProperties = modalObject;
     initialized = true;
     buildHtml(modalObject.QRBase64);
-    // setAsyncInterval(getStatus, 3000);
+    setAsyncInterval(getStatus, 3000);
   }
 }
 
 async function getData(url = '', data = {}) {
+
   const response = await fetch(url, {
     method: 'GET',
     mode: 'cors',
@@ -267,19 +268,25 @@ async function getData(url = '', data = {}) {
   return response.json();
 }
 
+
+
 const asyncIntervals = [];
 
 const runAsyncInterval = async (cb, interval, intervalIndex) => {
   await cb();
-  if (asyncIntervals[intervalIndex]) {
-    setTimeout(() => runAsyncInterval(cb, interval, intervalIndex), interval);
+  // if (asyncIntervals[intervalIndex]) {
+  //   setTimeout(() => runAsyncInterval(cb, interval, intervalIndex), interval);
+  // }
+
+  if (asyncIntervals[intervalIndex].run) {
+    asyncIntervals[intervalIndex].id = setTimeout(() => runAsyncInterval(cb, interval, intervalIndex), interval)
   }
 };
 
 const setAsyncInterval = (cb, interval) => {
   if (cb && typeof cb === "function") {
     const intervalIndex = asyncIntervals.length;
-    asyncIntervals.push(true);
+    asyncIntervals.push({ run: true, id: 0 })
     runAsyncInterval(cb, interval, intervalIndex);
     return intervalIndex;
   } else {
@@ -290,45 +297,50 @@ const setAsyncInterval = (cb, interval) => {
 const clearAsyncInterval = () => {
   if (asyncIntervals.length > 0) {
     asyncIntervals.forEach((item, index) => {
-      if (asyncIntervals[index]) {
-        asyncIntervals[index] = false;
+      if (asyncIntervals[index].run) {
+        clearTimeout(asyncIntervals[index].id)
+        asyncIntervals[index].run = false
       }
     })
   }
 };
 
 const getStatus = async () => {
-  let response = await getData('https://api.develop.playdigital.com.ar/ecommerce/payment-intention/c529ce02-3b55-4e1b-b63b-55b5f94169a6?mocked_status={status}'
+  let response = await getData('http://localhost:3001/api/productss?page=1&limit=12&colorss=shinny-f'
     .replace('{status}', mockStatus));
-    setModalStatus(response.status);
+  setModalStatus(response.status);
 }
 
 const setModalStatus = (status) => {
-  if(status == currentStatus) {
+  if (status == currentStatus) {
     return;
   }
   currentStatus = status;
   switch (status) {
     case 'STARTED':
-      handleStatusChange(1);
+      handleStatusChange('STARTED');
       break;
     case 'PROCESSING':
-      handleStatusChange(2);
+      handleStatusChange('PROCESSING');
       break;
     case 'PAYING':
-      handleStatusChange(3);
+      handleStatusChange('PAYING');
       break;
     case 'PAYMENT_READY':
-      handleStatusChange(4);
+      clearAsyncInterval();
+      handleStatusChange('PAYMENT_READY');
       break;
     case 'PAYMENT_DENIED':
-
+      clearAsyncInterval();
+      handleStatusChange('PAYMENT_DENIED');
       break;
     case 'ERROR':
-
+      clearAsyncInterval();
+      handleStatusChange('ERROR');
       break;
     case 'EXPIRED':
-
+      clearAsyncInterval();
+      handleStatusChange('EXPIRED');
       break;
     default:
       break;

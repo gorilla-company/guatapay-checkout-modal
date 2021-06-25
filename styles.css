@@ -137,6 +137,11 @@ p {
     width: 64px;
 }
 
+.modal-nav-ball-selected-step-PAYMENT_DENIED { 
+    width: 64px;
+    background-color: #fd0658;
+}
+
 .modal-ok-img {
     height: 80px;
 }

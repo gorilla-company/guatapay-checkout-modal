@@ -3,6 +3,7 @@ let initialized = false;
 let mockStatus = 'STARTED';
 let currentStatus = 'STARTED';
 let modalProperties = {};
+let checkoutId;
 
 function buildHtml(qrCode) {
   let link = document.createElement('link');
@@ -11,19 +12,46 @@ function buildHtml(qrCode) {
   link.href = './styles.css';
   document.head.appendChild(link);
 
+  let overlay = createElementWithClass("div", "modo-overlay");
+  overlay.id = "modo-overlay";
+
   // Section
+  let modalContainer = createElementWithClass("div", "modal-container");
+  modalContainer.id = 'modal-container';
   let section = createElementWithClass("section", "modal-wrapper");
   section.id = "main_modal";
   let header = document.createElement("header");
-  let divWrapper = createElementWithClass("div", "modal-header-wrapper");
-  divWrapper.innerHTML = '<img src="./img/logo.jpg" alt="logo">';
+  let headerWrapper = createElementWithClass("div", "modal-header-wrapper");
+  let logoWrapper = createElementWithClass("div", "modal-logo-wrapper");
+
+  let spanLogo = createElementWithClass("span", "title-header");
+  spanLogo.id = "title-header";
+  spanLogo.innerHTML = 'Pag\u00E1 con ';
+  let imgLogo = document.createElement('img');
+  imgLogo.src = './img/modo-logo.svg';
+  imgLogo.alt = 'logo';
+
+  logoWrapper.appendChild(spanLogo);
+  logoWrapper.appendChild(imgLogo);
+
   let closeButton = document.createElement("button");
-  closeButton.innerHTML = 'X';
   closeButton.onclick = () => closeModal();
-  divWrapper.appendChild(closeButton);
+  let imgClose = document.createElement('img');
+  imgClose.src = './img/close-btn.svg';
+  imgLogo.alt = 'close';
+  closeButton.appendChild(imgClose);
+
+  headerWrapper.appendChild(logoWrapper);
+  headerWrapper.appendChild(closeButton);
+
+  // divWrapper.innerHTML = '<img src="./img/logo.jpg" alt="logo">';
+  // let closeButton = document.createElement("button");
+  // closeButton.innerHTML = 'X';
+  // closeButton.onclick = () => closeModal();
+  // divWrapper.appendChild(closeButton);
 
   // create navbar
-  let navBar = createElementWithClass("nav");
+  let navBar = createElementWithClass("nav", "wizard");
   let step1Ball = createElementWithClass("div", "modal-nav-ball");
   step1Ball.classList.add("modal-nav-ball-selected");
   step1Ball.id = "selected-step";
@@ -60,7 +88,7 @@ function buildHtml(qrCode) {
   let stepExpired = createStepExpired();
 
   // append items to hierarchy
-  header.appendChild(divWrapper);
+  header.appendChild(headerWrapper);
   section.appendChild(header);
   section.appendChild(navBar);
   section.appendChild(step1Div);
@@ -71,23 +99,62 @@ function buildHtml(qrCode) {
   section.appendChild(stepPaymentError);
   section.appendChild(stepError);
   section.appendChild(stepExpired);
+  modalContainer.appendChild(section);
 
-  document.body.appendChild(section);
+  document.body.appendChild(overlay);
+  document.body.appendChild(modalContainer);
 }
 
 function createStep1(qrCode) {
   let step1Div = createElementWithClass("div", "modal-body-wrapper");
   step1Div.id = "step-STARTED";
-  step1Title = document.createElement("p");
+  step1Title = createElementWithClass("p", "paragraph");
   step1Title.innerHTML = "Escanea el c\u00F3digo QR <br> Con la App MODO o desde tu App bancaria preferida";
 
   let qrContainer = createElementWithClass("div", "modal-body-qr-wrapper");
   qrContainer.innerHTML = '<img src="data:image/png;base64, {qrCode}"></img>'.replace('{qrCode}', qrCode);
-  let disclaimerQuestion = document.createElement("p");
-  disclaimerQuestion.innerHTML = '\u00BFC\u00F3mo pagar desde App MODO?';
+  
+  let questionContainer = createElementWithClass("div", "question");
+  questionContainer.innerHTML = '\u00BFC\u00F3mo pagar desde App <b>MODO</b>';
+  
+  let toolTip = createElementWithClass("div", "tooltip");
+
+  let imgQuestion = document.createElement('img');
+  imgQuestion.src = './img/question-icon.svg';
+  imgQuestion.alt = 'question';
+  
+  let toolTipText = createElementWithClass("div", "tooltiptext");
+
+  let questionUl = document.createElement('ul');
+  let questionLi1 = document.createElement('li');
+  questionLi1.innerHTML = 'Descarg\u00E1 <span class="bold">MODO</span> en tu celular desde <span class="bold">App Store o Google Play</span>';
+  
+  let questionLi2 = document.createElement('li');
+  questionLi2.innerHTML = 'Registrate y vincul\u00E1 tus medios de pago';
+
+  let questionLi3 = document.createElement('li');
+  questionLi3.innerHTML = 'Seleccion\u00E1 la opci\u00F3n \u201CPagar\u201D desde la secci\u00F3n \u201CInicio\u201D en <span class="bold">MODO</span>.';
+
+  let questionLi4 = document.createElement('li');
+  questionLi4.innerHTML = 'Escane\u00E1 el C\u00F3digo QR con tu celular';
+
+  let questionLi5 = document.createElement('li');
+  questionLi5.innerHTML = 'Confirm\u00E1 el pago y listo!';
+
+  questionUl.appendChild(questionLi1);
+  questionUl.appendChild(questionLi2);
+  questionUl.appendChild(questionLi3);
+  questionUl.appendChild(questionLi4);
+  questionUl.appendChild(questionLi5);
+
+  toolTipText.appendChild(questionUl);
+  toolTip.appendChild(imgQuestion);
+  toolTip.appendChild(toolTipText);
+  questionContainer.appendChild(toolTip);
+
   step1Div.appendChild(step1Title);
   step1Div.appendChild(qrContainer);
-  step1Div.appendChild(disclaimerQuestion);
+  step1Div.appendChild(questionContainer);
   return step1Div;
 }
 
@@ -96,11 +163,14 @@ function createStep2() {
   step2Div.classList.add("hide");
   step2Div.id = "step-PROCESSING";
 
-  step2Title = document.createElement("p");
+  step2Title = createElementWithClass("p", "paragraph");
   step2Title.innerHTML = "Estamos esperando confirmaci\u00F3n";
 
   let divLoading = document.createElement("div");
-  divLoading.innerHTML = '<img src="./img/loading.gif" alt="loading">';
+  divLoading.classList.add("svg-icon");
+  divLoading.classList.add("rotate");
+
+  divLoading.innerHTML = '<img src="./img/hourglass-icon.svg" alt="loading">';
 
   let step2Text = document.createElement("p");
   step2Text.innerHTML = "Eleg\u00ED el medio de pago y confirm\u00E1 la transacci\u00F3n"
@@ -116,11 +186,14 @@ function createStep3() {
   step3Div.classList.add("hide");
   step3Div.id = "step-PAYING";
 
-  let step3Text = document.createElement("p");
+  let step3Text = createElementWithClass("p", "subtitle");
   step3Text.innerHTML = "Pago en proceso"
 
   let divLoadingStep3 = document.createElement("div");
-  divLoadingStep3.innerHTML = '<img src="./img/loading.gif" alt="loading">';
+  divLoadingStep3.classList.add("svg-icon");
+  divLoadingStep3.classList.add("spin");
+
+  divLoadingStep3.innerHTML = '<img src="./img/spinner.svg" alt="loading">';
 
   let step3TextUpper = document.createElement("p");
   step3TextUpper.innerHTML = "Estamos procesando tu pago,"
@@ -140,10 +213,10 @@ function createStep4(businessName, price, paymentNumber) {
   step.classList.add("hide");
   step.id = "step-PAYMENT_READY";
 
-  let stepTitle = document.createElement("p");
+  let stepTitle = createElementWithClass("p", "subtitle");
   stepTitle.innerHTML = "\u00A1Listo!"
-  let divImg = document.createElement("div");
-  divImg.innerHTML = '<img class="modal-ok-img" src="./img/ok.png" alt="ok">';
+  let divImg = createElementWithClass("div", "svg-icon");
+  divImg.innerHTML = '<img src="./img/check.svg" alt="ok">';
 
   let paidTo = document.createElement("p");
   paidTo.innerHTML = "Pagaste a"
@@ -157,12 +230,16 @@ function createStep4(businessName, price, paymentNumber) {
   let paymentNumberDiv = document.createElement("p");
   paymentNumberDiv.innerHTML = "En {paymentNumber} cuota".replace('{paymentNumber}', paymentNumber);
 
+  let continueButton = createElementWithClass("button", "modo-btn-primary");
+  continueButton.innerHTML = "Continuar";
+
   step.appendChild(stepTitle);
   step.appendChild(divImg);
-  step.appendChild(paidTo);
-  step.appendChild(paidToName);
-  step.appendChild(paidPrice);
-  step.appendChild(paymentNumberDiv);
+  step.appendChild(continueButton);
+  // step.appendChild(paidTo);
+  // step.appendChild(paidToName);
+  // step.appendChild(paidPrice);
+  // step.appendChild(paymentNumberDiv);
 
   return step;
 }
@@ -172,26 +249,28 @@ function createStepPaymentError() {
   step.classList.add("hide");
   step.id = "step-PAYMENT_DENIED";
 
-  let stepTitle = document.createElement("p");
+  let stepTitle = createElementWithClass("p", "subtitle");
   stepTitle.innerHTML = "Pago denegado"
 
-  let stepImg = document.createElement('div')
-  stepImg.innerHTML = '<img src="./img/error.png" alt="qr">';
+  let stepImg = createElementWithClass("div", "svg-icon");
+  stepImg.innerHTML = '<img src="./img/error.svg" alt="error">';
 
   let stepTextUpper = document.createElement("p");
-  stepTextUpper.innerHTML = "Lo sentimos, tu pago fue denegado"
+  stepTextUpper.innerHTML = "<b>Lo sentimos, tu pago fue denegado</b>"
   let stepTextMiddle = document.createElement("p");
   stepTextMiddle.innerHTML = "Por favor gener\u00E1 un nuevo QR"
   let stepTextLower = document.createElement("p");
   stepTextLower.innerHTML = "Para volver a intentar"
 
   let stepButtonRefresh = document.createElement('button');
+  stepButtonRefresh.classList.add("modo-btn-primary");
+  stepButtonRefresh.classList.add("mt-55");
   stepButtonRefresh.innerHTML = 'Generar nuevo QR';
   stepButtonRefresh.onclick = () => refreshQr();
 
-  let stepButtonCancel = document.createElement('button');
-  stepButtonCancel.innerHTML = 'cancelar';
-  stepButtonCancel.onclick = () => closeModal();
+  let cancelButton = createElementWithClass("button", "modo-btn-link");
+  cancelButton.innerHTML = 'Cancelar';
+  cancelButton.onclick = () => cancelModal();
 
   step.appendChild(stepTitle);
   step.appendChild(stepImg);
@@ -199,7 +278,7 @@ function createStepPaymentError() {
   step.appendChild(stepTextMiddle);
   step.appendChild(stepTextLower);
   step.appendChild(stepButtonRefresh);
-  step.appendChild(stepButtonCancel);
+  step.appendChild(cancelButton);
 
   return step;
 }
@@ -209,26 +288,28 @@ function createStepError() {
   step.classList.add("hide");
   step.id = "step-ERROR";
 
-  let stepTitle = document.createElement("p");
+  let stepTitle = createElementWithClass("p", "subtitle");
   stepTitle.innerHTML = "Error en el pago"
 
-  let stepImg = document.createElement('div')
-  stepImg.innerHTML = '<img src="./img/error.png" alt="qr">';
+  let stepImg = createElementWithClass("div", "svg-icon")
+  stepImg.innerHTML = '<img src="./img/error.svg" alt="error">';
 
   let stepTextUpper = document.createElement("p");
-  stepTextUpper.innerHTML = "No pudimos procesar tu pago"
+  stepTextUpper.innerHTML = "<b>No pudimos procesar tu pago</b>"
   let stepTextMiddle = document.createElement("p");
   stepTextMiddle.innerHTML = "Por favor gener\u00E1 un nuevo QR"
   let stepTextLower = document.createElement("p");
   stepTextLower.innerHTML = "Para volver a intentar"
 
   let stepButtonRefresh = document.createElement('button');
+  stepButtonRefresh.classList.add("modo-btn-primary");
+  stepButtonRefresh.classList.add("mt-55");
   stepButtonRefresh.innerHTML = 'Generar nuevo QR';
   stepButtonRefresh.onclick = () => refreshQr();
 
-  let stepButtonCancel = document.createElement('button');
-  stepButtonCancel.innerHTML = 'cancelar';
-  stepButtonCancel.onclick = () => closeModal();
+  let cancelButton = createElementWithClass("button", "modo-btn-link");
+  cancelButton.innerHTML = 'Cancelar';
+  cancelButton.onclick = () => cancelModal();
 
   step.appendChild(stepTitle);
   step.appendChild(stepImg);
@@ -236,7 +317,7 @@ function createStepError() {
   step.appendChild(stepTextMiddle);
   step.appendChild(stepTextLower);
   step.appendChild(stepButtonRefresh);
-  step.appendChild(stepButtonCancel);
+  step.appendChild(cancelButton);
 
   return step;
 }
@@ -245,26 +326,33 @@ function createStepExpired() {
   let step = createElementWithClass("div", "modal-body-wrapper");
   step.classList.add("hide");
   step.id = "step-EXPIRED";
-  let stepTitle = document.createElement("p");
-  stepTitle.innerHTML = "C\u00F3digo QR Expirado"
+  let stepTitle = createElementWithClass("p", "subtitle");
+  stepTitle.innerHTML = "C\u00F3digo QR Expirado";
+
+  let stepImg = createElementWithClass("div", "svg-icon");
+  stepImg.innerHTML = '<img src="./img/expired.svg" alt="expired">';
 
   let stepTextUpper = document.createElement("p");
   stepTextUpper.innerHTML = "Por favor gener\u00E1 un nuevo QR"
   let stepTextLower = document.createElement("p");
   stepTextLower.innerHTML = "para poder pagar"
 
-  let stepImg = document.createElement('div')
-  stepImg.innerHTML = '<img src="./img/expired_qr.png" alt="qr">';
-
   let stepButton = document.createElement('button');
+  stepButton.classList.add("modo-btn-primary");
+  stepButton.classList.add("mt-75");
   stepButton.innerHTML = 'Generar nuevo QR';
   stepButton.onclick = () => refreshQr();
+
+  let cancelButton = createElementWithClass("button", "modo-btn-link");
+  cancelButton.innerHTML = 'Cancelar';
+  cancelButton.onclick = () => cancelModal();
 
   step.appendChild(stepTitle);
   step.appendChild(stepImg);
   step.appendChild(stepTextUpper);
   step.appendChild(stepTextLower);
   step.appendChild(stepButton);
+  step.appendChild(cancelButton);
 
   return step;
 }
@@ -289,23 +377,33 @@ function handleStatusChange(status) {
   const newClass = "modal-nav-ball modal-nav-ball-selected modal-nav-ball-selected-step-" + status;
   document.getElementById("selected-step").className = newClass;
 
-
   const stepsToHide = removeSelectedStep(status);
   stepsToHide.forEach(element => document.getElementById("step-" + element).className = "modal-body-wrapper hide");
   document.getElementById("step-" + status).className = "modal-body-wrapper show";
 }
 
 function closeModal() {
-  clearAsyncInterval();
-  let modal = document.getElementById('main_modal');
-  document.body.removeChild(modal);
-  initialized = false;
-  currentStatus = 'STARTED';
+  removeModal();
   modalProperties?.onClose();
 }
 
+function cancelModal() {
+  removeModal();
+  modalProperties?.onCancel();
+}
+
+function removeModal() {
+  clearAsyncInterval();
+  let overlay = document.getElementById('modo-overlay');
+  let modal = document.getElementById('modal-container');
+  document.body.removeChild(modal);
+  document.body.removeChild(overlay);
+  initialized = false;
+  currentStatus = 'STARTED';
+}
+
 function refreshQr() {
-  closeModal();
+  removeModal();
   openModal(modalProperties);
 }
 
@@ -322,6 +420,7 @@ let openModal = function (modalObject) {
   //   callbackURL
   if (!initialized) {
     modalProperties = modalObject;
+    checkoutId = modalObject.checkoutId;
     initialized = true;
     buildHtml(modalObject.QRBase64);
     setAsyncInterval(getStatus, 3000);
@@ -395,9 +494,9 @@ const clearAsyncInterval = () => {
     })
   }
 };
-
 const getStatus = async () => {
-  let response = await getData('https://api.develop.playdigital.com.ar/ecommerce/payment-intention/c529ce02-3b55-4e1b-b63b-55b5f94169a6?mocked_status={status}'
+  let response = await getData('https://api.develop.playdigital.com.ar/ecommerce/payment-intention/{checkoutId}?mocked_status={status}'
+    .replace('{checkoutId}', checkoutId)
     .replace('{status}', mockStatus));
   if(response) {
     setModalStatus(response.status);
@@ -409,29 +508,41 @@ const setModalStatus = (status) => {
     return;
   }
   currentStatus = status;
+  let spanLogo = document.getElementById('title-header');
   switch (status) {
     case 'STARTED':
+      spanLogo.innerHTML = 'Pag\u00E1 con ';
       handleStatusChange('STARTED');
       break;
     case 'PROCESSING':
+      spanLogo.innerHTML = 'Pagando con ';
       handleStatusChange('PROCESSING');
       break;
     case 'PAYING':
+      spanLogo.innerHTML = 'Pagando con ';
       handleStatusChange('PAYING');
       break;
     case 'PAYMENT_READY':
+      modalProperties?.onSuccess();
+
+      spanLogo.innerHTML = 'Pagaste con ';
       clearAsyncInterval();
       handleStatusChange('PAYMENT_READY');
       break;
     case 'PAYMENT_DENIED':
+      modalProperties?.onFailure();
+      spanLogo.innerHTML = 'Pagando con ';
       clearAsyncInterval();
       handleStatusChange('PAYMENT_DENIED');
       break;
     case 'ERROR':
+      modalProperties?.onFailure();
+      spanLogo.innerHTML = 'Pagando con ';
       clearAsyncInterval();
       handleStatusChange('ERROR');
       break;
     case 'EXPIRED':
+      spanLogo.innerHTML = 'Pagando con ';
       clearAsyncInterval();
       handleStatusChange('EXPIRED');
       break;

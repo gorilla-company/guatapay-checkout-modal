@@ -12,14 +12,14 @@
   <!-- <div class="overlay"></div> -->
   <button onclick="showModal()">Mostrar Modal</button>
 
-  <button onclick="handleStatusChange('STARTED')">Nivel uno</button>
-  <button onclick="handleStatusChange('PROCESSING')">Nivel dos</button>
-  <button onclick="handleStatusChange('PAYING')">Nivel tres</button>
-  <button onclick="handleStatusChange('PAYMENT_READY')">Nivel cuatro</button>
+  <button onclick="setModalStatus('STARTED')">Nivel uno</button>
+  <button onclick="setModalStatus('PROCESSING')">Nivel dos</button>
+  <button onclick="setModalStatus('PAYING')">Nivel tres</button>
+  <button onclick="setModalStatus('PAYMENT_READY')">Nivel cuatro</button>
 
-  <button onclick="handleStatusChange('EXPIRED')">QR Expirado</button>
-  <button onclick="handleStatusChange('PAYMENT_DENIED')">Payment Error</button>
-  <button onclick="handleStatusChange('ERROR')">Error</button>
+  <button onclick="setModalStatus('EXPIRED')">QR Expirado</button>
+  <button onclick="setModalStatus('PAYMENT_DENIED')">Payment Error</button>
+  <button onclick="setModalStatus('ERROR')">Error</button>
 
 </body>
 

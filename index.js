@@ -6,7 +6,8 @@ function showModal() {
     onFailure: function() {console.log('onFailure')},
     onClose: function() {console.log('onClose')},
     onCancel: function() {console.log('onCancel')},
-    callbackURL: ''
+    callbackURL: 'https://www.google.com.ar',
+    deeplink: 'deeplink'
     }
 
     openModal(modalObject);

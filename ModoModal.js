@@ -1,7 +1,7 @@
 
 function modoModal() {
 let initialized = false;
-let mockStatus = 'STARTED';
+this.mockStatus = 'STARTED';
 let currentStatus = 'STARTED';
 let modalProperties = {};
 let checkoutId;
@@ -268,6 +268,7 @@ function createStepPaymentError() {
   let stepButtonRefresh = document.createElement('button');
   stepButtonRefresh.classList.add("modo-btn-primary");
   stepButtonRefresh.classList.add("mt-55");
+  stepButtonRefresh.classList.add("refresh-button");
   stepButtonRefresh.innerHTML = 'Generar nuevo QR';
   stepButtonRefresh.onclick = () => refreshQr();
 
@@ -307,9 +308,9 @@ function createStepError() {
   let stepButtonRefresh = document.createElement('button');
   stepButtonRefresh.classList.add("modo-btn-primary");
   stepButtonRefresh.classList.add("mt-55");
+  stepButtonRefresh.classList.add("refresh-button");
   stepButtonRefresh.innerHTML = 'Generar nuevo QR';
   stepButtonRefresh.onclick = () => refreshQr();
-
   let cancelButton = createElementWithClass("button", "modo-btn-link");
   cancelButton.innerHTML = 'Cancelar';
   cancelButton.onclick = () => cancelModal();
@@ -343,6 +344,7 @@ function createStepExpired() {
   let stepButton = document.createElement('button');
   stepButton.classList.add("modo-btn-primary");
   stepButton.classList.add("mt-75");
+  stepButton.classList.add("refresh-button");
   stepButton.innerHTML = 'Generar nuevo QR';
   stepButton.onclick = () => refreshQr();
 
@@ -416,13 +418,37 @@ function removeModal() {
   initialized = false;
 }
 
-function refreshQr() {
+async function refreshQr() {
+  // disable refresh button
+  let buttons = document.getElementsByClassName("refresh-button");
+  for (let item of buttons) {
+    item.disabled = true
+  }
+  let response = await postData('https://api.develop.playdigital.com.ar/ecommerce/payment-intention');
+  console.log(response);
   removeModal();
   openModal(modalProperties);
 }
 
+function detectMobile() {
+  const isMobile = (navigator.userAgent.match(/Android/i)
+    || navigator.userAgent.match(/webOS/i)
+    || navigator.userAgent.match(/iPhone/i)
+    || navigator.userAgent.match(/iPad/i)
+    || navigator.userAgent.match(/iPod/i)
+    || navigator.userAgent.match(/BlackBerry/i)
+    || navigator.userAgent.match(/Windows Phone/i));     
+    return isMobile;
+}
+
 
 this.openModal = function (modalObject) {
+
+  if(detectMobile()) {
+    console.log('redirect to ' + modalObject.deeplink);
+    return;
+  }
+
   //   The modal object must have the following properties
   //   checkoutId
   //   QRBase64
@@ -440,6 +466,24 @@ this.openModal = function (modalObject) {
     buildHtml(modalObject.QRBase64);
     setAsyncInterval(getStatus, 3000);
   }
+}
+
+async function postData(url = '', data = {}) {
+
+  const params = {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer c53b1531-8e10-4b01-9c76-6482a33794a1'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+  }
+
+  return await fetch(url, params);  
 }
 
 async function getData(url = '', data = {}) {

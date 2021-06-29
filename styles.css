@@ -204,7 +204,7 @@ p {
 
 
 .modal-wrapper {
-    font-family: 'Red Hat Display', sans-serif;
+    font-family: 'Red Hat Display'  !important;
     background-color: #f8f8f8;
     width: 576px;
     min-height: 576px;
@@ -311,8 +311,8 @@ p {
 
 /* Buttons */
 .modo-btn-primary {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
+    font-family: 'Open Sans', sans-serif !important;
+    font-size: 16px !important;
     line-height: 17.6px;
     background-color: #00D0A6;
     padding: 19px;

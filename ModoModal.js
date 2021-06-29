@@ -5,6 +5,7 @@ this.mockStatus = 'STARTED';
 let currentStatus = 'STARTED';
 let modalProperties = {};
 let checkoutId;
+let closeModalTimeout = {};
 
 function buildHtml(qrCode) {
   let link = document.createElement('link');
@@ -397,7 +398,12 @@ function cancelModal() {
   modalProperties.onCancel();
 }
 
+function clearCloseModalTimeout() {
+  clearTimeout(closeModalTimeout);
+}
+
 function finalize() {
+  clearCloseModalTimeout();
   if(modalProperties.callbackURL) {
     window.location.replace(modalProperties.callbackURL);
   }
@@ -425,6 +431,10 @@ async function refreshQr() {
     item.disabled = true
   }
   let response = await postData('https://api.develop.playdigital.com.ar/ecommerce/payment-intention');
+  // if(response) {
+  //   modalProperties.qrCode = response.qrCode;
+  //   modalProperties.deeplink = response.deeplink;
+  // }
   console.log(response);
   removeModal();
   openModal(modalProperties);
@@ -464,7 +474,7 @@ this.openModal = function (modalObject) {
     checkoutId = modalObject.checkoutId;
     initialized = true;
     buildHtml(modalObject.QRBase64);
-    setAsyncInterval(getStatus, 3000);
+    // setAsyncInterval(getStatus, 3000);
   }
 }
 
@@ -583,7 +593,7 @@ this.setModalStatus = (status) => {
       break;
     case 'PAYMENT_READY':
       modalProperties.onSuccess();
-      setTimeout(() => finalize(), 5000);
+      closeModalTimeout = setTimeout(() => finalize(), 5000);
       spanLogo.innerHTML = 'Pagaste con ';
       clearAsyncInterval();
       handleStatusChange('PAYMENT_READY');

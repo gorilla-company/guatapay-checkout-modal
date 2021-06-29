@@ -1,4 +1,5 @@
 
+function modoModal() {
 let initialized = false;
 let mockStatus = 'STARTED';
 let currentStatus = 'STARTED';
@@ -232,6 +233,8 @@ function createStep4(businessName, price, paymentNumber) {
 
   let continueButton = createElementWithClass("button", "modo-btn-primary");
   continueButton.innerHTML = "Continuar";
+  continueButton.onclick = () => finalize();
+
 
   step.appendChild(stepTitle);
   step.appendChild(divImg);
@@ -384,22 +387,33 @@ function handleStatusChange(status) {
 
 function closeModal() {
   removeModal();
-  modalProperties?.onClose();
+  modalProperties.onClose();
 }
 
 function cancelModal() {
   removeModal();
-  modalProperties?.onCancel();
+  modalProperties.onCancel();
+}
+
+function finalize() {
+  if(modalProperties.callbackURL) {
+    window.location.replace(modalProperties.callbackURL);
+  }
+  else {
+    removeModal();
+  }
 }
 
 function removeModal() {
   clearAsyncInterval();
   let overlay = document.getElementById('modo-overlay');
   let modal = document.getElementById('modal-container');
-  document.body.removeChild(modal);
-  document.body.removeChild(overlay);
+  if(modal)
+    document.body.removeChild(modal);
+  if(overlay)
+    document.body.removeChild(overlay);
+
   initialized = false;
-  currentStatus = 'STARTED';
 }
 
 function refreshQr() {
@@ -408,7 +422,7 @@ function refreshQr() {
 }
 
 
-let openModal = function (modalObject) {
+this.openModal = function (modalObject) {
   //   The modal object must have the following properties
   //   checkoutId
   //   QRBase64
@@ -419,6 +433,7 @@ let openModal = function (modalObject) {
   //   onCancel
   //   callbackURL
   if (!initialized) {
+    currentStatus = 'STARTED';
     modalProperties = modalObject;
     checkoutId = modalObject.checkoutId;
     initialized = true;
@@ -503,7 +518,7 @@ const getStatus = async () => {
   }
 }
 
-const setModalStatus = (status) => {
+this.setModalStatus = (status) => {
   if (status == currentStatus) {
     return;
   }
@@ -523,20 +538,20 @@ const setModalStatus = (status) => {
       handleStatusChange('PAYING');
       break;
     case 'PAYMENT_READY':
-      modalProperties?.onSuccess();
-
+      modalProperties.onSuccess();
+      setTimeout(() => finalize(), 5000);
       spanLogo.innerHTML = 'Pagaste con ';
       clearAsyncInterval();
       handleStatusChange('PAYMENT_READY');
       break;
     case 'PAYMENT_DENIED':
-      modalProperties?.onFailure();
+      modalProperties.onFailure();
       spanLogo.innerHTML = 'Pagando con ';
       clearAsyncInterval();
       handleStatusChange('PAYMENT_DENIED');
       break;
     case 'ERROR':
-      modalProperties?.onFailure();
+      modalProperties.onFailure();
       spanLogo.innerHTML = 'Pagando con ';
       clearAsyncInterval();
       handleStatusChange('ERROR');
@@ -550,3 +565,5 @@ const setModalStatus = (status) => {
       break;
   }
 }
+}
+modoModal();

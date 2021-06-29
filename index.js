@@ -6,7 +6,7 @@ function showModal() {
     onFailure: function() {console.log('onFailure')},
     onClose: function() {console.log('onClose')},
     onCancel: function() {console.log('onCancel')},
-    callbackURL: function() {console.log('onCallback')}
+    callbackURL: ''
     }
 
     openModal(modalObject);

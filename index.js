@@ -9,5 +9,5 @@ function showModal() {
     deeplink: 'deeplink'
     }
 
-    openModal(modalObject);
+    modoInitPayment(modalObject);
 }

@@ -441,7 +441,7 @@ async function refreshQr() {
   // }
   console.log(response);
   removeModal();
-  openModal(modalProperties);
+  modoInitPayment(modalProperties);
 }
 
 function detectMobile() {
@@ -456,7 +456,7 @@ function detectMobile() {
 }
 
 
-this.openModal = function (modalObject) {
+this.modoInitPayment = function (modalObject) {
 
   if(detectMobile()) {
     console.log('redirect to ' + modalObject.deeplink);

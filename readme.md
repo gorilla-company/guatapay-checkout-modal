@@ -21,7 +21,7 @@ var modalOptions = {
     callbackURL: ''
 }
 
-openModal(modalOptions);
+modoInitPayment(modalOptions);
 ```
 
 ## Options

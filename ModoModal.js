@@ -390,12 +390,16 @@ function handleStatusChange(status) {
 
 function closeModal() {
   removeModal();
-  modalProperties.onClose();
+  if(modalProperties.onClose) {
+    modalProperties.onClose();
+  }
 }
 
 function cancelModal() {
   removeModal();
-  modalProperties.onCancel();
+  if(modalProperties.onCancel) {
+    modalProperties.onCancel();
+  }
 }
 
 function clearCloseModalTimeout() {
@@ -474,7 +478,7 @@ this.openModal = function (modalObject) {
     checkoutId = modalObject.checkoutId;
     initialized = true;
     buildHtml(modalObject.QRBase64);
-    // setAsyncInterval(getStatus, 3000);
+    setAsyncInterval(getStatus, 3000);
   }
 }
 
@@ -592,20 +596,26 @@ this.setModalStatus = (status) => {
       handleStatusChange('PAYING');
       break;
     case 'PAYMENT_READY':
-      modalProperties.onSuccess();
+      if(modalProperties.onSuccess) {
+        modalProperties.onSuccess();
+      }
       closeModalTimeout = setTimeout(() => finalize(), 5000);
       spanLogo.innerHTML = 'Pagaste con ';
       clearAsyncInterval();
       handleStatusChange('PAYMENT_READY');
       break;
     case 'PAYMENT_DENIED':
-      modalProperties.onFailure();
+      if(modalProperties.onFailure) {
+        modalProperties.onFailure();
+      }
       spanLogo.innerHTML = 'Pagando con ';
       clearAsyncInterval();
       handleStatusChange('PAYMENT_DENIED');
       break;
     case 'ERROR':
-      modalProperties.onFailure();
+      if(modalProperties.onFailure) {
+        modalProperties.onFailure();
+      }
       spanLogo.innerHTML = 'Pagando con ';
       clearAsyncInterval();
       handleStatusChange('ERROR');

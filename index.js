@@ -4,7 +4,6 @@ function showModal() {
     checkoutId: 'c529ce02-3b55-4e1b-b63b-55b5f94169a6',
     onSuccess: function() {console.log('onSuccess')},
     onFailure: function() {console.log('onFailure')},
-    onClose: function() {console.log('onClose')},
     onCancel: function() {console.log('onCancel')},
     callbackURL: '',
     deeplink: 'deeplink'

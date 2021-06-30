@@ -23,3 +23,16 @@ var modalOptions = {
 
 openModal(modalOptions);
 ```
+
+## Options
+
+|Option |Required  | Description|
+--- | --- | ---
+|QRBase64|Yes|String.|
+|checkoutId|Yes|String.|
+|deeplink|Yes|String.|
+|onSuccess|No|Function.|
+|onFailure|No|Function.|
+|onClose|No|Function.|
+|onCancel|No|Function.|
+|callbackURL|No|String.|

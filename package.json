@@ -1,0 +1,26 @@
+{
+  "name": "modal-modo",
+  "version": "0.0.1",
+  "description": "Front-end vanila js component to process Modo payment intentions via a modal (on desktop) or deeplink (on mobile)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node_modules/.bin/webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/conexa-modo/modal-modo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/conexa-modo/modal-modo/issues"
+  },
+  "homepage": "https://gitlab.com/conexa-modo/modal-modo#readme",
+  "devDependencies": {
+    "css-loader": "^5.2.6",
+    "style-loader": "^3.0.0",
+    "webpack": "^5.41.1",
+    "webpack-cli": "^4.7.2"
+  }
+}

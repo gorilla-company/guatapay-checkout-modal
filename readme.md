@@ -1,6 +1,13 @@
 # Modo Modal
 
+Front-end vanilla js component to process Modo payment intentions via a modal (on desktop) or deeplink (on mobile)
+
 Stack: Vanilla JS
+
+## Install & Build
+
+$ npm i
+$ npm run build
 
 ## Usage
 

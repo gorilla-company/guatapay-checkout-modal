@@ -7,10 +7,9 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-
     // https://webpack.js.org/guides/author-libraries/#authoring-a-library
-    //libraryTarget: 'var', // var|umd
-    library: 'EntryPoint'
+    // https://webpack.js.org/configuration/output/#outputlibrary
+    library: 'ModoSDK',
   },
 
   // https://webpack.js.org/guides/asset-management/
@@ -19,6 +18,7 @@ module.exports = {
       {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
+        //type: 'asset/resource',
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,

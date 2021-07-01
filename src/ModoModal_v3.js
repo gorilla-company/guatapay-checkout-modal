@@ -1,26 +1,12 @@
 import './styles.css';
-import CloseBtn from './img/close-btn.svg'
-
-/*import QRCodeStyling, {
-  DrawType,
-  TypeNumber,
-  Mode,
-  ErrorCorrectionLevel,
-  DotType,
-  CornerSquareType,
-  CornerDotType,
-  Extension,
-  Options
-} from "qr-code-styling";*/
-
 
 let modoModal = function() {
   console.log('modoModal()')
   window.exposed_1 = 'algo';
 
   let initialized = false;
-  //this.mockStatus = 'STARTED'; 
-  window.mockStatus = 'STARTED';// <-- this => window
+  this.mockStatus = 'STARTED'; 
+  //window.mockStatus = 'STARTED';// <-- this => window
   window.exposed_3 = 'algo'; // <-- no queda expuesto despues de usar this  
   let currentStatus = 'STARTED';
   let modalProperties = {};
@@ -59,8 +45,7 @@ let modoModal = function() {
     let closeButton = document.createElement("button");
     closeButton.onclick = () => closeModal();
     let imgClose = document.createElement('img');
-    //imgClose.src = './img/close-btn.svg';
-    imgClose.src = CloseBtn;
+    imgClose.src = './img/close-btn.svg';
     imgLogo.alt = 'close';
     closeButton.appendChild(imgClose);
 
@@ -132,7 +117,7 @@ let modoModal = function() {
   function createStep1(qrCode) {
     let step1Div = createElementWithClass("div", "modal-body-wrapper");
     step1Div.id = "step-STARTED";
-    let step1Title = createElementWithClass("p", "paragraph");
+    step1Title = createElementWithClass("p", "paragraph");
     step1Title.innerHTML = "Escanea el c\u00F3digo QR <br> Con la App MODO o desde tu App bancaria preferida";
 
     let qrContainer = createElementWithClass("div", "modal-body-qr-wrapper");
@@ -187,7 +172,7 @@ let modoModal = function() {
     step2Div.classList.add("hide");
     step2Div.id = "step-PROCESSING";
 
-    let step2Title = createElementWithClass("p", "paragraph");
+    step2Title = createElementWithClass("p", "paragraph");
     step2Title.innerHTML = "Estamos esperando confirmaci\u00F3n";
 
     let divLoading = document.createElement("div");
@@ -478,7 +463,7 @@ let modoModal = function() {
 
   window.exposed_4 = 'algo';
   // this.modoInitPayment
-  window.modoInitPayment = function (modalObject) {
+  this.modoInitPayment = function (modalObject) {
 
     if(detectMobile()) {
       console.log('redirect to ' + modalObject.deeplink);
@@ -599,7 +584,7 @@ let modoModal = function() {
   }
 
   //window.setModalStatus = (status) => { //<-- this => window
-  let setModalStatus = (status) => {
+  this.setModalStatus = (status) => {
     if (status == currentStatus) {
       return;
     }
@@ -652,7 +637,6 @@ let modoModal = function() {
         break;
     }
   }
-
 }
 //modoModal();
 
@@ -660,5 +644,3 @@ export default {
   modoModal: modoModal,
   testExpose: 'ok'
 }
-
-//export modoModal;

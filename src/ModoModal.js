@@ -623,7 +623,7 @@ console.log(qrCode);
   }
 
   //window.setModalStatus = (status) => { //<-- this => window
-  let setModalStatus = (status) => {
+  window.setModalStatus = (status) => {
     if (status == currentStatus) {
       return;
     }
@@ -631,18 +631,22 @@ console.log(qrCode);
     let spanLogo = document.getElementById('title-header');
     switch (status) {
       case 'STARTED':
+        window.mockStatus = 'STARTED';
         spanLogo.innerHTML = 'Pag\u00E1 con ';
         handleStatusChange('STARTED');
         break;
       case 'PROCESSING':
+        window.mockStatus = 'PROCESSING';
         spanLogo.innerHTML = 'Pagando con ';
         handleStatusChange('PROCESSING');
         break;
       case 'PAYING':
+        window.mockStatus = 'PAYING';
         spanLogo.innerHTML = 'Pagando con ';
         handleStatusChange('PAYING');
         break;
       case 'PAYMENT_READY':
+        window.mockStatus = 'PAYMENT_READY';
         if(modalProperties.onSuccess) {
           modalProperties.onSuccess();
         }
@@ -652,6 +656,7 @@ console.log(qrCode);
         handleStatusChange('PAYMENT_READY');
         break;
       case 'PAYMENT_DENIED':
+        window.mockStatus = 'PAYMENT_DENIED';
         if(modalProperties.onFailure) {
           modalProperties.onFailure();
         }
@@ -660,6 +665,7 @@ console.log(qrCode);
         handleStatusChange('PAYMENT_DENIED');
         break;
       case 'EXPIRED':
+        window.mockStatus = 'EXPIRED';
         spanLogo.innerHTML = 'Pagando con ';
         clearAsyncInterval();
         handleStatusChange('EXPIRED');

@@ -1,7 +1,15 @@
 import './styles.css';
-import CloseBtn from './img/close-btn.svg'
 
-/*import QRCodeStyling, {
+import CloseBtn from './img/close-btn.svg';
+import svgLogo from './img/modo-logo.svg';
+import svgQuestion from './img/question-icon.svg';
+import svgHourglass from './img/hourglass-icon.svg';
+import svgSpinner from './img/spinner.svg';
+import svgCheck from './img/check.svg';
+import svgError from './img/error.svg';
+import svgExpired from './img/expired.svg';
+
+import QRCodeStyling, {
   DrawType,
   TypeNumber,
   Mode,
@@ -11,12 +19,32 @@ import CloseBtn from './img/close-btn.svg'
   CornerDotType,
   Extension,
   Options
-} from "qr-code-styling";*/
+} from "qr-code-styling";
 
 
 let modoModal = function() {
   console.log('modoModal()')
   window.exposed_1 = 'algo';
+
+  const qrCode = new QRCodeStyling({
+    width: 300,
+    height: 300,
+    type: "svg",
+    data: "https://www.facebook.com/",
+    image: "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg",
+    dotsOptions: {
+        color: "#4267b2",
+        type: "rounded"
+    },
+    backgroundOptions: {
+        color: "#e9ebee",
+    },
+    imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 20
+    }
+});
+console.log(qrCode);
 
   let initialized = false;
   //this.mockStatus = 'STARTED'; 
@@ -28,11 +56,6 @@ let modoModal = function() {
   let closeModalTimeout = {};
 
   function buildHtml(qrCode) {
-    let link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.type = 'text/css';
-    link.href = './styles.css';
-    document.head.appendChild(link);
 
     let overlay = createElementWithClass("div", "modo-overlay");
     overlay.id = "modo-overlay";
@@ -50,7 +73,7 @@ let modoModal = function() {
     spanLogo.id = "title-header";
     spanLogo.innerHTML = 'Pag\u00E1 con ';
     let imgLogo = document.createElement('img');
-    imgLogo.src = './img/modo-logo.svg';
+    imgLogo.src = svgLogo;
     imgLogo.alt = 'logo';
 
     logoWrapper.appendChild(spanLogo);
@@ -133,7 +156,7 @@ let modoModal = function() {
     let step1Div = createElementWithClass("div", "modal-body-wrapper");
     step1Div.id = "step-STARTED";
     let step1Title = createElementWithClass("p", "paragraph");
-    step1Title.innerHTML = "Escanea el c\u00F3digo QR <br> Con la App MODO o desde tu App bancaria preferida";
+    step1Title.innerHTML = "Escanea el código QR <br> Con la App MODO o desde tu App bancaria preferida";
 
     let qrContainer = createElementWithClass("div", "modal-body-qr-wrapper");
     qrContainer.innerHTML = '<img src="data:image/png;base64, {qrCode}"></img>'.replace('{qrCode}', qrCode);
@@ -144,7 +167,7 @@ let modoModal = function() {
     let toolTip = createElementWithClass("div", "tooltip");
 
     let imgQuestion = document.createElement('img');
-    imgQuestion.src = './img/question-icon.svg';
+    imgQuestion.src = svgQuestion;
     imgQuestion.alt = 'question';
     
     let toolTipText = createElementWithClass("div", "tooltiptext");
@@ -194,7 +217,7 @@ let modoModal = function() {
     divLoading.classList.add("svg-icon");
     divLoading.classList.add("rotate");
 
-    divLoading.innerHTML = '<img src="./img/hourglass-icon.svg" alt="loading">';
+    divLoading.innerHTML = '<img src={img} alt="loading">'.replace('{img}', svgHourglass);
 
     let step2Text = document.createElement("p");
     step2Text.innerHTML = "Eleg\u00ED el medio de pago y confirm\u00E1 la transacci\u00F3n"
@@ -217,7 +240,7 @@ let modoModal = function() {
     divLoadingStep3.classList.add("svg-icon");
     divLoadingStep3.classList.add("spin");
 
-    divLoadingStep3.innerHTML = '<img src="./img/spinner.svg" alt="loading">';
+    divLoadingStep3.innerHTML = '<img src={img} alt="loading">'.replace('{img}', svgSpinner);
 
     let step3TextUpper = document.createElement("p");
     step3TextUpper.innerHTML = "Estamos procesando tu pago,"
@@ -240,7 +263,7 @@ let modoModal = function() {
     let stepTitle = createElementWithClass("p", "subtitle");
     stepTitle.innerHTML = "\u00A1Listo!"
     let divImg = createElementWithClass("div", "svg-icon");
-    divImg.innerHTML = '<img src="./img/check.svg" alt="ok">';
+    divImg.innerHTML = '<img src={img} alt="ok">'.replace('{img}', svgCheck);
 
     let paidTo = document.createElement("p");
     paidTo.innerHTML = "Pagaste a"
@@ -279,7 +302,7 @@ let modoModal = function() {
     stepTitle.innerHTML = "Pago denegado"
 
     let stepImg = createElementWithClass("div", "svg-icon");
-    stepImg.innerHTML = '<img src="./img/error.svg" alt="error">';
+    stepImg.innerHTML = '<img src={img} alt="error">'.replace('{img}', svgError);
 
     let stepTextUpper = document.createElement("p");
     stepTextUpper.innerHTML = "<b>Lo sentimos, tu pago fue denegado</b>"
@@ -310,6 +333,7 @@ let modoModal = function() {
     return step;
   }
 
+  // remove
   function createStepError() {
     let step = createElementWithClass("div", "modal-body-wrapper");
     step.classList.add("hide");
@@ -319,7 +343,7 @@ let modoModal = function() {
     stepTitle.innerHTML = "Error en el pago"
 
     let stepImg = createElementWithClass("div", "svg-icon")
-    stepImg.innerHTML = '<img src="./img/error.svg" alt="error">';
+    stepImg.innerHTML = '<img src={img} alt="error">'.replace('{img}', svgError);;
 
     let stepTextUpper = document.createElement("p");
     stepTextUpper.innerHTML = "<b>No pudimos procesar tu pago</b>"
@@ -357,7 +381,7 @@ let modoModal = function() {
     stepTitle.innerHTML = "C\u00F3digo QR Expirado";
 
     let stepImg = createElementWithClass("div", "svg-icon");
-    stepImg.innerHTML = '<img src="./img/expired.svg" alt="expired">';
+    stepImg.innerHTML = '<img src={img} alt="expired">'.replace('{img}', svgExpired);
 
     let stepTextUpper = document.createElement("p");
     stepTextUpper.innerHTML = "Por favor gener\u00E1 un nuevo QR"
@@ -634,14 +658,6 @@ let modoModal = function() {
         spanLogo.innerHTML = 'Pagando con ';
         clearAsyncInterval();
         handleStatusChange('PAYMENT_DENIED');
-        break;
-      case 'ERROR':
-        if(modalProperties.onFailure) {
-          modalProperties.onFailure();
-        }
-        spanLogo.innerHTML = 'Pagando con ';
-        clearAsyncInterval();
-        handleStatusChange('ERROR');
         break;
       case 'EXPIRED':
         spanLogo.innerHTML = 'Pagando con ';

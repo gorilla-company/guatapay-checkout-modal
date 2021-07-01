@@ -486,6 +486,7 @@ console.log(qrCode);
     // }
     console.log(response);
     removeModal();
+    window.mockStatus = 'STARTED';
     modoInitPayment(modalProperties);
   }
 

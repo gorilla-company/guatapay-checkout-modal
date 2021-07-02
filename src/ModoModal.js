@@ -26,26 +26,6 @@ let modoModal = function() {
   console.log('modoModal()')
   window.exposed_1 = 'algo';
 
-  const qrCode = new QRCodeStyling({
-    width: 300,
-    height: 300,
-    type: "svg",
-    data: "https://www.facebook.com/",
-    image: "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg",
-    dotsOptions: {
-        color: "#4267b2",
-        type: "rounded"
-    },
-    backgroundOptions: {
-        color: "#e9ebee",
-    },
-    imageOptions: {
-        crossOrigin: "anonymous",
-        margin: 20
-    }
-});
-console.log(qrCode);
-
   let initialized = false;
   //this.mockStatus = 'STARTED'; 
   window.mockStatus = 'STARTED';// <-- this => window
@@ -152,14 +132,14 @@ console.log(qrCode);
   }
 
   
-  function createStep1(qrCode) {
+  function createStep1(qrString) {
     let step1Div = createElementWithClass("div", "modal-body-wrapper");
     step1Div.id = "step-STARTED";
     let step1Title = createElementWithClass("p", "paragraph");
     step1Title.innerHTML = "Escanea el código QR <br> Con la App MODO o desde tu App bancaria preferida";
 
     let qrContainer = createElementWithClass("div", "modal-body-qr-wrapper");
-    qrContainer.innerHTML = '<img src="data:image/png;base64, {qrCode}"></img>'.replace('{qrCode}', qrCode);
+    qrContainer.innerHTML = '<div id="qrContainer"></img>';
     
     let questionContainer = createElementWithClass("div", "question");
     questionContainer.innerHTML = '\u00BFC\u00F3mo pagar desde App <b>MODO</b>';
@@ -524,9 +504,35 @@ console.log(qrCode);
       modalProperties = modalObject;
       checkoutId = modalObject.checkoutId;
       initialized = true;
-      buildHtml(modalObject.QRBase64);
+
+      let qrCode = generateQr(modalObject.qrString);
+      buildHtml(qrCode);
+      qrCode.append(document.getElementById("qrContainer"));
       setAsyncInterval(getStatus, 3000);
     }
+  }
+
+  function generateQr(qrString) {
+    const qrCode = new QRCodeStyling({
+      width: 200,
+      height: 200,
+      type: "svg",
+      data: qrString,
+      image: 'https://media-exp1.licdn.com/dms/image/C4E0BAQH8NgFXakDtYw/company-logo_200_200/0/1621358929456?e=2159024400&v=beta&t=MZV2z93ujdIBCDtBqcysmclKF1d8-TrCxbl0U2MK8es',
+      dotsOptions: {
+          color: "#fffffff",
+          type: "rounded"
+      },
+      backgroundOptions: {
+          color: "#e9ebee",
+      },
+      imageOptions: {
+          crossOrigin: "anonymous",
+          margin: 20
+      }
+  });
+  console.log(qrCode);
+    return qrCode;
   }
 
   async function postData(url = '', data = {}) {

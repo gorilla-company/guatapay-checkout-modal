@@ -439,7 +439,12 @@ p {
 
     opacity: 0;
     transition: opacity .5s;
+
+
+    visibility: hidden;
+
 }
+
 
 .tooltip .tooltiptext::after {
     content: " ";
@@ -453,7 +458,7 @@ p {
 }
 
 .tooltip:hover .tooltiptext {
-    /* visibility: visible; */
+    visibility: visible;
     opacity: 1;
 }
 

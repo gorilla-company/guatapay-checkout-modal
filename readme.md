@@ -12,7 +12,7 @@ $ npm run build
 ## Usage
 
 ```html
-<script src="https://modo-modal.ecomerciar.com/ModoModal.js">
+<script src="https://modo-modal.ecomerciar.com/ModoModal.js" charset="utf-8">
 ```
 
 ```js

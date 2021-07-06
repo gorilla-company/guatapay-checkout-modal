@@ -18,7 +18,7 @@ $ npm run build
 ```js
 
 var modalOptions = {
-    QRBase64: '...',
+    qrString: '...',
     checkoutId: '...',
     deeplink: '...',
     onSuccess: function() {console.log('onSuccess')},

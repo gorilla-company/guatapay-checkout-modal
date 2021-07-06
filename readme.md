@@ -23,12 +23,12 @@ var modalOptions = {
     deeplink: '...',
     onSuccess: function() {console.log('onSuccess')},
     onFailure: function() {console.log('onFailure')},
-    onClose: function() {console.log('onClose')},
     onCancel: function() {console.log('onCancel')},
     callbackURL: ''
 }
 
-modoInitPayment(modalOptions);
+ModoSDK.default.modoModal();
+modoInitPayment(modalObject);
 ```
 
 ## Options

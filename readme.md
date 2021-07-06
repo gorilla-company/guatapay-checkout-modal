@@ -35,7 +35,7 @@ modoInitPayment(modalObject);
 
 |Option |Required  | Description|
 --- | --- | ---
-|QRBase64|Yes|String.|
+|qrString|Yes|String.|
 |checkoutId|Yes|String.|
 |deeplink|Yes|String.|
 |onSuccess|No|Function.|

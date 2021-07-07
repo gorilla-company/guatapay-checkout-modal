@@ -533,8 +533,8 @@ let modoModal = function() {
   //     }
   // });
   const qrCode = new QRCodeStyling({
-    width: 300,
-    height: 300,
+    width: 200,
+    height: 200,
     data: "https://qr-code-styling.com",
     margin: 0,
     qrOptions: {

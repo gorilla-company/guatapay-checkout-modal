@@ -8,6 +8,7 @@ import svgSpinner from './img/spinner.svg';
 import svgCheck from './img/check.svg';
 import svgError from './img/error.svg';
 import svgExpired from './img/expired.svg';
+import qrLogo from './img/qrLogo.png';
 
 import QRCodeStyling, {
   DrawType,
@@ -513,24 +514,84 @@ let modoModal = function() {
   }
 
   function generateQr(qrString) {
-    const qrCode = new QRCodeStyling({
-      width: 200,
-      height: 200,
-      type: "svg",
-      data: qrString,
-      image: 'https://media-exp1.licdn.com/dms/image/C4E0BAQH8NgFXakDtYw/company-logo_200_200/0/1621358929456?e=2159024400&v=beta&t=MZV2z93ujdIBCDtBqcysmclKF1d8-TrCxbl0U2MK8es',
-      dotsOptions: {
-          color: "#fffffff",
-          type: "rounded"
+  //   const qrCode = new QRCodeStyling({
+  //     width: 200,
+  //     height: 200,
+  //     type: "svg",
+  //     data: qrString,
+  //     image: './img/qrLogo.png',
+  //     dotsOptions: {
+  //         color: "#fffffff",
+  //         type: "rounded"
+  //     },
+  //     backgroundOptions: {
+  //         color: "#e9ebee",
+  //     },
+  //     imageOptions: {
+  //         crossOrigin: "anonymous",
+  //         margin: 20
+  //     }
+  // });
+  const qrCode = new QRCodeStyling({
+    width: 300,
+    height: 300,
+    data: "https://qr-code-styling.com",
+    margin: 0,
+    qrOptions: {
+      typeNumber: "4",
+      mode: "Byte",
+      errorCorrectionLevel: "H"
+    },
+    imageOptions: {
+      hideBackgroundDots: true,
+      imageSize: 0.4,
+      margin: 0
+    },
+    dotsOptions: {
+      type: "rounded",
+      color: "#121212",
+      gradient: null
+    },
+    backgroundOptions: {
+      color: "#ffffff"
+    },
+    image: qrLogo,
+    dotsOptionsHelper: {
+      colorType: {
+        single: true,
+        gradient: false
       },
-      backgroundOptions: {
-          color: "#e9ebee",
-      },
-      imageOptions: {
-          crossOrigin: "anonymous",
-          margin: 20
+      gradient: {
+        linear: true,
+        radial: false,
+        color1: "#6a1a4c",
+        color2: "#6a1a4c",
+        rotation: "0"
       }
+    },
+    cornersSquareOptions: {
+      type: "square",
+      color: "#121212"
+    },
+    cornersSquareOptionsHelper: {
+      colorType: {
+        single: true,
+        gradient: false
+      },
+      gradient: {
+        linear: true,
+        radial: false,
+        color1: "#000000",
+        color2: "#000000",
+        rotation: "0"
+      }
+    },
+    cornersDotOptions: {
+      type: "square",
+      color: "#121212"
+    }
   });
+
   console.log(qrCode);
     return qrCode;
   }

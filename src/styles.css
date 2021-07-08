@@ -79,7 +79,7 @@ body {
     -o-transform: translateY(-50%);
     z-index: 999;
     transform: translateY(-50%);
-    visibility: hidden;
+    /* visibility: hidden; */
 
   }
 

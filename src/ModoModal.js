@@ -132,10 +132,10 @@ let modoModal = function() {
     document.body.appendChild(overlay);
     document.body.appendChild(modalContainer);
 
-    const qrContainer = document.getElementById('imgLogo');
-    qrContainer.onload = () => {
-      modalContainer.style.visibility = "visible";
-    };
+    // const qrContainer = document.getElementById('imgLogo');
+    // qrContainer.onload = () => {
+    //   modalContainer.style.visibility = "visible";
+    // };
   }
 
   

@@ -54,6 +54,7 @@ let modoModal = function() {
     spanLogo.id = "title-header";
     spanLogo.innerHTML = 'Pag\u00E1 con ';
     let imgLogo = document.createElement('img');
+    imgLogo.id = 'imgLogo';
     imgLogo.src = svgLogo;
     imgLogo.alt = 'logo';
 
@@ -130,6 +131,11 @@ let modoModal = function() {
 
     document.body.appendChild(overlay);
     document.body.appendChild(modalContainer);
+
+    const qrContainer = document.getElementById('imgLogo');
+    qrContainer.onload = () => {
+      modalContainer.style.visibility = "visible";
+    };
   }
 
   
@@ -140,7 +146,7 @@ let modoModal = function() {
     step1Title.innerHTML = "Escanea el código QR <br> Con la App MODO o desde tu App bancaria preferida";
 
     let qrContainer = createElementWithClass("div", "modal-body-qr-wrapper");
-    qrContainer.innerHTML = '<div id="qrContainer"></img>';
+    qrContainer.innerHTML = '<div id="qrContainer"></div>';
     
     let questionContainer = createElementWithClass("div", "question");
     questionContainer.innerHTML = '\u00BFC\u00F3mo pagar desde App <b>MODO</b>';

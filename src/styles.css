@@ -63,25 +63,16 @@ body {
   }
 
   .modal-container{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
     box-sizing: border-box;
-    width: 100px;
-    height: 200px;
-    margin: 0 auto;
-    display: table;
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    /* border: 1px solid; */
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    z-index: 999;
-    transform: translateY(-50%);
-    /* visibility: hidden; */
-
+    width: 100%;
   }
+
 
 /* Modal Header */
 header {
@@ -111,8 +102,8 @@ p {
 .modal-logo-wrapper {
     text-align: center;
     height: 33px;
-    display: inline-flex;
-    justify-content: initial;
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 

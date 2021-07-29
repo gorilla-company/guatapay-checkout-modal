@@ -22,6 +22,7 @@ import QRCodeStyling, {
   Options
 } from "qr-code-styling";
 
+function modoInitPayment(foo) {};
 
 let modoModal = function() {
   console.log('modoModal()')
@@ -490,7 +491,7 @@ let modoModal = function() {
 
   window.exposed_4 = 'algo';
   // this.modoInitPayment
-  window.modoInitPayment = function (modalObject) {
+  modoInitPayment = function(modalObject) {
 
     if(detectMobile()) {
       console.log('redirect to ' + modalObject.deeplink);
@@ -514,10 +515,7 @@ let modoModal = function() {
 
       let qrCode = generateQr(modalObject.qrString);
       buildHtml(qrCode);
-      // qrCode.append(document.getElementById("qrContainer"));
-
-      setTimeout(() => qrCode.append(document.getElementById("qrContainer")), 3000)
-
+      qrCode.append(document.getElementById("qrContainer"));
       setAsyncInterval(getStatus, 3000);
     }
   }
@@ -608,8 +606,8 @@ let modoModal = function() {
       cache: 'no-cache',
       credentials: 'same-origin',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer c53b1531-8e10-4b01-9c76-6482a33794a1'
+        'Content-Type': 'application/json'
+        // 'Authorization': 'Bearer c53b1531-8e10-4b01-9c76-6482a33794a1'
       },
       redirect: 'follow',
       referrerPolicy: 'no-referrer',
@@ -623,9 +621,10 @@ let modoModal = function() {
       method: 'GET',
       mode: 'cors',
       cache: 'no-cache',
-      credentials: 'same-origin',
+      credentials: 'include',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOWRjZTE4NS1iYmQ1LTRmOTgtOTMxMS05ZGUxMzkwNzgzOWYiLCJpYXQiOjE2MjczOTE0MjUsImV4cCI6MTYyNzk5NjIyNX0.BLCNxTyITlwIkKKFxXzMj1cB3jBONRe_dLwBFPkR93w'
       },
       redirect: 'follow',
       referrerPolicy: 'no-referrer',
@@ -686,7 +685,7 @@ let modoModal = function() {
     }
   };
   const getStatus = async () => {
-    let response = await getData('https://api.develop.playdigital.com.ar/ecommerce/payment-intention/{checkoutId}?mocked_status={status}'
+    let response = await getData('https://merchants.preprod.playdigital.com.ar/merchants/ecommerce/payment-intention/{id}'.replace('{id}', 'c267ec56-d165-4078-9390-d770136d5029')
       .replace('{checkoutId}', checkoutId)
       .replace('{status}', mockStatus));
     if(response) {
@@ -748,11 +747,10 @@ let modoModal = function() {
   }
 
 }
-//modoModal();
+modoModal();
 
-export default {
-  modoModal: modoModal,
-  testExpose: 'ok'
+export {
+  modoInitPayment,
 }
 
 //export modoModal;

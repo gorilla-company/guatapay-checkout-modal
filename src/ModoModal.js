@@ -516,7 +516,7 @@ let modoModal = function() {
       buildHtml(qrCode);
       // qrCode.append(document.getElementById("qrContainer"));
 
-      setTimeout(() => qrCode.append(document.getElementById("qrContainer")), 10)
+      setTimeout(() => qrCode.append(document.getElementById("qrContainer")), 3000)
 
       setAsyncInterval(getStatus, 3000);
     }

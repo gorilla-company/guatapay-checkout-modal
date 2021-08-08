@@ -30,7 +30,7 @@ module.exports = {
       },
     ],
   },
-
+mode: 'development'
   // mode: '',
   //  The 'mode' option has not been set, webpack will fallback to 'production' for this value.
   //  Set 'mode' option to 'development' or 'production' to enable defaults for each environment.

@@ -141,7 +141,7 @@ let modoModal = function() {
       initialized = true;
 
       let qrCode = generateQr(modalObject.qrString);
-      HtmlBuildService.buildHtml(qrCode);
+      HtmlBuildService.buildHtml(refreshQr, closeModal, cancelModal);
       qrCode.append(document.getElementById("qrContainer"));
 
       setAsyncInterval(getStatus, 3000);

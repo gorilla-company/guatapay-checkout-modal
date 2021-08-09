@@ -72,9 +72,7 @@ const modoInitPayment = function (props) {
     for (const item of buttons) {
       item.disabled = true;
     }
-    const response = await restService.postData(
-      'https://api.develop.playdigital.com.ar/ecommerce/payment-intention',
-    );
+    const response = await modalProperties.refreshData();
     // if(response) {
     //   modalProperties.qrCode = response.qrCode;
     //   modalProperties.deeplink = response.deeplink;

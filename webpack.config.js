@@ -1,4 +1,5 @@
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
 
@@ -30,7 +31,11 @@ module.exports = {
       },
     ],
   },
-mode: 'development'
+  plugins: [
+    new Dotenv(),
+  ],
+  
+ mode: 'development'
   // mode: '',
   //  The 'mode' option has not been set, webpack will fallback to 'production' for this value.
   //  Set 'mode' option to 'development' or 'production' to enable defaults for each environment.

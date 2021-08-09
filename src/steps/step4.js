@@ -1,7 +1,7 @@
 import svgCheck from '../img/check.svg';
 import {createElementWithClass} from '../services/build-html.service'
 
-function createStep4(businessName, price, paymentNumber) {
+function createStep4(finalize) {
     let step = createElementWithClass("div", "modal-body-wrapper");
     step.classList.add("hide");
     step.id = "step-PAYMENT_READY";

@@ -1,7 +1,7 @@
 import svgError from '../img/error.svg';
 import {createElementWithClass} from '../services/build-html.service'
 
-function createStepPaymentError() {
+function createStepPaymentError(refreshQrFnc) {
     const step = createElementWithClass('div', 'modal-body-wrapper');
     step.classList.add('hide');
     step.id = 'step-PAYMENT_DENIED';
@@ -24,7 +24,7 @@ function createStepPaymentError() {
     stepButtonRefresh.classList.add('mt-55');
     stepButtonRefresh.classList.add('refresh-button');
     stepButtonRefresh.innerHTML = 'Generar nuevo QR';
-    stepButtonRefresh.onclick = () => refreshQr();
+    stepButtonRefresh.onclick = () => refreshQrFnc();
   
     const cancelButton = createElementWithClass('button', 'modo-btn-link');
     cancelButton.innerHTML = 'Cancelar';

@@ -1,7 +1,7 @@
 import svgExpired from '../img/expired.svg';
 import {createElementWithClass} from '../services/build-html.service'
 
-function createStepExpired() {
+function createStepExpired(refreshQr, cancelModal) {
     const step = createElementWithClass('div', 'modal-body-wrapper');
     step.classList.add('hide');
     step.id = 'step-EXPIRED';

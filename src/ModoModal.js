@@ -5,51 +5,18 @@ import restService from './services/rest.service'
 
 import qrLogo from './img/qrLogo.png';
 
-const modoModal = function () {
-  console.log('modoModal()');
-  window.exposed_1 = 'algo';
-
+const modoInitPayment = function (props) {
   let initialized = false;
   // this.mockStatus = 'STARTED';
   window.mockStatus = 'STARTED'; // <-- this => window
-  window.exposed_3 = 'algo'; // <-- no queda expuesto despues de usar this
   let currentStatus = 'STARTED';
-  let modalProperties = {};
+  let modalProperties = props;
   let checkoutId;
   let closeModalTimeout = {};
 
   const asyncIntervals = [];
 
-  const runAsyncInterval = async (cb, interval, intervalIndex) => {
-    await cb();
-    if (asyncIntervals[intervalIndex].run) {
-      asyncIntervals[intervalIndex].id = setTimeout(
-        () => runAsyncInterval(cb, interval, intervalIndex),
-        interval,
-      );
-    }
-  };
 
-  const setAsyncInterval = (cb, interval) => {
-    if (cb && typeof cb === 'function') {
-      const intervalIndex = asyncIntervals.length;
-      asyncIntervals.push({ run: true, id: 0 });
-      runAsyncInterval(cb, interval, intervalIndex);
-      return intervalIndex;
-    }
-    throw new Error('Callback must be a function');
-  };
-
-  const clearAsyncInterval = () => {
-    if (asyncIntervals.length > 0) {
-      asyncIntervals.forEach((item, index) => {
-        if (asyncIntervals[index].run) {
-          clearTimeout(asyncIntervals[index].id);
-          asyncIntervals[index].run = false;
-        }
-      });
-    }
-  };
 
   function removeModal() {
     clearAsyncInterval();
@@ -116,10 +83,9 @@ const modoModal = function () {
     //   modalProperties.qrCode = response.qrCode;
     //   modalProperties.deeplink = response.deeplink;
     // }
-    console.log(response);
     removeModal();
     window.mockStatus = 'STARTED';
-    modoInitPayment(modalProperties);
+    showModal(modalProperties);
   }
 
   function detectMobile() {
@@ -133,7 +99,7 @@ const modoModal = function () {
     return isMobile;
   }
 
-  window.modoInitPayment = function (modalObject) {
+  function showModal(modalObject) {
     if (detectMobile()) {
       console.log(`redirect to ${modalObject.deeplink}`);
       return;
@@ -243,7 +209,7 @@ const modoModal = function () {
   const getStatus = async () => {
     try {
       const response = await restService.getData(
-        'https://api.develop.playdigital.com.ar/ecommerce/payment-intention/{checkoutId}?mocked_status={status}'
+          process.env.PAYMENT_STATUS_URL
           .replace('{checkoutId}', checkoutId)
           .replace('{status}', mockStatus),
       );
@@ -308,12 +274,12 @@ const modoModal = function () {
         break;
     }
   };
+  showModal(modalProperties);
 };
 // modoModal();
 
-export default {
-  modoModal,
-  testExpose: 'ok',
+export {
+  modoInitPayment
 };
 
 // export modoModal;

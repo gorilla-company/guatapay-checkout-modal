@@ -39,24 +39,13 @@ function buildHtml(refreshQrFnc, closeModalFnc, cancelModalFnc) {
 
   // create steps containers
 
-  // STEP 1
-
   const step1Div = createStep1();
-
-  // STEP 2
-
   const step2Div = createStep2();
-
-  // STEP 3
-
   const step3Div = createStep3();
-
-  // STEP 4
-
   const step4Div = createStep4();
 
-  const stepPaymentError = createStepPaymentError();
-  const stepExpired = createStepExpired();
+  const stepPaymentError = createStepPaymentError(refreshQrFnc);
+  const stepExpired = createStepExpired(closeModalFnc);
 
   // append items to hierarchy
   section.appendChild(header);

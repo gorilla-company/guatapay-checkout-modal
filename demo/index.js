@@ -17,7 +17,7 @@ function showModal() {
 
     //modoInitPayment(modalObject);
     
-    ModoSDK.default.modoModal();
+    // ModoSDK.default.modoModal();
     modoInitPayment(modalObject);
     //ModoSDK.default.modoInitPayment(modalObject);
 

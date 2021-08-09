@@ -75,29 +75,17 @@ const modoModal = function () {
     }
   }
 
-  function removeSelectedStep(status) {
-    let arr = [
-      'STARTED',
-      'PROCESSING',
-      'PAYING',
-      'PAYMENT_READY',
-      'PAYMENT_DENIED',
-      'ERROR',
-      'EXPIRED',
-    ];
-    arr = arr.filter((item) => item !== status);
-
-    return arr;
-  }
-
   function handleStatusChange(status) {
     const newClass = `modal-nav-ball modal-nav-ball-selected modal-nav-ball-selected-step-${
       status}`;
     document.getElementById('selected-step').className = newClass;
 
-    const stepsToHide = removeSelectedStep(status);
+    const stepsToHide = HtmlBuildService.removeSelectedStep(status);
     stepsToHide.forEach(
-      (element) => (document.getElementById(`step-${element}`).className = 'modal-body-wrapper hide'),
+      (element) =>  {
+        let step =  document.getElementById(`step-${element}`);
+        step.className = 'modal-body-wrapper hide'
+      },
     );
     document.getElementById(`step-${status}`).className = 'modal-body-wrapper show';
   }

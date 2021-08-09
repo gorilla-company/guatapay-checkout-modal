@@ -1,7 +1,7 @@
 import svgError from '../img/error.svg';
 import {createElementWithClass} from '../services/build-html.service'
 
-function createStepPaymentError(refreshQrFnc) {
+function createStepPaymentError(refreshQrFnc, cancelModal) {
     const step = createElementWithClass('div', 'modal-body-wrapper');
     step.classList.add('hide');
     step.id = 'step-PAYMENT_DENIED';

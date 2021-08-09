@@ -1,3 +1,5 @@
+const asyncIntervals = [];
+
 const runAsyncInterval = async (cb, interval, intervalIndex) => {
     await cb();
     if (asyncIntervals[intervalIndex].run) {

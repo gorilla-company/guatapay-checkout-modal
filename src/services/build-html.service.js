@@ -7,20 +7,13 @@ import {createStepExpired} from '../steps/expired';
 import {createHeader} from '../steps/header';
 import {createNavBar} from '../steps/navBar';
 
-let refreshQr = {};
-let closeModal = {};
-let cancelModal = {};
-
 function createElementWithClass(elementName, className) {
   const element = document.createElement(elementName);
   element.className = className;
   return element;
 }
 
-function buildHtml(refreshQrFnc, closeModalFnc, cancelModalFnc) {
-  refreshQr = refreshQrFnc;
-  closeModal = closeModalFnc;
-  cancelModal = cancelModalFnc;
+function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
 
   const overlay = createElementWithClass('div', 'modo-overlay');
   overlay.id = 'modo-overlay';
@@ -42,10 +35,10 @@ function buildHtml(refreshQrFnc, closeModalFnc, cancelModalFnc) {
   const step1Div = createStep1();
   const step2Div = createStep2();
   const step3Div = createStep3();
-  const step4Div = createStep4();
+  const step4Div = createStep4(finalize);
 
-  const stepPaymentError = createStepPaymentError(refreshQrFnc);
-  const stepExpired = createStepExpired(closeModalFnc);
+  const stepPaymentError = createStepPaymentError(refreshQr, cancelModal);
+  const stepExpired = createStepExpired(refreshQr, closeModal);
 
   // append items to hierarchy
   section.appendChild(header);

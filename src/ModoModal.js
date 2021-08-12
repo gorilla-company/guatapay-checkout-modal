@@ -1,5 +1,5 @@
 import './styles.css';
-import QRCodeStyling from 'qr-code-styling';
+// import QRCodeStyling from 'qr-code-styling';
 import HtmlBuildService from './services/build-html.service';
 import restService from './services/rest.service'
 import {setAsyncInterval, clearAsyncInterval} from './services/async-interval.service'

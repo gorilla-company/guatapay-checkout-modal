@@ -29,13 +29,18 @@ module.exports = {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
       },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: { loader: 'babel-loader' }
+      }
     ],
   },
   plugins: [
     new Dotenv(),
   ],
   
-//  mode: 'development'
+ mode: 'development'
   // mode: '',
   //  The 'mode' option has not been set, webpack will fallback to 'production' for this value.
   //  Set 'mode' option to 'development' or 'production' to enable defaults for each environment.

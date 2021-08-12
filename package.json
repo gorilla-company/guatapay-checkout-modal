@@ -4,7 +4,7 @@
   "description": "Front-end vanila js component to process Modo payment intentions via a modal (on desktop) or deeplink (on mobile)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "node_modules/.bin/webpack"
   },
   "repository": {
@@ -18,16 +18,30 @@
   },
   "homepage": "https://gitlab.com/conexa-modo/modal-modo#readme",
   "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "css-loader": "^5.2.6",
     "dotenv-webpack": "^7.0.3",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4",
+    "jest": "^27.0.6",
     "style-loader": "^3.0.0",
     "webpack": "^5.41.1",
     "webpack-cli": "^4.7.2"
   },
   "dependencies": {
-    "qr-code-styling": "^1.6.0-rc.0"
+    "identity-obj-proxy": "^3.0.0",
+    "qr-code-styling": "^1.6.0-rc.0",
+    "regenerator-runtime": "^0.13.9"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__tests__/ModoModal.test.js",
+      "\\.(css|less)$": "identity-obj-proxy"
+    },
+    "setupFilesAfterEnv": ["<rootDir>/src/__tests__/ModoModal.test.js"] 
   }
 }

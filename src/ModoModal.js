@@ -1,8 +1,8 @@
 import './styles.css';
 import QRCodeStyling from 'qr-code-styling';
 import HtmlBuildService from './services/build-html.service';
-import restService from './services/rest.service'
-import {setAsyncInterval, clearAsyncInterval} from './services/async-interval.service'
+import restService from './services/rest.service';
+import { setAsyncInterval, clearAsyncInterval } from './services/async-interval.service';
 import qrLogo from './img/qrLogo.png';
 
 const modoInitPayment = function (props) {
@@ -23,7 +23,7 @@ const modoInitPayment = function (props) {
 
     initialized = false;
   }
-  
+
   function closeModal() {
     removeModal();
     if (modalProperties.onClose) {
@@ -45,102 +45,15 @@ const modoInitPayment = function (props) {
 
     const stepsToHide = HtmlBuildService.removeSelectedStep(status);
     stepsToHide.forEach(
-      (element) =>  {
-        let step =  document.getElementById(`step-${element}`);
-        step.className = 'modal-body-wrapper hide'
+      (element) => {
+        const step = document.getElementById(`step-${element}`);
+        step.className = 'modal-body-wrapper hide';
       },
     );
     document.getElementById(`step-${status}`).className = 'modal-body-wrapper show';
   }
 
-  function clearCloseModalTimeout() {
-    clearTimeout(closeModalTimeout);
-  }
-
-  function finalize() {
-    clearCloseModalTimeout();
-    if (modalProperties.callbackURL) {
-      window.location.replace(modalProperties.callbackURL);
-    } else {
-      removeModal();
-    }
-  }
-
-  async function refreshQr() {
-    // disable refresh button
-    const buttons = document.getElementsByClassName('refresh-button');
-    for (const item of buttons) {
-      item.disabled = true;
-    }
-    const response = await modalProperties.refreshData();
-    // if(response) {
-    //   modalProperties.qrCode = response.qrCode;
-    //   modalProperties.deeplink = response.deeplink;
-    // }
-    removeModal();
-    window.mockStatus = 'STARTED';
-    showModal(modalProperties);
-  }
-
-  function detectMobile() {
-    const isMobile = navigator.userAgent.match(/Android/i)
-      || navigator.userAgent.match(/webOS/i)
-      || navigator.userAgent.match(/iPhone/i)
-      || navigator.userAgent.match(/iPad/i)
-      || navigator.userAgent.match(/iPod/i)
-      || navigator.userAgent.match(/BlackBerry/i)
-      || navigator.userAgent.match(/Windows Phone/i);
-    return isMobile;
-  }
-
-  function showModal(modalObject) {
-    if (detectMobile()) {
-      console.log(`redirect to ${modalObject.deeplink}`);
-      return;
-    }
-
-    //   The modal object must have the following properties
-    //   checkoutId
-    //   QRBase64
-    //   deeplink
-    //   onSuccess
-    //   onFailure
-    //   onClose
-    //   onCancel
-    //   callbackURL
-    if (!initialized) {
-      currentStatus = 'STARTED';
-      modalProperties = modalObject;
-      checkoutId = modalObject.checkoutId;
-      initialized = true;
-
-      const qrCode = generateQr(modalObject.qrString);
-      HtmlBuildService.buildHtml(refreshQr, closeModal, cancelModal, finalize);
-      qrCode.append(document.getElementById('qrContainer'));
-
-      setAsyncInterval(getStatus, 3000);
-    }
-  };
-
   function generateQr(qrString) {
-    //   const qrCode = new QRCodeStyling({
-    //     width: 200,
-    //     height: 200,
-    //     type: "svg",
-    //     data: qrString,
-    //     image: './img/qrLogo.png',
-    //     dotsOptions: {
-    //         color: "#fffffff",
-    //         type: "rounded"
-    //     },
-    //     backgroundOptions: {
-    //         color: "#e9ebee",
-    //     },
-    //     imageOptions: {
-    //         crossOrigin: "anonymous",
-    //         margin: 20
-    //     }
-    // });
     const qrCode = new QRCodeStyling({
       width: 200,
       height: 200,
@@ -195,26 +108,94 @@ const modoInitPayment = function (props) {
         color: '#121212',
       },
     });
-
-    console.log(qrCode);
     return qrCode;
+  }
+
+  function detectMobile() {
+    const isMobile = navigator.userAgent.match(/Android/i)
+      || navigator.userAgent.match(/webOS/i)
+      || navigator.userAgent.match(/iPhone/i)
+      || navigator.userAgent.match(/iPad/i)
+      || navigator.userAgent.match(/iPod/i)
+      || navigator.userAgent.match(/BlackBerry/i)
+      || navigator.userAgent.match(/Windows Phone/i);
+    return isMobile;
+  }
+
+  function clearCloseModalTimeout() {
+    clearTimeout(closeModalTimeout);
+  }
+
+  function finalize() {
+    clearCloseModalTimeout();
+    if (modalProperties.callbackURL) {
+      window.location.replace(modalProperties.callbackURL);
+    } else {
+      removeModal();
+    }
   }
 
   const getStatus = async () => {
     try {
       const response = await restService.getData(
-          process.env.PAYMENT_STATUS_URL
+        process.env.PAYMENT_STATUS_URL
           .replace('{checkoutId}', checkoutId)
-          .replace('{status}', mockStatus),
+          .replace('{status}', window.mockStatus),
       );
       if (response) {
-        setModalStatus(response.status);
+        window.setModalStatus(response.status);
       }
-    }
-    catch {
-      setModalStatus('ERROR');
+    } catch {
+      window.setModalStatus('ERROR');
     }
   };
+
+  function showModal(modalObject) {
+    if (detectMobile()) {
+      // console.log(`redirect to ${modalObject.deeplink}`);
+      return;
+    }
+
+    //   The modal object must have the following properties
+    //   checkoutId
+    //   QRBase64
+    //   deeplink
+    //   onSuccess
+    //   onFailure
+    //   onClose
+    //   onCancel
+    //   callbackURL
+    if (!initialized) {
+      currentStatus = 'STARTED';
+      modalProperties = modalObject;
+      checkoutId = modalObject.checkoutId;
+      initialized = true;
+
+      const qrCode = generateQr(modalObject.qrString);
+      HtmlBuildService.buildHtml(refreshQr, closeModal, cancelModal, finalize);
+      qrCode.append(document.getElementById('qrContainer'));
+
+      setAsyncInterval(getStatus, 3000);
+    }
+  }
+
+  async function refreshQr() {
+    // disable refresh button
+    const buttons = document.getElementsByClassName('refresh-button');
+    for (const item of buttons) {
+      item.disabled = true;
+    }
+
+    // assign refreshed response data to the modal
+    const response = await modalProperties.refreshData();
+    // if(response) {
+    //   modalProperties.qrCode = response.qrCode;
+    //   modalProperties.deeplink = response.deeplink;
+    // }
+    removeModal();
+    window.mockStatus = 'STARTED';
+    showModal(modalProperties);
+  }
 
   // window.setModalStatus = (status) => { //<-- this => window
   window.setModalStatus = (status) => {
@@ -273,7 +254,7 @@ const modoInitPayment = function (props) {
 // modoModal();
 
 export {
-  modoInitPayment
+  modoInitPayment,
 };
 
 // export modoModal;

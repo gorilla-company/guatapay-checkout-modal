@@ -37,8 +37,6 @@ async function postData(url = '', data = {}) {
       .catch((err) => {
         throw err;
       });
-
-    // If there's no post, warn
     if (!result) return;
 
     return result;

@@ -20,15 +20,18 @@ $ npm run build
 var modalOptions = {
     qrString: '...',
     checkoutId: '...',
-    deeplink: '...',
+    deeplink:  {
+        url: '...',
+        callback: '...',
+        callbackSuccess: '...'
+    },
     onSuccess: function() {console.log('onSuccess')},
     onFailure: function() {console.log('onFailure')},
     onCancel: function() {console.log('onCancel')},
     callbackURL: ''
 }
 
-ModoSDK.default.modoModal();
-modoInitPayment(modalObject);
+ModoSDK.modoInitPayment(modalObject);
 ```
 
 ## Options

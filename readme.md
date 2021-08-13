@@ -22,8 +22,8 @@ var modalOptions = {
     checkoutId: '...',
     deeplink:  {
         url: '...',
-        callback: '...',
-        callbackSuccess: '...'
+        callbackURL: '...',
+        callbackURLSuccess: '...'
     },
     onSuccess: function() {console.log('onSuccess')},
     onFailure: function() {console.log('onFailure')},

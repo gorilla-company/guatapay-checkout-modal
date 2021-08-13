@@ -182,8 +182,9 @@ const modoInitPayment = function (props) {
   async function refreshQr() {
     // disable refresh button
     const buttons = document.getElementsByClassName('refresh-button');
-    for (const item of buttons) {
-      item.disabled = true;
+
+    for (let i = 0; i < buttons.length; i += 1) {
+      buttons[i].disabled = true;
     }
 
     // assign refreshed response data to the modal
@@ -199,7 +200,7 @@ const modoInitPayment = function (props) {
 
   // window.setModalStatus = (status) => { //<-- this => window
   window.setModalStatus = (status) => {
-    if (status == currentStatus) {
+    if (status === currentStatus) {
       return;
     }
     currentStatus = status;

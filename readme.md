@@ -12,7 +12,7 @@ $ npm run build
 ## Usage
 
 ```html
-<script src="https://modo-modal.ecomerciar.com/ModoModal.js">
+<script src="https://modo-modal.ecomerciar.com/dist/bundle.js" charset="utf-8">
 ```
 
 ```js
@@ -20,15 +20,18 @@ $ npm run build
 var modalOptions = {
     qrString: '...',
     checkoutId: '...',
-    deeplink: '...',
+    deeplink:  {
+        url: '...',
+        callbackURL: '...',
+        callbackURLSuccess: '...'
+    },
     onSuccess: function() {console.log('onSuccess')},
     onFailure: function() {console.log('onFailure')},
     onCancel: function() {console.log('onCancel')},
     callbackURL: ''
 }
 
-ModoSDK.default.modoModal();
-modoInitPayment(modalObject);
+ModoSDK.modoInitPayment(modalObject);
 ```
 
 ## Options

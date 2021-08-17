@@ -1,9 +1,12 @@
 import './styles.css';
-// import QRCodeStyling from 'qr-code-styling';
+import 'regenerator-runtime/runtime'
+
+import QRCodeStyling from 'qr-code-styling';
 import HtmlBuildService from './services/build-html.service';
 import restService from './services/rest.service'
 import {setAsyncInterval, clearAsyncInterval} from './services/async-interval.service'
 import qrLogo from './img/qrLogo.png';
+
 
 const modoInitPayment = function (props) {
   let initialized = false;

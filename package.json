@@ -4,7 +4,7 @@
   "description": "Front-end vanila js component to process Modo payment intentions via a modal (on desktop) or deeplink (on mobile)",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --env=jsdom",
     "build": "node_modules/.bin/webpack"
   },
   "repository": {
@@ -42,6 +42,8 @@
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__tests__/ModoModal.test.js",
       "\\.(css|less)$": "identity-obj-proxy"
     },
-    "setupFilesAfterEnv": ["<rootDir>/src/__tests__/ModoModal.test.js"] 
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/__tests__/ModoModal.test.js"
+    ]
   }
 }

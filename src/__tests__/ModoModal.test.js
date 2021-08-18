@@ -103,8 +103,82 @@ describe("Html service", () => {
   );
 
   test("It should create the overlay html", () => {
-    const overlay = '<div class="modo-overlay" id="modo-overlay"></div>'
+    const overlay = '<div class="modo-overlay" id="modo-overlay"></div>';
     buildHtmlService.buildHtml();
     expect(document.getElementById("modo-overlay").outerHTML).toBe(overlay);
   });
+
+  test("It should create the modal container html", () => {
+    const overlay = '<div class="modal-container" id="modal-container"></div>';
+
+    const div = document.getElementById("modal-container");
+    const html = div.outerHTML.replace(div.innerHTML || "", "");
+
+    buildHtmlService.buildHtml();
+    expect(html).toBe(overlay);
+  });
+
+  test.each`
+    status              | expected
+    ${"STARTED"}        | ${"modal-nav-ball modal-nav-ball-selected modal-nav-ball-selected-step-STARTED"}
+    ${"PROCESSING"}     | ${"modal-nav-ball modal-nav-ball-selected modal-nav-ball-selected-step-PROCESSING"}
+    ${"PAYING"}         | ${"modal-nav-ball modal-nav-ball-selected modal-nav-ball-selected-step-PAYING"}
+    ${"PAYMENT_READY"}  | ${"modal-nav-ball modal-nav-ball-selected modal-nav-ball-selected-step-PAYMENT_READY"}
+    ${"PAYMENT_DENIED"} | ${"modal-nav-ball modal-nav-ball-selected modal-nav-ball-selected-step-PAYMENT_DENIED"}
+    ${"EXPIRED"}        | ${"modal-nav-ball modal-nav-ball-selected modal-nav-ball-selected-step-EXPIRED"}
+  `(
+    "It should set the navbar class corresponding to the status $status",
+    ({ status, expected }) => {
+      buildHtmlService.handleStatusChange(status);
+      expect(document.getElementById("selected-step").className).toBe(expected);
+    }
+  );
+
+  test.each`
+    status              | expected
+    ${"STARTED"}        | ${"modal-body-wrapper show"}
+    ${"PROCESSING"}     | ${"modal-body-wrapper show"}
+    ${"PAYING"}         | ${"modal-body-wrapper show"}
+    ${"PAYMENT_READY"}  | ${"modal-body-wrapper show"}
+    ${"PAYMENT_DENIED"} | ${"modal-body-wrapper show"}
+    ${"EXPIRED"}        | ${"modal-body-wrapper show"}
+  `(
+    "It should set the class of the step for the $status status to 'show'",
+    ({ status, expected }) => {
+      buildHtmlService.handleStatusChange(status);
+      expect(document.getElementById(`step-${status}`).className).toBe(
+        expected
+      );
+    }
+  );
+
+  test.each`
+    status              | expected
+    ${"STARTED"}        | ${"modal-body-wrapper hide"}
+    ${"PROCESSING"}     | ${"modal-body-wrapper hide"}
+    ${"PAYING"}         | ${"modal-body-wrapper hide"}
+    ${"PAYMENT_READY"}  | ${"modal-body-wrapper hide"}
+    ${"PAYMENT_DENIED"} | ${"modal-body-wrapper hide"}
+    ${"EXPIRED"}        | ${"modal-body-wrapper hide"}
+  `(
+    "It should set the class of the steps that are not $status status to 'hide'",
+    ({ status, expected }) => {
+      let arr = [
+        "STARTED",
+        "PROCESSING",
+        "PAYING",
+        "PAYMENT_READY",
+        "PAYMENT_DENIED",
+        "EXPIRED",
+      ];
+      arr = arr.filter((item) => item !== status);
+
+      buildHtmlService.handleStatusChange(status);
+      arr.forEach((element) => {
+        expect(document.getElementById(`step-${element}`).className).toBe(
+          expected
+        );
+      });
+    }
+  );
 });

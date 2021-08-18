@@ -40,7 +40,7 @@ ModoSDK.modoInitPayment(modalObject);
 --- | --- | ---
 |qrString|Yes|String.|
 |checkoutId|Yes|String.|
-|deeplink|Yes|String.|
+|deeplink|Yes|Object.|
 |onSuccess|No|Function.|
 |onFailure|No|Function.|
 |onClose|No|Function.|

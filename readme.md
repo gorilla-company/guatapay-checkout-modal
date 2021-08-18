@@ -9,9 +9,11 @@ Stack: Vanilla JS
 ```
 $ npm i
 $ cp .env.example .env.production
-# Fill in PAYMENT_STATUS_URL in .env.production
+# Fill in PAYMENT_STATUS_URL in .env.production with the URL of the /payment-intention/{intention-id} endpoint.
 $ npm run build
 ```
+
+Serve the `/dist` directory via https with CORS enabled for the `GET` method. 
 
 ## Client Usage
 

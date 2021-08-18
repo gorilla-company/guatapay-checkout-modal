@@ -21,7 +21,7 @@ $ npm run build
 
 ```js
 
-var settings = {
+var options = {
     qrString: '...',
     checkoutId: '...',
     deeplink:  {
@@ -35,7 +35,7 @@ var settings = {
     callbackURL: ''
 }
 
-ModoSDK.modoInitPayment(settings);
+ModoSDK.modoInitPayment(options);
 ```
 
 ### Options

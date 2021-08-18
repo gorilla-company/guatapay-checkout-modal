@@ -4,6 +4,7 @@ import HtmlBuildService from './services/build-html.service';
 import restService from './services/rest.service'
 import {setAsyncInterval, clearAsyncInterval} from './services/async-interval.service'
 import qrCodeService from './services/qr-code.service';
+import deeplinkService from './services/deeplink.service';
 
 const modoInitPayment = function (props) {
   let initialized = false;
@@ -57,10 +58,10 @@ const modoInitPayment = function (props) {
       item.disabled = true;
     }
     const response = await modalProperties.refreshData();
-    // if(response) {
-    //   modalProperties.qrCode = response.qrCode;
-    //   modalProperties.deeplink = response.deeplink;
-    // }
+    if(response) {
+      modalProperties.qrCode = response.qrCode;
+      modalProperties.deeplink.url = response.deeplink;
+    }
     removeModal();
     window.mockStatus = 'STARTED';
     showModal(modalProperties);
@@ -79,7 +80,7 @@ const modoInitPayment = function (props) {
 
   function showModal(modalObject) {
     if (detectMobile()) {
-      console.log(`redirect to ${modalObject.deeplink}`);
+      deeplinkService.redirectToDeeplink(modalObject);
       return;
     }
 

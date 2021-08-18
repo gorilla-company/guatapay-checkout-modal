@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --env=jsdom",
-    "build": "node_modules/.bin/webpack"
+    "build": "npx webpack --env environment=production --env mode=production",
+    "dev": "npx webpack --env environment=development --env mode=development"
   },
   "repository": {
     "type": "git",

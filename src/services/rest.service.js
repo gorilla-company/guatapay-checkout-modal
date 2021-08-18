@@ -1,20 +1,3 @@
-async function postData(url = '', data = {}) {
-    const params = {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer c53b1531-8e10-4b01-9c76-6482a33794a1',
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-    };
-
-    return await fetch(url, params);
-  }
-
   async function getData(url = '', data = {}) {
     const params = {
       method: 'GET',
@@ -43,6 +26,5 @@ async function postData(url = '', data = {}) {
   }
 
   export default {
-    postData,
     getData
   };

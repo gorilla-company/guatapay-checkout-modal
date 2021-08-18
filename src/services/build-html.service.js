@@ -75,9 +75,45 @@ function removeSelectedStep(status) {
   return arr;
 }
 
+function setTitleByStatus(status) {
+  const spanLogo = document.getElementById('title-header');
+    switch (status) {
+      case 'STARTED':
+        spanLogo.innerHTML = 'Pag\u00E1 con ';
+        break;
+      case 'PAYMENT_READY':
+        spanLogo.innerHTML = 'Pagaste con ';
+        break;
+      case 'PROCESSING':
+      case 'PAYING':
+      case 'PAYMENT_DENIED':
+      case 'EXPIRED':
+        spanLogo.innerHTML = 'Pagando con ';
+        break;
+    }
+}
+
+function handleStatusChange(status) {
+  const newClass = `modal-nav-ball modal-nav-ball-selected modal-nav-ball-selected-step-${
+    status}`;
+  document.getElementById('selected-step').className = newClass;
+
+  const stepsToHide = removeSelectedStep(status);
+  stepsToHide.forEach(
+    (element) =>  {
+      let step =  document.getElementById(`step-${element}`);
+      step.className = 'modal-body-wrapper hide'
+    },
+  );
+  document.getElementById(`step-${status}`).className = 'modal-body-wrapper show';
+  setTitleByStatus(status);
+}
+
 export default {
   buildHtml,
-  removeSelectedStep
+  removeSelectedStep,
+  setTitleByStatus,
+  handleStatusChange
 };
 
 export {

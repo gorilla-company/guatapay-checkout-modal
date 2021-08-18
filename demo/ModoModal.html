@@ -13,13 +13,13 @@
   <!-- <div class="overlay"></div> -->
   <button onclick="showModal()">Mostrar Modal</button>
 
-  <button onclick="setModalStatus('STARTED')">Nivel uno</button>
-  <button onclick="setModalStatus('PROCESSING')">Nivel dos</button>
-  <button onclick="setModalStatus('PAYING')">Nivel tres</button>
-  <button onclick="setModalStatus('PAYMENT_READY')">Nivel cuatro</button>
+  <button onclick="setModalStatus('CREATED')">Nivel uno</button>
+  <button onclick="setModalStatus('SCANNED')">Nivel dos</button>
+  <button onclick="setModalStatus('PROCESSING')">Nivel tres</button>
+  <button onclick="setModalStatus('ACCEPTED')">Nivel cuatro</button>
 
-  <button onclick="setModalStatus('EXPIRED')">QR Expirado</button>
-  <button onclick="setModalStatus('PAYMENT_DENIED')">Payment Error</button>
+  <button onclick="setModalStatus('VOIDED')">QR Expirado</button>
+  <button onclick="setModalStatus('REJECTED')">Payment Error</button>
   </div>
 
 
@@ -29,3 +29,4 @@
 
 <script type="text/javascript" src="../dist/bundle.js" charset="utf-8"></script>
 <script type="text/javascript" src="index.js"></script>
+<script type="text/javascript" src="demoPaymentVariables.js"></script>

@@ -15,7 +15,7 @@
         if (response.ok) {
           return response.json();
         }
-        return Promise.reject(response);
+        return Promise.reject('error');
       })
       .catch((err) => {
         throw err;

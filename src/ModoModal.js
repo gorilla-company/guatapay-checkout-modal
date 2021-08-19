@@ -101,14 +101,24 @@ const modoInitPayment = function (props) {
     }
   }
 
+  function buildStatusUrl() {
+    let url = process.env.PAYMENT_STATUS_URL.replace(
+      "{checkoutId}",
+      modalProperties.checkoutId
+    )
+    if(process.env.ENV == 'dev') {
+      url = `${url}?mocked_status={status}`
+      .replace("{status}", mockStatus)
+    }
+    return url;
+  }
+
   const getStatus = async () => {
     try {
       const response = await restService.getData(
-        process.env.PAYMENT_STATUS_URL.replace(
-          "{checkoutId}",
-          modalProperties.checkoutId
-        ).replace("{status}", mockStatus)
+        buildStatusUrl()
       );
+      
       if (response) {
         setModalStatus(response.status);
       }

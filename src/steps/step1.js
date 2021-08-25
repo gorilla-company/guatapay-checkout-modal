@@ -15,6 +15,7 @@ function createStep1() {
     const toolTip = createElementWithClass('div', 'tooltip');
   
     const imgQuestion = document.createElement('img');
+    imgQuestion.id = 'img-question';
     imgQuestion.src = svgQuestion;
     imgQuestion.alt = 'question';
   

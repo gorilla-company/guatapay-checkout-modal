@@ -13,7 +13,11 @@ function createStep2() {
     divLoading.classList.add('svg-icon');
     divLoading.classList.add('rotate');
   
-    divLoading.innerHTML = '<img src={img} alt="loading">'.replace('{img}', svgHourglass);
+    const imgLoading = document.createElement('img');
+    imgLoading.id = 'img-loading';
+    imgLoading.src = svgHourglass;
+    imgLoading.alt= "loading"
+    divLoading.appendChild(imgLoading);
   
     const step2Text = document.createElement('p');
     step2Text.innerHTML = 'Eleg\u00ED el medio de pago y confirm\u00E1 la transacci\u00F3n';

@@ -8,6 +8,7 @@ import {
 } from './services/async-interval.service';
 import qrCodeService from './services/qr-code.service';
 import deeplinkService from './services/deeplink.service';
+import loadingService from './services/loading.service';
 
 const modoInitPayment = function (props) {
   let initialized = false;
@@ -120,6 +121,9 @@ const modoInitPayment = function (props) {
 
       const qrCode = qrCodeService.generateQr(modalObject.qrString);
       HtmlBuildService.buildHtml(refreshQr, closeModal, cancelModal, finalize);
+
+      loadingService.initLoading();
+
       qrCode.append(document.getElementById('qrContainer'));
 
       setAsyncInterval(getStatus, 3000);

@@ -1,4 +1,5 @@
 import svgQuestion from '../img/question-icon.svg';
+import qrLogo from '../img/qrLogo.png';
 
 function createStep1() {
     const step1Div = createElementWithClass('div', 'modal-body-wrapper');
@@ -18,6 +19,12 @@ function createStep1() {
     imgQuestion.id = 'img-question';
     imgQuestion.src = svgQuestion;
     imgQuestion.alt = 'question';
+
+    const imgQr = document.createElement('img');
+    imgQr.id = 'img-qr';
+    imgQr.src = qrLogo;
+    imgQr.alt = 'qrcode';
+    imgQr.classList.add('hide');
   
     const toolTipText = createElementWithClass('div', 'tooltiptext');
   
@@ -51,6 +58,7 @@ function createStep1() {
     step1Div.appendChild(step1Title);
     step1Div.appendChild(qrContainer);
     step1Div.appendChild(questionContainer);
+    step1Div.appendChild(imgQr);
     return step1Div;
   }
 

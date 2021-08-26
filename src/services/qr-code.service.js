@@ -1,4 +1,5 @@
 import QRCodeStyling from 'qr-code-styling';
+import qrLogo from '../img/qrLogo.png';
 
 function generateQr(qrString) {
     const qrCode = new QRCodeStyling({
@@ -19,6 +20,7 @@ function generateQr(qrString) {
       backgroundOptions: {
         color: '#ffffff',
       },
+      image: qrLogo,
       dotsOptionsHelper: {
         colorType: {
           single: true,

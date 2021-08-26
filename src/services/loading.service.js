@@ -77,6 +77,7 @@ function initLoading() {
     "img-error",
     "img-spinner",
     "img-check",
+    "img-qr",
   ];
   showLoadingOverlay();
   setImageLoadedEvents();

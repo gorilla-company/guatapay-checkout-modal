@@ -6,10 +6,16 @@ Stack: Vanilla JS
 
 ## Install & Build
 
+```
 $ npm i
+$ cp .env.example .env.production
+# Fill in PAYMENT_STATUS_URL in .env.production with the URL of the /payment-intention/{intention-id} endpoint.
 $ npm run build
+```
 
-## Usage
+Serve the `/dist` directory via https with CORS enabled for the `GET` method. 
+
+## Client Usage
 
 ```html
 <script src="https://modo-modal.ecomerciar.com/dist/bundle.js" charset="utf-8">
@@ -17,7 +23,7 @@ $ npm run build
 
 ```js
 
-var modalOptions = {
+var options = {
     qrString: '...',
     checkoutId: '...',
     deeplink:  {
@@ -31,18 +37,21 @@ var modalOptions = {
     callbackURL: ''
 }
 
-ModoSDK.modoInitPayment(modalObject);
+ModoSDK.modoInitPayment(options);
 ```
 
-## Options
+### Options
 
 |Option |Required  | Description|
 --- | --- | ---
-|qrString|Yes|String.|
-|checkoutId|Yes|String.|
-|deeplink|Yes|Object.|
+|qrString|Yes|String. Payment Intention's "qr" value.|
+|checkoutId|Yes|String. Payment Intention's "id" value.|
+|deeplink|Yes|Object. Sub-properties will be used on mobile only. |
+|deeplink.url|Yes|String. Payment Intention's "deeplink" value.|
+|deeplink.callbackURL|Yes|String. URL to redirect to if payment fails.|
+|deeplink.callbackURLSuccess|Yes|String. URL to redirect to if payment succeeds.|
 |onSuccess|No|Function.|
 |onFailure|No|Function.|
 |onClose|No|Function.|
 |onCancel|No|Function.|
-|callbackURL|No|String.|
+|callbackURL|No|String. URL to redirect to if payment succeeds.|

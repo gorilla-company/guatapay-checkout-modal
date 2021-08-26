@@ -9,7 +9,12 @@ function createStepExpired(refreshQr, cancelModal) {
     stepTitle.innerHTML = 'C\u00F3digo QR Expirado';
   
     const stepImg = createElementWithClass('div', 'svg-icon');
-    stepImg.innerHTML = '<img src={img} alt="expired">'.replace('{img}', svgExpired);
+
+    const imgExpired = document.createElement('img');
+    imgExpired.id = 'img-expired';
+    imgExpired.src = svgExpired;
+    imgExpired.alt= "expired"
+    stepImg.appendChild(imgExpired);
   
     const stepTextUpper = document.createElement('p');
     stepTextUpper.innerHTML = 'Por favor gener\u00E1 un nuevo QR';

@@ -13,8 +13,12 @@ function createStep3() {
     const divLoadingStep3 = document.createElement('div');
     divLoadingStep3.classList.add('svg-icon');
     divLoadingStep3.classList.add('spin');
-  
-    divLoadingStep3.innerHTML = '<img src={img} alt="loading">'.replace('{img}', svgSpinner);
+
+    const imgSpinner = document.createElement('img');
+    imgSpinner.id = 'img-spinner';
+    imgSpinner.src = svgSpinner;
+    imgSpinner.alt= "loading"
+    divLoadingStep3.appendChild(imgSpinner);
   
     const step3TextUpper = document.createElement('p');
     step3TextUpper.innerHTML = 'Estamos procesando tu pago,';

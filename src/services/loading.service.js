@@ -1,26 +1,26 @@
-let idArray = [
-  "img-question",
-  "img-loading",
-  "img-expired",
-  "img-error",
-  "img-spinner",
-  "img-check",
-];
+let idArray = [];
 let imagesLoaded = false;
 let fontsLoaded = false;
+let interval = {};
 
 function onElementLoadingCompleted() {
   if (imagesLoaded && fontsLoaded) {
     const modalContainer = document.getElementById("modal-container");
-    modalContainer.classList.remove("hide");
+    modalContainer.classList.remove("non-visible");
   }
 }
 
 function setFontsLoadedEvents() {
-  document.fonts.ready.then(function (font_face_set) {
+  interval = setInterval(fontLoadListener, 500);
+}
+
+function fontLoadListener() {
+  let hasLoaded = document.fonts.check('12px "Red Hat Display"');
+  if (hasLoaded) {
     fontsLoaded = true;
     onElementLoadingCompleted();
-  });
+    clearInterval(interval);
+  }
 }
 
 function setImageLoadedEvents() {
@@ -45,7 +45,19 @@ function onImageLoaded(id) {
   idArray = filteredArr;
 }
 
+function hideAll() {
+    
+}
+
 function initLoading() {
+  idArray = [
+    "img-question",
+    "img-loading",
+    "img-expired",
+    "img-error",
+    "img-spinner",
+    "img-check",
+  ];
   setImageLoadedEvents();
   setFontsLoadedEvents();
 }

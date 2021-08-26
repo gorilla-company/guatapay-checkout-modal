@@ -9,11 +9,7 @@ function onElementLoadingCompleted() {
   if (imagesLoaded && fontsLoaded) {
     // const modalContainer = document.getElementById("modal-container");
     // modalContainer.classList.remove("non-visible");
-    showCurrentStep();
-
-    let stepLoading = document.getElementById('step-LOADING');
-    stepLoading.className = "modal-body-wrapper hide";
-
+    removeLoadingOverlay();
   }
 }
 
@@ -52,16 +48,25 @@ function onImageLoaded(id) {
   idArray = filteredArr;
 }
 
-function hideCurrentStep() {
-    const currentStep = modalService.getCurrentInternalStatus();
-    let step = document.getElementById(`step-${currentStep}`);
-    step.className = "modal-body-wrapper hide";
+function showLoadingOverlay() {
+    let step = document.getElementById('main_modal');
+    step.classList.add("hide");
+
+    let stepLoading = document.getElementById('loading-section');
+    stepLoading.classList.remove('hide');
 }
 
-function showCurrentStep() {
-  const currentStep = modalService.getCurrentInternalStatus();
-  let step = document.getElementById(`step-${currentStep}`);
-  step.className = "modal-body-wrapper show";;
+function removeLoadingOverlay() {
+  // const currentStep = modalService.getCurrentInternalStatus();
+  // let step = document.getElementById(`step-${currentStep}`);
+  // step.className = "modal-body-wrapper show";;
+
+  let step = document.getElementById('main_modal');
+  step.classList.remove("hide");
+  
+  let stepLoading = document.getElementById('loading-section');
+  stepLoading.classList.add('hide');
+
 }
 
 function initLoading() {
@@ -73,7 +78,7 @@ function initLoading() {
     "img-spinner",
     "img-check",
   ];
-  hideCurrentStep();
+  showLoadingOverlay();
   setImageLoadedEvents();
   setFontsLoadedEvents();
 }

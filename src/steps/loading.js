@@ -4,6 +4,9 @@ import {createElementWithClass} from '../services/build-html.service'
 function createLoading() {
     const step = createElementWithClass('div', 'modal-body-wrapper');
     // step.classList.add('hide');
+    const section = createElementWithClass("section", "modal-wrapper");
+    section.id = 'loading-section';
+
     step.id = 'step-LOADING';
   
     const title = createElementWithClass('p', 'paragraph');
@@ -21,7 +24,8 @@ function createLoading() {
     
     step.appendChild(title);
     step.appendChild(divLoading);
-    return step;
+    section.appendChild(step);
+    return section;
   }
 
   export {

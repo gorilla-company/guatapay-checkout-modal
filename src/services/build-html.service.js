@@ -21,9 +21,9 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
   // Section
   const modalContainer = createElementWithClass("div", "modal-container");
   modalContainer.id = "modal-container";
-  // modalContainer.classList.add("non-visible");
   const section = createElementWithClass("section", "modal-wrapper");
   section.id = "main_modal";
+  section.classList.add("hide");
 
   // create header
   const header = createHeader(closeModal);
@@ -41,7 +41,7 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
   const stepPaymentError = createStepPaymentError(refreshQr, cancelModal);
   const stepExpired = createStepExpired(refreshQr, closeModal);
 
-  const stepLoading = createLoading();
+  const loadingOverlay = createLoading();
 
   // append items to hierarchy
   section.appendChild(header);
@@ -53,10 +53,9 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
 
   section.appendChild(stepPaymentError);
   section.appendChild(stepExpired);
-  section.appendChild(stepLoading);
 
   modalContainer.appendChild(section);
-
+  modalContainer.appendChild(loadingOverlay);
   document.body.appendChild(overlay);
   document.body.appendChild(modalContainer);
 

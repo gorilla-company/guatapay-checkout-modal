@@ -6,6 +6,7 @@ import { createStepPaymentError } from "../steps/paymentError";
 import { createStepExpired } from "../steps/expired";
 import { createHeader } from "../steps/header";
 import { createNavBar } from "../steps/navBar";
+import { createLoading } from "../steps/loading";
 
 function createElementWithClass(elementName, className) {
   const element = document.createElement(elementName);
@@ -20,7 +21,7 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
   // Section
   const modalContainer = createElementWithClass("div", "modal-container");
   modalContainer.id = "modal-container";
-  modalContainer.classList.add("hide");
+  modalContainer.classList.add("non-visible");
   const section = createElementWithClass("section", "modal-wrapper");
   section.id = "main_modal";
 
@@ -40,6 +41,8 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
   const stepPaymentError = createStepPaymentError(refreshQr, cancelModal);
   const stepExpired = createStepExpired(refreshQr, closeModal);
 
+  const stepLoading = createLoading();
+
   // append items to hierarchy
   section.appendChild(header);
   section.appendChild(navBar);
@@ -50,6 +53,8 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
 
   section.appendChild(stepPaymentError);
   section.appendChild(stepExpired);
+  section.appendChild(stepLoading);
+
   modalContainer.appendChild(section);
 
   document.body.appendChild(overlay);

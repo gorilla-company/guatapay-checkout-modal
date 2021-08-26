@@ -53,7 +53,7 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
 
   section.appendChild(stepPaymentError);
   section.appendChild(stepExpired);
-  section.appendChild(stepLoading);
+  // section.appendChild(stepLoading);
 
   modalContainer.appendChild(section);
 

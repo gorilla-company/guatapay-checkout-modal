@@ -23,6 +23,7 @@ function createHeader(closeModal) {
     closeButton.onclick = () => closeModal();
     const imgClose = document.createElement('img');
     imgClose.src = CloseBtn;
+    imgClose.id = "img-close";
     imgLogo.alt = 'close';
     closeButton.appendChild(imgClose);
   

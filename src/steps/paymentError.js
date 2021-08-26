@@ -10,7 +10,11 @@ function createStepPaymentError(refreshQrFnc, cancelModal) {
     stepTitle.innerHTML = 'Pago denegado';
   
     const stepImg = createElementWithClass('div', 'svg-icon');
-    stepImg.innerHTML = '<img src={img} alt="error">'.replace('{img}', svgError);
+    const imgError = document.createElement('img');
+    imgError.id = 'img-error';
+    imgError.src = svgError;
+    imgError.alt= "error"
+    stepImg.appendChild(imgError);
   
     const stepTextUpper = document.createElement('p');
     stepTextUpper.innerHTML = '<b>Lo sentimos, tu pago fue denegado</b>';

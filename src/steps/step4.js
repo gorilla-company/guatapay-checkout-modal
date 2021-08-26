@@ -9,7 +9,12 @@ function createStep4(finalize) {
     let stepTitle = createElementWithClass("p", "subtitle");
     stepTitle.innerHTML = "\u00A1Listo!"
     let divImg = createElementWithClass("div", "svg-icon");
-    divImg.innerHTML = '<img src={img} alt="ok">'.replace('{img}', svgCheck);
+
+    const imgCheck = document.createElement('img');
+    imgCheck.id = 'img-check';
+    imgCheck.src = svgCheck;
+    imgCheck.alt= "ok"
+    divImg.appendChild(imgCheck);
   
     let continueButton = createElementWithClass("button", "modo-btn-primary");
     continueButton.innerHTML = "Continuar";

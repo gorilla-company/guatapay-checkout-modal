@@ -118,13 +118,10 @@ const modoInitPayment = function (props) {
       modalService.setCurrentStatus('CREATED');
       modalProperties = modalObject;
       initialized = true;
-
-      const qrCode = qrCodeService.generateQr(modalObject.qrString);
       HtmlBuildService.buildHtml(refreshQr, closeModal, cancelModal, finalize);
-
       loadingService.initLoading();
 
-      qrCode.append(document.getElementById('qrContainer'));
+      qrCodeService.generateQr(modalObject.qrString);
 
       setAsyncInterval(getStatus, 3000);
     }

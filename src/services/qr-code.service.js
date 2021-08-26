@@ -1,5 +1,6 @@
 import QRCodeStyling from 'qr-code-styling';
 import qrLogo from '../img/qrLogo.png';
+import loadingService from './loading.service';
 
 function generateQr(qrString) {
     const qrCode = new QRCodeStyling({
@@ -56,8 +57,15 @@ function generateQr(qrString) {
         color: '#121212',
       },
     });
-    return qrCode;
+    loadQr(qrCode);
   }
+
+function loadQr(qrCode) {  
+  qrCode.getRawData('jpg').then(() => {
+    qrCode.append(document.getElementById('qrContainer'));
+    loadingService.onQrLoaded();
+  });
+}
 
 export default {
     generateQr

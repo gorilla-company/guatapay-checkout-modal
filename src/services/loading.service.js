@@ -1,16 +1,21 @@
-import modalService from './modal.service';
-
 let idArray = [];
 let imagesLoaded = false;
 let fontsLoaded = false;
+let qrLoaded = false;
+
 let interval = {};
 
 function onElementLoadingCompleted() {
-  if (imagesLoaded && fontsLoaded) {
+  if (imagesLoaded && fontsLoaded && qrLoaded) {
     // const modalContainer = document.getElementById("modal-container");
     // modalContainer.classList.remove("non-visible");
     removeLoadingOverlay();
   }
+}
+
+function onQrLoaded() {
+  qrLoaded = true;
+  onElementLoadingCompleted();
 }
 
 function setFontsLoadedEvents() {
@@ -86,4 +91,5 @@ function initLoading() {
 
 export default {
   initLoading,
+  onQrLoaded
 };

@@ -1,3 +1,5 @@
+import modalService from './modal.service';
+
 let idArray = [];
 let imagesLoaded = false;
 let fontsLoaded = false;
@@ -5,8 +7,13 @@ let interval = {};
 
 function onElementLoadingCompleted() {
   if (imagesLoaded && fontsLoaded) {
-    const modalContainer = document.getElementById("modal-container");
-    modalContainer.classList.remove("non-visible");
+    // const modalContainer = document.getElementById("modal-container");
+    // modalContainer.classList.remove("non-visible");
+    showCurrentStep();
+
+    let stepLoading = document.getElementById('step-LOADING');
+    stepLoading.className = "modal-body-wrapper hide";
+
   }
 }
 
@@ -45,8 +52,16 @@ function onImageLoaded(id) {
   idArray = filteredArr;
 }
 
-function hideAll() {
-    
+function hideCurrentStep() {
+    const currentStep = modalService.getCurrentInternalStatus();
+    let step = document.getElementById(`step-${currentStep}`);
+    step.className = "modal-body-wrapper hide";
+}
+
+function showCurrentStep() {
+  const currentStep = modalService.getCurrentInternalStatus();
+  let step = document.getElementById(`step-${currentStep}`);
+  step.className = "modal-body-wrapper show";;
 }
 
 function initLoading() {
@@ -58,6 +73,7 @@ function initLoading() {
     "img-spinner",
     "img-check",
   ];
+  hideCurrentStep();
   setImageLoadedEvents();
   setFontsLoadedEvents();
 }

@@ -21,7 +21,7 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
   // Section
   const modalContainer = createElementWithClass("div", "modal-container");
   modalContainer.id = "modal-container";
-  modalContainer.classList.add("non-visible");
+  // modalContainer.classList.add("non-visible");
   const section = createElementWithClass("section", "modal-wrapper");
   section.id = "main_modal";
 
@@ -53,7 +53,7 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
 
   section.appendChild(stepPaymentError);
   section.appendChild(stepExpired);
-  // section.appendChild(stepLoading);
+  section.appendChild(stepLoading);
 
   modalContainer.appendChild(section);
 

@@ -9,12 +9,12 @@ import {
 import qrCodeService from './services/qr-code.service';
 import deeplinkService from './services/deeplink.service';
 import loadingService from './services/loading.service';
+import modalService from './services/modal.service';
 
 const modoInitPayment = function (props) {
   let initialized = false;
   // this.mockStatus = 'STARTED';
   window.mockStatus = 'CREATED'; // <-- this => window
-  let currentStatus = 'CREATED';
   let modalProperties = props;
   let closeModalTimeout = {};
 
@@ -115,7 +115,7 @@ const modoInitPayment = function (props) {
     }
 
     if (!initialized) {
-      currentStatus = 'CREATED';
+      modalService.setCurrentStatus('CREATED');
       modalProperties = modalObject;
       initialized = true;
 
@@ -132,10 +132,10 @@ const modoInitPayment = function (props) {
 
   window.setModalStatus = (status) => {
     let internalStatus = {};
-    if (status == currentStatus) {
+    if (status == modalService.getCurrentStatus()) {
       return;
     }
-    currentStatus = status;
+    modalService.setCurrentStatus(status);
     switch (status) {
       case 'CREATED':
         internalStatus = 'STARTED';

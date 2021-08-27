@@ -19,7 +19,12 @@ function onQrLoaded() {
 }
 
 function setFontsLoadedEvents() {
-  interval = setInterval(fontLoadListener, 500);
+  document.fonts.ready.then(function () {
+    fontsLoaded = true;
+    onElementLoadingCompleted();
+  });
+
+  // interval = setInterval(fontLoadListener, 500);
 }
 
 function fontLoadListener() {
@@ -54,11 +59,11 @@ function onImageLoaded(id) {
 }
 
 function showLoadingOverlay() {
-    let step = document.getElementById('main_modal');
-    step.classList.add("hide");
+  let step = document.getElementById("main_modal");
+  step.classList.add("hide");
 
-    let stepLoading = document.getElementById('loading-section');
-    stepLoading.classList.remove('hide');
+  let stepLoading = document.getElementById("loading-section");
+  stepLoading.classList.remove("hide");
 }
 
 function removeLoadingOverlay() {
@@ -66,19 +71,18 @@ function removeLoadingOverlay() {
   // let step = document.getElementById(`step-${currentStep}`);
   // step.className = "modal-body-wrapper show";;
 
-  let step = document.getElementById('main_modal');
+  let step = document.getElementById("main_modal");
   step.classList.remove("hide");
-  
-  let stepLoading = document.getElementById('loading-section');
-  stepLoading.classList.add('hide');
 
+  let stepLoading = document.getElementById("loading-section");
+  stepLoading.classList.add("hide");
 }
 
 function initLoading() {
   imagesLoaded = false;
   fontsLoaded = false;
   qrLoaded = false;
-  
+
   idArray = [
     "img-question",
     "img-loading",
@@ -95,5 +99,5 @@ function initLoading() {
 
 export default {
   initLoading,
-  onQrLoaded
+  onQrLoaded,
 };

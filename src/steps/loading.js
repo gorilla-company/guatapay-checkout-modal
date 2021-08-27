@@ -10,20 +10,15 @@ function createLoading() {
     step.id = 'step-LOADING';
   
     const title = createElementWithClass('p', 'paragraph');
+    const titleInvisible = createElementWithClass('p', 'paragraph');
+    // title.style = 'font-family: Arial';
+    title.classList.add('loading-paragraph');
     title.innerHTML = 'Cargando';
-  
-    const divLoading = document.createElement('div');
-    divLoading.classList.add('svg-icon');
-    divLoading.classList.add('rotate');
-  
-    const imgLoading = document.createElement('img');
-    imgLoading.id = 'img-loading-loader';
-    imgLoading.src = svgHourglass;
-    imgLoading.alt= "loading"
-    divLoading.appendChild(imgLoading);
-    
+    titleInvisible.innerHTML = '.';    
+    titleInvisible.style = 'visibility: hidden';
+
     step.appendChild(title);
-    step.appendChild(divLoading);
+    step.appendChild(titleInvisible);
     section.appendChild(step);
     return section;
   }

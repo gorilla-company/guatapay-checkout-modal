@@ -488,3 +488,7 @@ p {
 .tooltiptext ul li .bold{
     font-family: 'Open Sans Bold';
 }
+
+.loading-paragraph {    
+    font-family: Arial;
+}

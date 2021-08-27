@@ -39,7 +39,7 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
   const step4Div = createStep4(finalize);
 
   const stepPaymentError = createStepPaymentError(refreshQr, cancelModal);
-  const stepExpired = createStepExpired(refreshQr, closeModal);
+  const stepExpired = createStepExpired(refreshQr, cancelModal);
 
   const loadingOverlay = createLoading();
 

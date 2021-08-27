@@ -75,6 +75,10 @@ function removeLoadingOverlay() {
 }
 
 function initLoading() {
+  imagesLoaded = false;
+  fontsLoaded = false;
+  qrLoaded = false;
+  
   idArray = [
     "img-question",
     "img-loading",

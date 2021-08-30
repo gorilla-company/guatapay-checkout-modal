@@ -21,10 +21,11 @@ function createStep2() {
   
     const step2Text = document.createElement('p');
     step2Text.innerHTML = 'Eleg\u00ED el medio de pago y confirm\u00E1 la transacci\u00F3n';
-  
-    step2Div.appendChild(step2Title);
-    step2Div.appendChild(divLoading);
     step2Div.appendChild(step2Text);
+  
+    step2Div.appendChild(divLoading);
+    step2Div.appendChild(step2Title);
+
     return step2Div;
   }
 

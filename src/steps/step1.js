@@ -11,7 +11,7 @@ function createStep1() {
     qrContainer.innerHTML = '<div id="qrContainer"></div>';
   
     const questionContainer = createElementWithClass('div', 'question');
-    questionContainer.innerHTML = '\u00BFC\u00F3mo pagar desde App <b>MODO</b>';
+    questionContainer.innerHTML = '\u00BFC\u00F3mo pagar desde App <b>MODO</b>?';
   
     const toolTip = createElementWithClass('div', 'tooltip');
   

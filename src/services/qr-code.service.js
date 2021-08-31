@@ -60,7 +60,7 @@ function generateQr(qrString) {
     loadQr(qrCode);
   }
 
-function loadQr(qrCode) {  
+function loadQr(qrCode) {
   qrCode.getRawData('jpg').then(() => {
     qrCode.append(document.getElementById('qrContainer'));
     loadingService.onQrLoaded();
@@ -68,5 +68,6 @@ function loadQr(qrCode) {
 }
 
 export default {
-    generateQr
+    generateQr,
+    loadQr
 };

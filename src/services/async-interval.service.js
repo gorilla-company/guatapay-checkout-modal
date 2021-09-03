@@ -29,6 +29,8 @@ const runAsyncInterval = async (cb, interval, intervalIndex) => {
         }
       });
     }
+
+    return asyncIntervals;
   };
 
   export {

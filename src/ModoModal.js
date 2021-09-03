@@ -12,48 +12,10 @@ import loadingService from './services/loading.service';
 import modalService from './services/modal.service';
 
 const modoInitPayment = function (props) {
-  let initialized = false;
+  modalService.setInitializedStatus(false);
   // this.mockStatus = 'STARTED';
   window.mockStatus = 'CREATED'; // <-- this => window
   let modalProperties = props;
-  let closeModalTimeout = {};
-
-  function removeModal() {
-    clearAsyncInterval();
-    const overlay = document.getElementById('modo-overlay');
-    const modal = document.getElementById('modal-container');
-    if (modal) document.body.removeChild(modal);
-    if (overlay) document.body.removeChild(overlay);
-
-    initialized = false;
-  }
-
-  function closeModal() {
-    removeModal();
-    if (modalProperties.onClose) {
-      modalProperties.onClose();
-    }
-  }
-
-  function cancelModal() {
-    removeModal();
-    if (modalProperties.onCancel) {
-      modalProperties.onCancel();
-    }
-  }
-
-  function clearCloseModalTimeout() {
-    clearTimeout(closeModalTimeout);
-  }
-
-  function finalize() {
-    clearCloseModalTimeout();
-    if (modalProperties.callbackURL) {
-      window.location.replace(modalProperties.callbackURL);
-    } else {
-      removeModal();
-    }
-  }
 
   async function refreshQr() {
     // disable refresh button
@@ -114,11 +76,12 @@ const modoInitPayment = function (props) {
       return;
     }
 
-    if (!initialized) {
+    if (!modalService.getInitializedStatus()) {
       modalService.setCurrentStatus('CREATED');
       modalProperties = modalObject;
-      initialized = true;
-      HtmlBuildService.buildHtml(refreshQr, closeModal, cancelModal, finalize);
+      modalService.initService(modalProperties)
+      modalService.setInitializedStatus(true);
+      HtmlBuildService.buildHtml(refreshQr, modalService.closeModal, modalService.cancelModal, modalService.finalize);
       loadingService.initLoading();
 
       qrCodeService.generateQr(modalObject.qrString);
@@ -148,7 +111,7 @@ const modoInitPayment = function (props) {
         if (modalProperties.onSuccess) {
           modalProperties.onSuccess();
         }
-        closeModalTimeout = setTimeout(() => finalize(), 5000);
+        modalService.setCloseModalTimeout();
         clearAsyncInterval();
         break;
       case 'REJECTED':

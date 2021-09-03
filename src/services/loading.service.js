@@ -7,8 +7,6 @@ let interval = {};
 
 function onElementLoadingCompleted() {
   if (imagesLoaded && fontsLoaded && qrLoaded) {
-    // const modalContainer = document.getElementById("modal-container");
-    // modalContainer.classList.remove("non-visible");
     removeLoadingOverlay();
   }
 }
@@ -23,17 +21,6 @@ function setFontsLoadedEvents() {
     fontsLoaded = true;
     onElementLoadingCompleted();
   });
-
-  // interval = setInterval(fontLoadListener, 500);
-}
-
-function fontLoadListener() {
-  let hasLoaded = document.fonts.check('12px "Red Hat Display"');
-  if (hasLoaded) {
-    fontsLoaded = true;
-    onElementLoadingCompleted();
-    clearInterval(interval);
-  }
 }
 
 function setImageLoadedEvents() {
@@ -67,10 +54,6 @@ function showLoadingOverlay() {
 }
 
 function removeLoadingOverlay() {
-  // const currentStep = modalService.getCurrentInternalStatus();
-  // let step = document.getElementById(`step-${currentStep}`);
-  // step.className = "modal-body-wrapper show";;
-
   let step = document.getElementById("main_modal");
   step.classList.remove("hide");
 

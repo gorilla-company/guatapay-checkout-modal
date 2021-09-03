@@ -15,6 +15,11 @@ import { modoInitPayment } from "../ModoModal";
 import qrCodeService from "../services/qr-code.service";
 import restService from "../services/rest.service";
 import deeplinkService from "../services/deeplink.service";
+import {
+  setAsyncInterval,
+  clearAsyncInterval,
+} from "../services/async-interval.service";
+import modalService from "../services/modal.service";
 
 import { async } from "regenerator-runtime/runtime";
 
@@ -36,9 +41,9 @@ function setupFetchStub(data, isOk) {
           Promise.resolve({
             data,
           }),
-      })
-    })
-  }
+      });
+    });
+  };
 }
 
 describe("Generate html", () => {
@@ -202,14 +207,15 @@ describe("Html service", () => {
 
 describe("Qr code service", () => {
   test("it should return the qr code object", () => {
-
-    expect(qrCodeService.generateQr('string')).not.toBeNull();
+    expect(qrCodeService.generateQr("string")).not.toBeNull();
   });
 
   test("it should call the append function", async () => {
     const qrCodeTest = {
-      getRawData: jest.fn( async (string) => { return 'test data'} ),
-      append: jest.fn((object) => {})
+      getRawData: jest.fn(async (string) => {
+        return "test data";
+      }),
+      append: jest.fn((object) => {}),
     };
     await qrCodeService.loadQr(qrCodeTest);
     expect(qrCodeTest.append.mock.calls.length).toBe(1);
@@ -217,23 +223,25 @@ describe("Qr code service", () => {
 });
 
 describe("Rest service", () => {
-  it('it resolves the fetch correctly', async () => {
-    const fakeData = { response: 'ok' }
+  it("it resolves the fetch correctly", async () => {
+    const fakeData = { response: "ok" };
     global.fetch = jest.fn().mockImplementation(setupFetchStub(fakeData, true));
-  
-    const res = await restService.getData('');
-    expect(res).toEqual({ data: fakeData })
+
+    const res = await restService.getData("");
+    expect(res).toEqual({ data: fakeData });
     expect(fetch).toHaveBeenCalledTimes(1);
 
     global.fetch.mockClear();
     delete global.fetch;
-  })
+  });
 
-  it('if status is not ok throws an error', async () => {
-    const fakeData = { response: 'ok' }
-    global.fetch = jest.fn().mockImplementation(setupFetchStub(fakeData, false));
-  
-    await restService.getData('').catch(e => expect(e).toMatch('error'));
+  it("if status is not ok throws an error", async () => {
+    const fakeData = { response: "ok" };
+    global.fetch = jest
+      .fn()
+      .mockImplementation(setupFetchStub(fakeData, false));
+
+    await restService.getData("").catch((e) => expect(e).toMatch("error"));
     global.fetch.mockClear();
     delete global.fetch;
   });
@@ -241,7 +249,9 @@ describe("Rest service", () => {
 
 describe("Deeplink service", () => {
   let location;
-  let mockLocation = new URL("https://example.com");
+  let mockLocation = new URL(
+    "https://mockUrl.com/?qr=qrcode&callback=callbackURL&callbackSuccess=callbackURLSuccess"
+  );
 
   beforeEach(() => {
     location = window.location;
@@ -254,18 +264,97 @@ describe("Deeplink service", () => {
     window.location = location;
   });
 
-  test('it should return the deeplink url', async () => {
+  const object = {
+    qrString: "qrcode",
+    deeplink: {
+      url: "https://mockUrl.com/",
+      callbackURL: "callbackURL",
+      callbackURLSuccess: "callbackURLSuccess",
+    },
+  };
 
-    const object = {
-      qrString: 'qrcode',
-      deeplink: {
-        url: 'mockUrl.com/',
-        callbackURL: 'callbackURL',
-        callbackURLSuccess: 'callbackURLSuccess'
-      }
-    }
+  test("it should return the deeplink url", async () => {
     const url = deeplinkService.buildDeepLink(object);
 
-    expect(url).toEqual('mockUrl.com/?qr=qrcode&callback=callbackURL&callbackSuccess=callbackURLSuccess');
-  })
+    expect(url).toEqual(
+      "https://mockUrl.com/?qr=qrcode&callback=callbackURL&callbackSuccess=callbackURLSuccess"
+    );
+  });
+
+  test("it should set the window location to the deeplink url", async () => {
+    const url =
+      "https://mockurl.com/?qr=qrcode&callback=callbackURL&callbackSuccess=callbackURLSuccess";
+    deeplinkService.redirectToDeeplink(object);
+    expect(window.location.href).toEqual(url);
+  });
+});
+
+describe("Async Interval service", () => {
+  jest.useFakeTimers();
+
+  test("it should call the function", () => {
+    const fn = jest.fn(async (string) => {
+      return "test data";
+    });
+    setAsyncInterval(fn, 3000);
+
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
+
+  test("it should throw an 'Callback must be a function' error", () => {
+    const fn = {};
+    expect(() => {
+      setAsyncInterval(fn, 3000);
+    }).toThrow("Callback must be a function");
+  });
+
+  test("it should clear the async intervals array", () => {
+    const ai = clearAsyncInterval();
+    ai.forEach((item) => {
+      expect(item.run).toBe(false);
+    });
+  });
+
+  // const flushPromises = () => new Promise(res => process.nextTick(res))
+
+  // it('should call callback', async () => {
+  //     const fn = jest.fn( async (string) => { return 'test data'} );
+
+  //     setAsyncInterval(fn, 3000);
+
+  //     jest.advanceTimersByTime(3000)
+  //     await flushPromises();
+  //     expect(fn).toHaveBeenCalledTimes(1)
+  //   })
+});
+
+describe("Modal Service", () => {
+  test.each`
+    status          | expected
+    ${"CREATED"}    | ${"STARTED"}
+    ${"SCANNED"}    | ${"PROCESSING"}
+    ${"PROCESSING"} | ${"PAYING"}
+    ${"ACCEPTED"}   | ${"PAYMENT_READY"}
+    ${"REJECTED"}   | ${"PAYMENT_DENIED"}
+    ${"CANCELLED"}  | ${"PAYMENT_DENIED"}
+    ${"ERROR"}      | ${"PAYMENT_DENIED"}
+    ${"VOIDED"}     | ${"EXPIRED"}
+  `("It should return the correct internal status", ({ status, expected }) => {
+    const currentStatus = modalService.getCurrentInternalStatus(status);
+    expect(currentStatus).toBe(expected);
+  });
+
+  test.each`
+    status              | expected
+    ${"STARTED"}        | ${"STARTED"}
+    ${"PROCESSING"}     | ${"PROCESSING"}
+    ${"PAYING"}         | ${"PAYING"}
+    ${"PAYMENT_READY"}  | ${"PAYMENT_READY"}
+    ${"PAYMENT_DENIED"} | ${"PAYMENT_DENIED"}
+    ${"EXPIRED"}        | ${"EXPIRED"}
+  `("It should return the correct internal status", ({ status, expected }) => {
+    modalService.setCurrentStatus(status);
+    const currentStatus = modalService.getCurrentStatus();
+    expect(currentStatus).toBe(expected);
+  });
 });

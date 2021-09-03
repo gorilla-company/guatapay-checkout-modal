@@ -7,7 +7,7 @@ function createStep2() {
     step2Div.id = 'step-PROCESSING';
   
     const step2Title = createElementWithClass('p', 'paragraph');
-    step2Title.innerHTML = 'Estamos esperando confirmaci\u00F3n';
+    step2Title.innerHTML = 'Estamos esperando confirmaci\u00F3n.';
   
     const divLoading = document.createElement('div');
     divLoading.classList.add('svg-icon');
@@ -20,7 +20,7 @@ function createStep2() {
     divLoading.appendChild(imgLoading);
   
     const step2Text = document.createElement('p');
-    step2Text.innerHTML = 'Eleg\u00ED el medio de pago y confirm\u00E1 la transacci\u00F3n';
+    step2Text.innerHTML = 'Eleg\u00ED el medio de pago y confirm\u00E1 la transacci\u00F3n.';
     step2Div.appendChild(step2Text);
   
     step2Div.appendChild(divLoading);

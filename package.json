@@ -44,7 +44,8 @@
       "\\.(css|less)$": "identity-obj-proxy"
     },
     "setupFilesAfterEnv": [
-      "<rootDir>/src/__tests__/ModoModal.test.js"
+      "<rootDir>/src/__tests__/ModoModal.test.js",
+      "<rootDir>/src/__tests__/env/setEnvVars.js"
     ]
   }
 }

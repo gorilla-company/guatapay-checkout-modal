@@ -1,7 +1,15 @@
 import {
-  clearAsyncInterval
-} from '../services/async-interval.service';
-let currentStatus = "STARTED";
+  clearAsyncInterval,
+  setAsyncInterval,
+} from './async-interval.service';
+import deeplinkService from './deeplink.service';
+import buildHtmlService from './build-html.service';
+import loadingService from './loading.service';
+import qrCodeService from './qr-code.service';
+import restService from './rest.service';
+
+window.mockStatus = 'CREATED'; // <-- this => window
+let currentStatus = 'STARTED';
 let initialized = false;
 let closeModalTimeout = {};
 let modalProperties;
@@ -16,20 +24,22 @@ function setCurrentStatus(status) {
 
 function getCurrentInternalStatus(status) {
   switch (status) {
-    case "CREATED":
-      return "STARTED";
-    case "SCANNED":
-      return "PROCESSING";
-    case "PROCESSING":
-      return "PAYING";
-    case "ACCEPTED":
-      return "PAYMENT_READY";
-    case "REJECTED":
-    case "CANCELLED":
-    case "ERROR":
-      return "PAYMENT_DENIED";
-    case "VOIDED":
-      return "EXPIRED";
+    case 'CREATED':
+      return 'STARTED';
+    case 'SCANNED':
+      return 'PROCESSING';
+    case 'PROCESSING':
+      return 'PAYING';
+    case 'ACCEPTED':
+      return 'PAYMENT_READY';
+    case 'REJECTED':
+    case 'CANCELLED':
+    case 'ERROR':
+      return 'PAYMENT_DENIED';
+    case 'VOIDED':
+      return 'EXPIRED';
+    default:
+      return 'ERROR';
   }
 }
 
@@ -76,7 +86,7 @@ function clearCloseModalTimeout() {
 function finalize() {
   clearCloseModalTimeout();
   if (modalProperties.callbackURL) {
-    window.location.replace(modalProperties.callbackURL);
+    window.location.href = modalProperties.callbackURL;
   } else {
     removeModal();
   }
@@ -85,6 +95,106 @@ function finalize() {
 function initService(props) {
   modalProperties = props;
 }
+
+function detectMobile() {
+  const isMobile = navigator.userAgent.match(/Android/i)
+    || navigator.userAgent.match(/webOS/i)
+    || navigator.userAgent.match(/iPhone/i)
+    || navigator.userAgent.match(/iPad/i)
+    || navigator.userAgent.match(/iPod/i)
+    || navigator.userAgent.match(/BlackBerry/i)
+    || navigator.userAgent.match(/Windows Phone/i);
+  return isMobile;
+}
+
+function showModal(modalObject) {
+  if (detectMobile()) {
+    deeplinkService.redirectToDeeplink(modalObject);
+    return;
+  }
+
+  if (!getInitializedStatus()) {
+    setCurrentStatus('CREATED');
+    initService(modalObject);
+    buildHtmlService.buildHtml(refreshQr, closeModal, cancelModal, finalize);
+    loadingService.initLoading();
+    qrCodeService.generateQr(modalObject.qrString);
+
+    setAsyncInterval(getStatus, 3000);
+    setInitializedStatus(true);
+  }
+}
+
+async function refreshQr() {
+  try {
+    loadingService.disableRefreshQrButton();
+
+    const response = await modalProperties.refreshData();
+
+    modalProperties.qrCode = response.qrCode;
+    modalProperties.deeplink.url = response.deeplink;
+    
+    removeModal();
+    window.mockStatus = 'CREATED';
+    showModal(modalProperties);
+  }
+  catch {
+    window.setModalStatus('REJECTED');
+  }
+}
+
+const getStatus = async () => {
+  try {
+    const response = await restService.getData(
+      buildStatusUrl(),
+    );
+    window.setModalStatus(response.status);    
+  } catch {
+    window.setModalStatus('REJECTED');
+  }
+};
+
+function buildStatusUrl() {
+  let url = process.env.PAYMENT_STATUS_URL.replace(
+    '{checkoutId}',
+    modalProperties.checkoutId,
+  );
+  if (process.env.ENV === 'dev') {
+    url = `${url}?mocked_status={status}`
+      .replace('{status}', window.mockStatus);
+  }
+  return url;
+}
+
+window.setModalStatus = (status) => {
+  if (status == getCurrentStatus()) {
+    return;
+  }
+  setCurrentStatus(status);
+  switch (status) {
+    case 'ACCEPTED':
+      if (modalProperties.onSuccess) {
+        modalProperties.onSuccess();
+      }
+      setCloseModalTimeout();
+      clearAsyncInterval();
+      break;
+    case 'REJECTED':
+    case 'CANCELLED':
+    case 'ERROR':
+      if (modalProperties.onFailure) {
+        modalProperties.onFailure();
+      }
+      clearAsyncInterval();
+      break;
+    case 'VOIDED':
+      clearAsyncInterval();
+      break;
+  }
+  const internalStatus = getCurrentInternalStatus(status);
+  window.mockStatus = status;
+  buildHtmlService.handleStatusChange(internalStatus);
+};
 
 export default {
   getCurrentStatus,
@@ -96,5 +206,11 @@ export default {
   setInitializedStatus,
   getInitializedStatus,
   setCloseModalTimeout,
-  initService
+  initService,
+  removeModal,
+  detectMobile,
+  showModal,
+  buildStatusUrl,
+  refreshQr,
+  getStatus
 };

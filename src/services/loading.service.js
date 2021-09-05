@@ -3,36 +3,37 @@ let imagesLoaded = false;
 let fontsLoaded = false;
 let qrLoaded = false;
 
-let interval = {};
+function showLoadingOverlay() {
+  const step = document.getElementById('main_modal');
+  step.classList.add('hide');
 
-function onElementLoadingCompleted() {
-  if (imagesLoaded && fontsLoaded && qrLoaded) {
+  const stepLoading = document.getElementById('loading-section');
+  stepLoading.classList.remove('hide');
+}
+
+function removeLoadingOverlay() {
+  const step = document.getElementById('main_modal');
+  step.classList.remove('hide');
+
+  const stepLoading = document.getElementById('loading-section');
+  stepLoading.classList.add('hide');
+}
+
+function onElementLoadingCompleted(img, fonts, qr) {
+  if (img && fonts && qr) {
     removeLoadingOverlay();
   }
 }
 
 function onQrLoaded() {
   qrLoaded = true;
-  onElementLoadingCompleted();
+  onElementLoadingCompleted(imagesLoaded, fontsLoaded, qrLoaded);
 }
 
 function setFontsLoadedEvents() {
-  document.fonts.ready.then(function () {
+  document.fonts.ready.then(() => {
     fontsLoaded = true;
-    onElementLoadingCompleted();
-  });
-}
-
-function setImageLoadedEvents() {
-  let imgArr = [];
-  idArray.forEach((id) => {
-    imgArr.push(document.getElementById(id));
-  });
-
-  imgArr.forEach((element) => {
-    element.onload = function (event) {
-      onImageLoaded(event.target.id);
-    };
+    onElementLoadingCompleted(imagesLoaded, fontsLoaded, qrLoaded);
   });
 }
 
@@ -40,25 +41,30 @@ function onImageLoaded(id) {
   const filteredArr = idArray.filter((e) => e !== id);
   if (filteredArr.length === 0) {
     imagesLoaded = true;
-    onElementLoadingCompleted();
+    onElementLoadingCompleted(imagesLoaded, fontsLoaded, qrLoaded);
   }
   idArray = filteredArr;
 }
 
-function showLoadingOverlay() {
-  let step = document.getElementById("main_modal");
-  step.classList.add("hide");
+function setImageLoadedEvents() {
+  const imgArr = [];
+  idArray.forEach((id) => {
+    imgArr.push(document.getElementById(id));
+  });
 
-  let stepLoading = document.getElementById("loading-section");
-  stepLoading.classList.remove("hide");
+  imgArr.forEach((element) => {
+    const currentImage = element;
+    currentImage.onload = (event) => {
+      onImageLoaded(event.target.id);
+    };
+  });
 }
 
-function removeLoadingOverlay() {
-  let step = document.getElementById("main_modal");
-  step.classList.remove("hide");
-
-  let stepLoading = document.getElementById("loading-section");
-  stepLoading.classList.add("hide");
+function disableRefreshQrButton() {
+  const buttons = document.getElementsByClassName('refresh-button');
+  for (const item of buttons) {
+    item.disabled = true;
+  }
 }
 
 function initLoading() {
@@ -67,13 +73,13 @@ function initLoading() {
   qrLoaded = false;
 
   idArray = [
-    "img-question",
-    "img-loading",
-    "img-expired",
-    "img-error",
-    "img-spinner",
-    "img-check",
-    "img-qr",
+    'img-question',
+    'img-loading',
+    'img-expired',
+    'img-error',
+    'img-spinner',
+    'img-check',
+    'img-qr',
   ];
   showLoadingOverlay();
   setImageLoadedEvents();
@@ -83,4 +89,10 @@ function initLoading() {
 export default {
   initLoading,
   onQrLoaded,
+  showLoadingOverlay,
+  removeLoadingOverlay,
+  onElementLoadingCompleted,
+  onImageLoaded,
+  disableRefreshQrButton,
+  imagesLoaded,
 };

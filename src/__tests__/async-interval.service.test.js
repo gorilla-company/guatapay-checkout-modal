@@ -2,13 +2,14 @@ import {
   setAsyncInterval,
   clearAsyncInterval,
 } from '../services/async-interval.service';
+import constants from '../utils/constants'
 
 describe('Async Interval service', () => {
   jest.useFakeTimers();
 
   it('should call the function', () => {
     const fn = jest.fn(async (string) => 'test data');
-    setAsyncInterval(fn, 3000);
+    setAsyncInterval(fn, constants.callIntervalTime);
 
     expect(fn).toHaveBeenCalledTimes(1);
   });
@@ -16,7 +17,7 @@ describe('Async Interval service', () => {
   it("should throw an 'Callback must be a function' error", () => {
     const fn = {};
     expect(() => {
-      setAsyncInterval(fn, 3000);
+      setAsyncInterval(fn, constants.callIntervalTime);
     }).toThrow('Callback must be a function');
   });
 

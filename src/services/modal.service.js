@@ -4,6 +4,7 @@ import buildHtmlService from './build-html.service';
 import loadingService from './loading.service';
 import qrCodeService from './qr-code.service';
 import restService from './rest.service';
+import constants from '../utils/constants';
 
 window.mockStatus = 'CREATED'; // <-- this => window
 let currentStatus = 'STARTED';
@@ -86,7 +87,7 @@ function finalize() {
 }
 
 function setCloseModalTimeout() {
-  closeModalTimeout = setTimeout(() => finalize(), 5000);
+  closeModalTimeout = setTimeout(() => finalize(), constants.closeModalAfterSuccessTime);
 }
 
 function initService(props) {
@@ -158,7 +159,7 @@ function showModal(modalObject) {
     loadingService.initLoading();
     qrCodeService.generateQr(modalObject.qrString);
 
-    setAsyncInterval(getStatus, 3000);
+    setAsyncInterval(getStatus, constants.callIntervalTime);
     setInitializedStatus(true);
   }
 }

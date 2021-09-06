@@ -1,7 +1,4 @@
-import {
-  clearAsyncInterval,
-  setAsyncInterval,
-} from './async-interval.service';
+import { clearAsyncInterval, setAsyncInterval } from './async-interval.service';
 import deeplinkService from './deeplink.service';
 import buildHtmlService from './build-html.service';
 import loadingService from './loading.service';
@@ -75,10 +72,6 @@ function cancelModal() {
   }
 }
 
-function setCloseModalTimeout() {
-  closeModalTimeout = setTimeout(() => finalize(), 5000);
-}
-
 function clearCloseModalTimeout() {
   clearTimeout(closeModalTimeout);
 }
@@ -90,6 +83,10 @@ function finalize() {
   } else {
     removeModal();
   }
+}
+
+function setCloseModalTimeout() {
+  closeModalTimeout = setTimeout(() => finalize(), 5000);
 }
 
 function initService(props) {
@@ -106,6 +103,46 @@ function detectMobile() {
     || navigator.userAgent.match(/Windows Phone/i);
   return isMobile;
 }
+
+async function refreshQr() {
+  try {
+    loadingService.disableRefreshQrButton();
+
+    const response = await modalProperties.refreshData();
+
+    modalProperties.qrCode = response.qrCode;
+    modalProperties.deeplink.url = response.deeplink;
+
+    removeModal();
+    window.mockStatus = 'CREATED';
+    showModal(modalProperties);
+  } catch {
+    window.setModalStatus('REJECTED');
+  }
+}
+
+function buildStatusUrl() {
+  let url = process.env.PAYMENT_STATUS_URL.replace(
+    '{checkoutId}',
+    modalProperties.checkoutId,
+  );
+  if (process.env.ENV === 'dev') {
+    url = `${url}?mocked_status={status}`.replace(
+      '{status}',
+      window.mockStatus,
+    );
+  }
+  return url;
+}
+
+const getStatus = async () => {
+  try {
+    const response = await restService.getData(buildStatusUrl());
+    window.setModalStatus(response.status);
+  } catch {
+    window.setModalStatus('REJECTED');
+  }
+};
 
 function showModal(modalObject) {
   if (detectMobile()) {
@@ -125,49 +162,8 @@ function showModal(modalObject) {
   }
 }
 
-async function refreshQr() {
-  try {
-    loadingService.disableRefreshQrButton();
-
-    const response = await modalProperties.refreshData();
-
-    modalProperties.qrCode = response.qrCode;
-    modalProperties.deeplink.url = response.deeplink;
-    
-    removeModal();
-    window.mockStatus = 'CREATED';
-    showModal(modalProperties);
-  }
-  catch {
-    window.setModalStatus('REJECTED');
-  }
-}
-
-const getStatus = async () => {
-  try {
-    const response = await restService.getData(
-      buildStatusUrl(),
-    );
-    window.setModalStatus(response.status);    
-  } catch {
-    window.setModalStatus('REJECTED');
-  }
-};
-
-function buildStatusUrl() {
-  let url = process.env.PAYMENT_STATUS_URL.replace(
-    '{checkoutId}',
-    modalProperties.checkoutId,
-  );
-  if (process.env.ENV === 'dev') {
-    url = `${url}?mocked_status={status}`
-      .replace('{status}', window.mockStatus);
-  }
-  return url;
-}
-
 window.setModalStatus = (status) => {
-  if (status == getCurrentStatus()) {
+  if (status === getCurrentStatus()) {
     return;
   }
   setCurrentStatus(status);
@@ -188,6 +184,12 @@ window.setModalStatus = (status) => {
       clearAsyncInterval();
       break;
     case 'VOIDED':
+      clearAsyncInterval();
+      break;
+    default:
+      if (modalProperties.onFailure) {
+        modalProperties.onFailure();
+      }
       clearAsyncInterval();
       break;
   }
@@ -212,5 +214,5 @@ export default {
   showModal,
   buildStatusUrl,
   refreshQr,
-  getStatus
+  getStatus,
 };

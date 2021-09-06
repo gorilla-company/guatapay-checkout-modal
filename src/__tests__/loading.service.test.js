@@ -1,7 +1,6 @@
 import { jest } from "@jest/globals";
 import loadingService from "../services/loading.service";
 import "core-js";
-import svg from "../img/check.svg";
 
 document.fonts = {
   ready: {
@@ -10,39 +9,6 @@ document.fonts = {
     }),
   },
 };
-
-// it("shouldn't fail if the modal or overlay html is not present when cancel called", async () => {
-//     const flushPromises = () => new Promise(setImmediate);
-//   const testPromise = new Promise((resolve) => { resolve({}); });
-//   document.fonts = {};
-//   document.fonts.ready = {};
-//   document.fonts.ready.then = jest.fn(async () => {
-//     return true;
-//   });
-
-//   global.Image = class {
-//     constructor() {
-//       setTimeout(() => {
-//         this.onload(); // simulate success
-//       }, 5);
-//     }
-//   }
-
-//   document.body.innerHTML =
-//     '<div id="main_modal"></div> <div id="loading-section"></div>' +
-//     '<div id="img-question" src="../img/check.svg"></div>' +
-//     '<div id="img-loading"></div>' +
-//     '<div id="img-expired"></div>' +
-//     '<div id="img-error"></div>' +
-//     '<div id="img-spinner"></div>' +
-//     '<div id="img-check"></div>' +
-//     '<div id="img-qr"></div>';
-
-//   loadingService.initLoading();
-//   await flushPromises();
-// //   testPromise.resolve();
-//   expect(true).toBe(true);
-// });
 
 it("shouldn run and make the loading classes visible and hide the rest", async () => {
   document.body.innerHTML =

@@ -1,28 +1,27 @@
-import svgHourglass from '../img/hourglass-icon.svg';
-import {createElementWithClass} from '../services/build-html.service'
+import utilsService from '../services/utils.service';
 
 function createLoading() {
-    const step = createElementWithClass('div', 'modal-body-wrapper');
-    // step.classList.add('hide');
-    const section = createElementWithClass("section", "modal-wrapper");
-    section.id = 'loading-section';
+  const step = utilsService.createElementWithClass('div', 'modal-body-wrapper');
+  // step.classList.add('hide');
+  const section = utilsService.createElementWithClass('section', 'modal-wrapper');
+  section.id = 'loading-section';
 
-    step.id = 'step-LOADING';
-  
-    const title = createElementWithClass('p', 'paragraph');
-    const titleInvisible = createElementWithClass('p', 'paragraph');
-    // title.style = 'font-family: Arial';
-    title.classList.add('loading-paragraph');
-    title.innerHTML = 'Cargando';
-    titleInvisible.innerHTML = '.';    
-    titleInvisible.style = 'visibility: hidden';
+  step.id = 'step-LOADING';
 
-    step.appendChild(title);
-    step.appendChild(titleInvisible);
-    section.appendChild(step);
-    return section;
-  }
+  const title = utilsService.createElementWithClass('p', 'paragraph');
+  const titleInvisible = utilsService.createElementWithClass('p', 'paragraph');
+  // title.style = 'font-family: Arial';
+  title.classList.add('loading-paragraph');
+  title.innerHTML = 'Cargando';
+  titleInvisible.innerHTML = '.';
+  titleInvisible.style = 'visibility: hidden';
 
-  export {
-    createLoading
-  }
+  step.appendChild(title);
+  step.appendChild(titleInvisible);
+  section.appendChild(step);
+  return section;
+}
+
+export {
+  createLoading,
+};

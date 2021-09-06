@@ -1,11 +1,9 @@
-import modalService from "../services/modal.service";
-import { async } from "regenerator-runtime/runtime";
+import { async } from 'regenerator-runtime/runtime';
+import modalService from '../services/modal.service';
 
 document.fonts = {
   ready: {
-    then: jest.fn(async () => {
-      return true;
-    }),
+    then: jest.fn(async () => true),
   },
 };
 
@@ -14,20 +12,18 @@ function setupFetchStub(data, isOk) {
     return new Promise((resolve) => {
       resolve({
         ok: isOk,
-        json: () =>
-          Promise.resolve(
-            data,
-          ),
+        json: () => Promise.resolve(
+          data,
+        ),
       });
     });
   };
 }
 
-describe("Modal Service", () => {
-
+describe('Modal Service', () => {
   let location;
-  let mockLocation = new URL(
-    "https://mockUrl.com/?qr=qrcode&callback=callbackURL&callbackSuccess=callbackURLSuccess"
+  const mockLocation = new URL(
+    'https://mockUrl.com/?qr=qrcode&callback=callbackURL&callbackSuccess=callbackURLSuccess',
   );
 
   beforeEach(() => {
@@ -45,52 +41,52 @@ describe("Modal Service", () => {
     onCancel: jest.fn(),
     onSuccess: jest.fn(),
     onFailure: jest.fn(),
-    callbackURL: "https://mockurl.com/",
+    callbackURL: 'https://mockurl.com/',
     checkoutId: 1234,
-    refreshData: jest.fn(async () => {return {qrCode: 'testQr', deeplink: "https://mockUrl.com/"}}),
+    refreshData: jest.fn(async () => ({ qrCode: 'testQr', deeplink: 'https://mockUrl.com/' })),
     deeplink: {
-      url: "https://mockUrl.com/",
-      callbackURL: "callbackURL",
-      callbackURLSuccess: "callbackURLSuccess",
+      url: 'https://mockUrl.com/',
+      callbackURL: 'callbackURL',
+      callbackURLSuccess: 'callbackURLSuccess',
     },
   };
 
-  it("should set and return the given status", () => {
-    const status = "CREATED";
+  it('should set and return the given status', () => {
+    const status = 'CREATED';
     modalService.setCurrentStatus(status);
     const currentStatus = modalService.getCurrentStatus();
-    expect(currentStatus).toBe("CREATED");
+    expect(currentStatus).toBe('CREATED');
   });
 
   test.each`
     status          | expected
-    ${"CREATED"}    | ${"STARTED"}
-    ${"SCANNED"}    | ${"PROCESSING"}
-    ${"PROCESSING"} | ${"PAYING"}
-    ${"ACCEPTED"}   | ${"PAYMENT_READY"}
-    ${"REJECTED"}   | ${"PAYMENT_DENIED"}
-    ${"CANCELLED"}  | ${"PAYMENT_DENIED"}
-    ${"ERROR"}      | ${"PAYMENT_DENIED"}
-    ${"VOIDED"}     | ${"EXPIRED"}
-    ${"NOT_EXISTING"} | ${"ERROR"}
-  `("It should return the correct internal status", ({ status, expected }) => {
+    ${'CREATED'}    | ${'STARTED'}
+    ${'SCANNED'}    | ${'PROCESSING'}
+    ${'PROCESSING'} | ${'PAYING'}
+    ${'ACCEPTED'}   | ${'PAYMENT_READY'}
+    ${'REJECTED'}   | ${'PAYMENT_DENIED'}
+    ${'CANCELLED'}  | ${'PAYMENT_DENIED'}
+    ${'ERROR'}      | ${'PAYMENT_DENIED'}
+    ${'VOIDED'}     | ${'EXPIRED'}
+    ${'NOT_EXISTING'} | ${'ERROR'}
+  `('It should return the correct internal status', ({ status, expected }) => {
     const currentStatus = modalService.getCurrentInternalStatus(status);
     expect(currentStatus).toBe(expected);
   });
 
-  it("should set and return the given status", () => {
-    const status = "CREATED";
+  it('should set and return the given status', () => {
+    const status = 'CREATED';
     modalService.setCurrentStatus(status);
     const currentStatus = modalService.getCurrentStatus();
-    expect(currentStatus).toBe("CREATED");
+    expect(currentStatus).toBe('CREATED');
   });
 
-  it("should set and return the given status", () => {
+  it('should set and return the given status', () => {
     modalService.setInitializedStatus(true);
     expect(modalService.getInitializedStatus()).toBe(true);
   });
 
-  it("should execute the close function", () => {
+  it('should execute the close function', () => {
     modalService.initService(modalProperties);
     modalService.closeModal();
 
@@ -100,27 +96,25 @@ describe("Modal Service", () => {
   it("shouldn't throw exception when no close function is provided", () => {
     modalProperties.onClose = null;
     modalService.initService(modalProperties);
-    document.body.innerHTML =
-      '<div id="modo-overlay"></div> <div id="modal-container"></div>';
+    document.body.innerHTML = '<div id="modo-overlay"></div> <div id="modal-container"></div>';
 
     modalService.closeModal();
 
-    const overlay = document.getElementById("modo-overlay");
-    const container = document.getElementById("modal-container");
+    const overlay = document.getElementById('modo-overlay');
+    const container = document.getElementById('modal-container');
 
     expect(overlay).toBe(null);
     expect(container).toBe(null);
   });
 
-  it("should remove the modal from the html body when close called", () => {
+  it('should remove the modal from the html body when close called', () => {
     modalService.initService(modalProperties);
 
-    document.body.innerHTML =
-      '<div id="modo-overlay"></div> <div id="modal-container"></div>';
+    document.body.innerHTML = '<div id="modo-overlay"></div> <div id="modal-container"></div>';
 
     modalService.closeModal();
-    const overlay = document.getElementById("modo-overlay");
-    const container = document.getElementById("modal-container");
+    const overlay = document.getElementById('modo-overlay');
+    const container = document.getElementById('modal-container');
 
     expect(overlay).toBe(null);
     expect(container).toBe(null);
@@ -129,14 +123,14 @@ describe("Modal Service", () => {
   it("shouldn't fail if the modal or overlay html is not present when close called", () => {
     modalService.initService(modalProperties);
     modalService.closeModal();
-    const overlay = document.getElementById("modo-overlay");
-    const container = document.getElementById("modal-container");
+    const overlay = document.getElementById('modo-overlay');
+    const container = document.getElementById('modal-container');
 
     expect(overlay).toBe(null);
     expect(container).toBe(null);
   });
 
-  it("should execute the cancel function", () => {
+  it('should execute the cancel function', () => {
     modalService.initService(modalProperties);
     modalService.cancelModal();
 
@@ -146,27 +140,25 @@ describe("Modal Service", () => {
   it("shouldn't throw exception when no cancel function is provided", () => {
     modalProperties.onCancel = null;
     modalService.initService(modalProperties);
-    document.body.innerHTML =
-      '<div id="modo-overlay"></div> <div id="modal-container"></div>';
+    document.body.innerHTML = '<div id="modo-overlay"></div> <div id="modal-container"></div>';
 
     modalService.cancelModal();
 
-    const overlay = document.getElementById("modo-overlay");
-    const container = document.getElementById("modal-container");
+    const overlay = document.getElementById('modo-overlay');
+    const container = document.getElementById('modal-container');
 
     expect(overlay).toBe(null);
     expect(container).toBe(null);
   });
 
-  it("should remove the modal from the html body when cancel called", () => {
+  it('should remove the modal from the html body when cancel called', () => {
     modalService.initService(modalProperties);
 
-    document.body.innerHTML =
-      '<div id="modo-overlay"></div> <div id="modal-container"></div>';
+    document.body.innerHTML = '<div id="modo-overlay"></div> <div id="modal-container"></div>';
 
     modalService.cancelModal();
-    const overlay = document.getElementById("modo-overlay");
-    const container = document.getElementById("modal-container");
+    const overlay = document.getElementById('modo-overlay');
+    const container = document.getElementById('modal-container');
 
     expect(overlay).toBe(null);
     expect(container).toBe(null);
@@ -175,81 +167,78 @@ describe("Modal Service", () => {
   it("shouldn't fail if the modal or overlay html is not present when cancel called", () => {
     modalService.initService(modalProperties);
     modalService.cancelModal();
-    const overlay = document.getElementById("modo-overlay");
-    const container = document.getElementById("modal-container");
+    const overlay = document.getElementById('modo-overlay');
+    const container = document.getElementById('modal-container');
 
     expect(overlay).toBe(null);
     expect(container).toBe(null);
   });
 
-  it("should relocate to the callback url provided", () => {
+  it('should relocate to the callback url provided', () => {
     modalService.initService(modalProperties);
     modalService.finalize();
 
     expect(window.location.href).toEqual(modalProperties.callbackURL);
   });
 
-  it("should close the modal if no callback url is provided", () => {
+  it('should close the modal if no callback url is provided', () => {
     modalProperties.callbackURL = null;
     modalService.initService(modalProperties);
     modalService.finalize();
 
-    const overlay = document.getElementById("modo-overlay");
-    const container = document.getElementById("modal-container");
+    const overlay = document.getElementById('modo-overlay');
+    const container = document.getElementById('modal-container');
 
     expect(overlay).toBe(null);
     expect(container).toBe(null);
   });
 
-  it("should return not null if the userAgent is mobile", () => {
-    const navigator = { userAgent: 'Android'};
+  it('should return not null if the userAgent is mobile', () => {
+    const navigator = { userAgent: 'Android' };
     Object.defineProperty(window, 'navigator', {
       value: navigator,
-      writable: true
-   });
+      writable: true,
+    });
 
     const isMobile = modalService.detectMobile();
     expect(isMobile).not.toBe(null);
   });
-  
-  it("should return null if the userAgent is not mobile", () => {
-    const navigator = { userAgent: 'Mozilla'};
+
+  it('should return null if the userAgent is not mobile', () => {
+    const navigator = { userAgent: 'Mozilla' };
     Object.defineProperty(window, 'navigator', {
       value: navigator,
-      writable: true
-   });
+      writable: true,
+    });
 
     const isMobile = modalService.detectMobile();
     expect(isMobile).toBe(null);
   });
 
-  it("should return the get status url", () => {
+  it('should return the get status url', () => {
     modalService.initService(modalProperties);
 
     const url = modalService.buildStatusUrl();
     expect(url).toBe('https://mockUrl.com/1234?mocked_status=CREATED');
   });
 
-  
-  it("should navigate to the deeplink url", () => {
-
-    const navigator = { userAgent: 'Android'};
+  it('should navigate to the deeplink url', () => {
+    const navigator = { userAgent: 'Android' };
     Object.defineProperty(window, 'navigator', {
       value: navigator,
-      writable: true
-   });
+      writable: true,
+    });
 
     modalService.showModal(modalProperties);
     expect(window.location.href).toEqual('https://mockurl.com/?qr=undefined&callback=callbackURL&callbackSuccess=callbackURLSuccess');
   });
 
-  it("should set the initialized flag on true", () => {
-
-    const navigator = { userAgent: 'Mozilla'};
+  it('should set the initialized flag on true', () => {
+    const navigator = { userAgent: 'Mozilla' };
     Object.defineProperty(window, 'navigator', {
       value: navigator,
-      writable: true
-   });
+      writable: true,
+    });
 
     modalService.showModal(modalProperties);
     const initialized = modalService.getInitializedStatus();
@@ -257,14 +246,14 @@ describe("Modal Service", () => {
     expect(initialized).toBe(true);
   });
 
-  it("should call the refresh qr function and replace the values of the modal object", async () => {
-    const navigator = { userAgent: 'Mozilla'};
+  it('should call the refresh qr function and replace the values of the modal object', async () => {
+    const navigator = { userAgent: 'Mozilla' };
     Object.defineProperty(window, 'navigator', {
       value: navigator,
-      writable: true
-   });
+      writable: true,
+    });
     modalService.showModal(modalProperties);
-    
+
     await modalService.refreshQr();
     const initialized = modalService.getInitializedStatus();
 
@@ -272,12 +261,12 @@ describe("Modal Service", () => {
     expect(initialized).toBe(true);
   });
 
-  it("should send to the failed step if the request throws error", async () => {
-    const navigator = { userAgent: 'Mozilla'};
+  it('should send to the failed step if the request throws error', async () => {
+    const navigator = { userAgent: 'Mozilla' };
     Object.defineProperty(window, 'navigator', {
       value: navigator,
-      writable: true
-   });
+      writable: true,
+    });
     modalService.showModal(modalProperties);
     modalProperties.refreshData.mockImplementation(() => {
       throw new Error();
@@ -289,9 +278,9 @@ describe("Modal Service", () => {
     expect(status).toBe('REJECTED');
   });
 
-  it("should call the onSuccess function and stet the status to created", async () => {
+  it('should call the onSuccess function and stet the status to created', async () => {
     modalService.showModal(modalProperties);
-    global.fetch = jest.fn().mockImplementation(setupFetchStub({status: 'ACCEPTED'}, true));
+    global.fetch = jest.fn().mockImplementation(setupFetchStub({ status: 'ACCEPTED' }, true));
 
     await modalService.getStatus();
     const status = modalService.getCurrentStatus();
@@ -299,10 +288,10 @@ describe("Modal Service", () => {
     expect(modalProperties.onSuccess).toHaveBeenCalledTimes(1);
     expect(status).toBe('ACCEPTED');
   });
-  
-  it("should call the onFailure function and stet the status to created", async () => {
+
+  it('should call the onFailure function and stet the status to created', async () => {
     modalService.showModal(modalProperties);
-    global.fetch = jest.fn().mockImplementation(setupFetchStub({status: 'ERROR'}, true));
+    global.fetch = jest.fn().mockImplementation(setupFetchStub({ status: 'ERROR' }, true));
 
     await modalService.getStatus();
     const status = modalService.getCurrentStatus();
@@ -310,8 +299,4 @@ describe("Modal Service", () => {
     expect(modalProperties.onFailure).toHaveBeenCalledTimes(1);
     expect(status).toBe('ERROR');
   });
-
 });
-
-
-

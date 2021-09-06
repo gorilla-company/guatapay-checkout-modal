@@ -62,8 +62,9 @@ function setImageLoadedEvents() {
 
 function disableRefreshQrButton() {
   const buttons = document.getElementsByClassName('refresh-button');
-  for (const item of buttons) {
-    item.disabled = true;
+
+  for (let i = 0; i < buttons.length; i += 1) {
+    buttons[i].disabled = true;
   }
 }
 

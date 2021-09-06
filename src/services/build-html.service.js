@@ -13,20 +13,21 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
   const overlay = utilsService.createElementWithClass('div', 'modo-overlay');
   overlay.id = 'modo-overlay';
 
-  // Section
-  const modalContainer = utilsService.createElementWithClass('div', 'modal-container');
+  const modalContainer = utilsService.createElementWithClass(
+    'div',
+    'modal-container',
+  );
   modalContainer.id = 'modal-container';
-  const section = utilsService.createElementWithClass('section', 'modal-wrapper');
+  const section = utilsService.createElementWithClass(
+    'section',
+    'modal-wrapper',
+  );
   section.id = 'main_modal';
   section.classList.add('hide');
 
-  // create header
   const header = createHeader(closeModal);
 
-  // create navbar
   const navBar = createNavBar();
-
-  // create steps containers
 
   const step1Div = createStep1();
   const step2Div = createStep2();
@@ -38,7 +39,6 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
 
   const loadingOverlay = createLoading();
 
-  // append items to hierarchy
   section.appendChild(header);
   section.appendChild(navBar);
   section.appendChild(step1Div);

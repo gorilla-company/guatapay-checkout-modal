@@ -25,9 +25,9 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
   section.id = 'main_modal';
   section.classList.add('hide');
 
-  const header = header.createHeader(closeModal);
+  const headerSection = header.createHeader(closeModal);
 
-  const navBar = navBar.createNavBar();
+  const navBarSection = navBar.createNavBar();
 
   const step1Div = step1.createStep1();
   const step2Div = step2.createStep2();
@@ -39,8 +39,8 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
 
   const loadingOverlay = loading.createLoading();
 
-  section.appendChild(header);
-  section.appendChild(navBar);
+  section.appendChild(headerSection);
+  section.appendChild(navBarSection);
   section.appendChild(step1Div);
   section.appendChild(step2Div);
   section.appendChild(step3Div);

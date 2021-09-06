@@ -152,6 +152,7 @@ function showModal(modalObject) {
 
   if (!getInitializedStatus()) {
     setCurrentStatus('CREATED');
+    window.mockStatus = 'CREATED'; 
     initService(modalObject);
     buildHtmlService.buildHtml(refreshQr, closeModal, cancelModal, finalize);
     loadingService.initLoading();
@@ -187,10 +188,6 @@ window.setModalStatus = (status) => {
       clearAsyncInterval();
       break;
     default:
-      if (modalProperties.onFailure) {
-        modalProperties.onFailure();
-      }
-      clearAsyncInterval();
       break;
   }
   const internalStatus = getCurrentInternalStatus(status);

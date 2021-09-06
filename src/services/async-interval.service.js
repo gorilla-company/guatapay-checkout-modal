@@ -1,3 +1,5 @@
+import "regenerator-runtime/runtime";
+
 const asyncIntervals = [];
 
 const runAsyncInterval = async (cb, interval, intervalIndex) => {

@@ -18,6 +18,7 @@ function createStep4(finalize) {
 
   const continueButton = utilsService.createElementWithClass('button', 'modo-btn-primary');
   continueButton.innerHTML = 'Continuar';
+  continueButton.id = 'finalize';
   continueButton.onclick = () => finalize();
 
   step.appendChild(stepTitle);

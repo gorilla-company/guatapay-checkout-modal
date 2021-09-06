@@ -17,17 +17,18 @@ function createStepPaymentError(refreshQrFnc, cancelModal) {
   stepImg.appendChild(imgError);
 
   const stepTextUpper = document.createElement('p');
-  stepTextUpper.innerHTML = '<b>Lo sentimos, tu pago fue denegado</b>';
+  stepTextUpper.innerHTML = '<b>Lo sentimos, tu pago fue denegado.</b>';
   const stepTextMiddle = document.createElement('p');
   stepTextMiddle.innerHTML = 'Por favor gener\u00E1 un nuevo QR';
   const stepTextLower = document.createElement('p');
-  stepTextLower.innerHTML = 'Para volver a intentar';
+  stepTextLower.innerHTML = 'Para volver a intentar.';
 
   const stepButtonRefresh = document.createElement('button');
   stepButtonRefresh.classList.add('modo-btn-primary');
   stepButtonRefresh.classList.add('mt-55');
   stepButtonRefresh.classList.add('refresh-button');
   stepButtonRefresh.innerHTML = 'Generar nuevo QR';
+  stepButtonRefresh.id = 'payment-refresh';
   stepButtonRefresh.onclick = () => refreshQrFnc();
 
   const cancelButton = utilsService.createElementWithClass('button', 'modo-btn-link');

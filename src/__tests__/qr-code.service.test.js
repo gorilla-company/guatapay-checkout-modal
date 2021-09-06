@@ -1,11 +1,11 @@
 import qrCodeService from '../services/qr-code.service';
 
 describe('Qr code service', () => {
-  test('it should return the qr code object', () => {
+  it('should return the qr code object', () => {
     expect(qrCodeService.generateQr('string')).not.toBeNull();
   });
 
-  test('it should call the append function', async () => {
+  it('should call the append function', async () => {
     const qrCodeTest = {
       getRawData: jest.fn(async (string) => 'test data'),
       append: jest.fn((object) => {}),

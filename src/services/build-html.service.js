@@ -53,11 +53,6 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
   modalContainer.appendChild(loadingOverlay);
   document.body.appendChild(overlay);
   document.body.appendChild(modalContainer);
-
-  // const qrContainer = document.getElementById('imgLogo');
-  // qrContainer.onload = () => {
-  //   modalContainer.style.visibility = "visible";
-  // };
 }
 
 function removeSelectedStep(status) {

@@ -26,7 +26,7 @@ describe('Deeplink service', () => {
     },
   };
 
-  test('it should return the deeplink url', async () => {
+  it('should return the deeplink url', async () => {
     const url = deeplinkService.buildDeepLink(object);
 
     expect(url).toEqual(
@@ -34,7 +34,7 @@ describe('Deeplink service', () => {
     );
   });
 
-  test('it should set the window location to the deeplink url', async () => {
+  it('should set the window location to the deeplink url', async () => {
     const url = 'https://mockurl.com/?qr=qrcode&callback=callbackURL&callbackSuccess=callbackURLSuccess';
     deeplinkService.redirectToDeeplink(object);
     expect(window.location.href).toEqual(url);

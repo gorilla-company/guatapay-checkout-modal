@@ -19,7 +19,7 @@ function createStepExpired(refreshQr, cancelModal) {
   const stepTextUpper = document.createElement('p');
   stepTextUpper.innerHTML = 'Por favor gener\u00E1 un nuevo QR';
   const stepTextLower = document.createElement('p');
-  stepTextLower.innerHTML = 'para poder pagar';
+  stepTextLower.innerHTML = 'para poder pagar.';
 
   const stepButton = document.createElement('button');
   stepButton.classList.add('modo-btn-primary');

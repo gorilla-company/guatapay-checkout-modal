@@ -36,7 +36,7 @@ describe('Build Html service', () => {
     },
   );
 
-  test('It should create the overlay html', () => {
+  it('should create the overlay html', () => {
     const overlay = '<div class="modo-overlay" id="modo-overlay"></div>';
     buildHtmlService.buildHtml();
     expect(document.getElementById('modo-overlay').outerHTML).toBe(overlay);

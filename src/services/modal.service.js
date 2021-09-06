@@ -6,7 +6,7 @@ import qrCodeService from './qr-code.service';
 import restService from './rest.service';
 import constants from '../utils/constants';
 
-window.mockStatus = 'CREATED'; // <-- this => window
+window.mockStatus = 'CREATED';
 let currentStatus = 'STARTED';
 let initialized = false;
 let closeModalTimeout = {};

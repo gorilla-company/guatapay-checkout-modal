@@ -32,6 +32,6 @@ function createStep3() {
   return step3Div;
 }
 
-export {
+export default {
   createStep3,
 };

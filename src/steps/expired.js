@@ -42,6 +42,6 @@ function createStepExpired(refreshQr, cancelModal) {
   return step;
 }
 
-export {
+export default {
   createStepExpired,
 };

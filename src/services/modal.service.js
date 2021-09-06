@@ -105,23 +105,6 @@ function detectMobile() {
   return isMobile;
 }
 
-async function refreshQr() {
-  try {
-    loadingService.disableRefreshQrButton();
-
-    const response = await modalProperties.refreshData();
-
-    modalProperties.qrCode = response.qrCode;
-    modalProperties.deeplink.url = response.deeplink;
-
-    removeModal();
-    window.mockStatus = 'CREATED';
-    showModal(modalProperties);
-  } catch {
-    window.setModalStatus('REJECTED');
-  }
-}
-
 function buildStatusUrl() {
   let url = process.env.PAYMENT_STATUS_URL.replace(
     '{checkoutId}',
@@ -153,7 +136,7 @@ function showModal(modalObject) {
 
   if (!getInitializedStatus()) {
     setCurrentStatus('CREATED');
-    window.mockStatus = 'CREATED'; 
+    window.mockStatus = 'CREATED';
     initService(modalObject);
     buildHtmlService.buildHtml(refreshQr, closeModal, cancelModal, finalize);
     loadingService.initLoading();
@@ -161,6 +144,23 @@ function showModal(modalObject) {
 
     setAsyncInterval(getStatus, constants.callIntervalTime);
     setInitializedStatus(true);
+  }
+}
+
+async function refreshQr() {
+  try {
+    loadingService.disableRefreshQrButton();
+
+    const response = await modalProperties.refreshData();
+
+    modalProperties.qrCode = response.qrCode;
+    modalProperties.deeplink.url = response.deeplink;
+
+    removeModal();
+    window.mockStatus = 'CREATED';
+    showModal(modalProperties);
+  } catch {
+    window.setModalStatus('REJECTED');
   }
 }
 

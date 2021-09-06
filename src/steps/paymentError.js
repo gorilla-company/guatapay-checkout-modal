@@ -46,6 +46,6 @@ function createStepPaymentError(refreshQrFnc, cancelModal) {
   return step;
 }
 
-export {
+export default {
   createStepPaymentError,
 };

@@ -20,6 +20,6 @@ function createLoading() {
   return section;
 }
 
-export {
+export default {
   createLoading,
 };

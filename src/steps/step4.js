@@ -28,6 +28,6 @@ function createStep4(finalize) {
   return step;
 }
 
-export {
+export default {
   createStep4,
 };

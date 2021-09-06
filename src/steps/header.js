@@ -33,6 +33,6 @@ function createHeader(closeModal) {
   return header;
 }
 
-export {
+export default {
   createHeader,
 };

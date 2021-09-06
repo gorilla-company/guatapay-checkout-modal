@@ -29,6 +29,6 @@ function createStep2() {
   return step2Div;
 }
 
-export {
+export default {
   createStep2,
 };

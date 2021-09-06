@@ -18,6 +18,6 @@ function createNavBar() {
   return navBar;
 }
 
-export {
+export default {
   createNavBar,
 };

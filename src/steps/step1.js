@@ -63,6 +63,6 @@ function createStep1() {
   return step1Div;
 }
 
-export {
+export default {
   createStep1,
 };

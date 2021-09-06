@@ -1,12 +1,12 @@
-import { createStep1 } from '../steps/step1';
-import { createStep2 } from '../steps/step2';
-import { createStep3 } from '../steps/step3';
-import { createStep4 } from '../steps/step4';
-import { createStepPaymentError } from '../steps/paymentError';
-import { createStepExpired } from '../steps/expired';
-import { createHeader } from '../steps/header';
-import { createNavBar } from '../steps/navBar';
-import { createLoading } from '../steps/loading';
+import step1 from '../steps/step1';
+import step2 from '../steps/step2';
+import step3 from '../steps/step3';
+import step4 from '../steps/step4';
+import paymentError from '../steps/paymentError';
+import expired from '../steps/expired';
+import header from '../steps/header';
+import navBar from '../steps/navBar';
+import loading from '../steps/loading';
 import utilsService from './utils.service';
 
 function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
@@ -25,19 +25,19 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
   section.id = 'main_modal';
   section.classList.add('hide');
 
-  const header = createHeader(closeModal);
+  const header = header.createHeader(closeModal);
 
-  const navBar = createNavBar();
+  const navBar = navBar.createNavBar();
 
-  const step1Div = createStep1();
-  const step2Div = createStep2();
-  const step3Div = createStep3();
-  const step4Div = createStep4(finalize);
+  const step1Div = step1.createStep1();
+  const step2Div = step2.createStep2();
+  const step3Div = step3.createStep3();
+  const step4Div = step4.createStep4(finalize);
 
-  const stepPaymentError = createStepPaymentError(refreshQr, cancelModal);
-  const stepExpired = createStepExpired(refreshQr, cancelModal);
+  const stepPaymentError = paymentError.createStepPaymentError(refreshQr, cancelModal);
+  const stepExpired = expired.createStepExpired(refreshQr, cancelModal);
 
-  const loadingOverlay = createLoading();
+  const loadingOverlay = loading.createLoading();
 
   section.appendChild(header);
   section.appendChild(navBar);

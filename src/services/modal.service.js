@@ -138,7 +138,12 @@ function showModal(modalObject) {
     setCurrentStatus('CREATED');
     window.mockStatus = 'CREATED';
     initService(modalObject);
-    buildHtmlService.buildHtml(refreshQr, closeModal, cancelModal, finalize);
+    buildHtmlService.buildHtml(
+      refreshQr, // eslint-disable-line no-use-before-define
+      closeModal,
+      cancelModal,
+      finalize,
+    );
     loadingService.initLoading();
     qrCodeService.generateQr(modalObject.qrString);
 

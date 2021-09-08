@@ -1,5 +1,10 @@
-import { async } from 'regenerator-runtime/runtime';
 import modalService from '../services/modal.service';
+import qrCodeService from '../services/qr-code.service';
+jest.mock('../services/qr-code.service');
+
+qrCodeService.generateQr.mockResolvedValue({
+  data:true
+});
 
 document.fonts = {
   ready: {

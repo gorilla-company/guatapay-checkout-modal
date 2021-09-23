@@ -85,10 +85,6 @@ header {
     width: 100%;
 }
 
-p {
-    margin: 0;
-}
-
 .modal-header-wrapper {
     position: relative;
     border-bottom: 1px solid #dfdfdf;
@@ -137,7 +133,7 @@ p {
 
 .modal-header-wrapper button img {
     width: 16px;
-    height: auto;;
+    height: auto;
 }
 
 /* Modal Body */
@@ -164,6 +160,7 @@ p.paragraph {
 }
 
 p {
+    margin: 0;
     font-size: 14px;
     font-weight: normal;
     line-height: 22px;
@@ -211,7 +208,7 @@ p {
 
 
 .modal-wrapper {
-    font-family: 'Red Hat Display'  !important;
+    font-family: 'Red Hat Display', Arial, Helvetica, sans-serif  !important;
     background-color: #f8f8f8;
     width: 576px;
     min-height: 576px;
@@ -366,7 +363,6 @@ p {
 .modo-btn-link {
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
-    font-size: 16px;
     line-height: 17.6px;
     background-color: transparent;
     padding: 19px;
@@ -483,7 +479,7 @@ p {
 .tooltiptext ul {
     list-style-type: circle;
     text-align: left;
-    font-family: 'Open Sans Fina';
+    font-family: 'Open Sans Fina', Arial, Helvetica, sans-serif;
     font-size: 14px;
     line-height: 22px;
     padding: 0 0px 0 24px;
@@ -491,9 +487,9 @@ p {
 }
 
 .tooltiptext ul li .bold{
-    font-family: 'Open Sans Bold';
+    font-family: 'Open Sans Bold', Arial, Helvetica, sans-serif;
 }
 
 .loading-paragraph {    
-    font-family: Arial;
+    font-family: Arial, Helvetica, sans-serif;
 }

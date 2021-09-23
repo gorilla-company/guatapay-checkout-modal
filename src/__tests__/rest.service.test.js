@@ -2,11 +2,9 @@ import restService from '../services/rest.service';
 
 function setupFetchStub(data, isOk) {
   return function fetchStub(_url) {
-    return new Promise((resolve) => {
-      resolve({
-        ok: isOk,
-        json: () => Promise.resolve(data),
-      });
+    return Promise.resolve({
+      ok: isOk,
+      json: () => Promise.resolve(data),
     });
   };
 }

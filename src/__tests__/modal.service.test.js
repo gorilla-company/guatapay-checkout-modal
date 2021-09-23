@@ -14,14 +14,12 @@ document.fonts = {
 
 function setupFetchStub(data, isOk) {
   return function fetchStub(_url) {
-    return new Promise((resolve) => {
-      resolve({
+      return Promise.resolve({
         ok: isOk,
         json: () => Promise.resolve(
           data,
         ),
       });
-    });
   };
 }
 
@@ -55,13 +53,6 @@ describe('Modal Service', () => {
       callbackURLSuccess: 'callbackURLSuccess',
     },
   };
-
-  it('should set and return the given status', () => {
-    const status = 'CREATED';
-    modalService.setCurrentStatus(status);
-    const currentStatus = modalService.getCurrentStatus();
-    expect(currentStatus).toBe('CREATED');
-  });
 
   test.each`
     status          | expected

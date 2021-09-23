@@ -8,9 +8,12 @@ describe('Qr code service', () => {
   it('should call the append function', async () => {
     const qrCodeTest = {
       getRawData: jest.fn(async (string) => 'test data'),
-      append: jest.fn((object) => {}),
+      append: jest.fn(),
     };
-    await qrCodeService.loadQr(qrCodeTest);
-    expect(qrCodeTest.append.mock.calls.length).toBe(1);
+    qrCodeService.loadQr(qrCodeTest)
+    .then(() => {
+      expect(qrCodeTest.append.mock.calls.length).toBe(1);
+    });
+
   });
 });

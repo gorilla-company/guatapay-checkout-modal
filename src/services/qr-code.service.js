@@ -3,7 +3,7 @@ import qrLogo from '../img/qrLogo.png';
 import loadingService from './loading.service';
 
 function loadQr(qrCode) {
-  qrCode.getRawData('jpg').then(() => {
+  return qrCode.getRawData('jpg').then(() => {
     qrCode.append(document.getElementById('qrContainer'));
     loadingService.onQrLoaded();
   });
@@ -64,7 +64,7 @@ function generateQr(qrString) {
       color: '#121212',
     },
   });
-  loadQr(qrCode);
+  return loadQr(qrCode);
 }
 
 export default {

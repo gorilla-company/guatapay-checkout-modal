@@ -1,25 +1,20 @@
-<style>
-
-</style>
-
-<html>
+<!DOCTYPE html>
+<html lang="es">
 
 <head>
-  <!-- <link rel="stylesheet" href="./styles.css"> -->
 </head>
 
 <body>
   <div style="z-index: 1800; position: absolute;">
-  <!-- <div class="overlay"></div> -->
-  <button onclick="showModal()">Mostrar Modal</button>
+    <button onclick="showModal()">Mostrar Modal</button>
 
-  <button onclick="setModalStatus('CREATED')">Nivel uno</button>
-  <button onclick="setModalStatus('SCANNED')">Nivel dos</button>
-  <button onclick="setModalStatus('PROCESSING')">Nivel tres</button>
-  <button onclick="setModalStatus('ACCEPTED')">Nivel cuatro</button>
+    <button onclick="setModalStatus('CREATED')">Nivel uno</button>
+    <button onclick="setModalStatus('SCANNED')">Nivel dos</button>
+    <button onclick="setModalStatus('PROCESSING')">Nivel tres</button>
+    <button onclick="setModalStatus('ACCEPTED')">Nivel cuatro</button>
 
-  <button onclick="setModalStatus('VOIDED')">QR Expirado</button>
-  <button onclick="setModalStatus('REJECTED')">Payment Error</button>
+    <button onclick="setModalStatus('VOIDED')">QR Expirado</button>
+    <button onclick="setModalStatus('REJECTED')">Payment Error</button>
   </div>
 
 

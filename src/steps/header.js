@@ -3,7 +3,7 @@ import svgLogo from '../img/modo-logo.svg';
 import utilsService from '../services/utils.service';
 
 function createHeader(closeModal) {
-  const header = document.createElement('header');
+  const header = utilsService.createElementWithClass('header', 'modal-header-modo');
   document.createElement('header');
   const headerWrapper = utilsService.createElementWithClass('div', 'modal-header-wrapper');
   const logoWrapper = utilsService.createElementWithClass('div', 'modal-logo-wrapper');

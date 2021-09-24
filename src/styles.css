@@ -77,7 +77,7 @@ body {
 
 
 /* Modal Header */
-header {
+.modal-header-modo {
     height: 68px;
     display: flex;
     justify-content: center;

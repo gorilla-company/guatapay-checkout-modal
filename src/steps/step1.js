@@ -8,8 +8,10 @@ function createStep1() {
   const step1Title = utilsService.createElementWithClass('p', 'paragraph');
   step1Title.innerHTML = 'Escanea el código QR <br> Con la App MODO o desde tu App bancaria preferida.';
 
-  const qrContainer = utilsService.createElementWithClass('div', 'modal-body-qr-wrapper');
-  qrContainer.innerHTML = '<div id="qrContainer"></div>';
+  const qrWrapper = utilsService.createElementWithClass('div', 'modal-body-qr-wrapper');
+  const qrContainer = document.createElement('div');
+  qrContainer.id = 'qrContainer';
+  // qrContainer.innerHTML = '<div id="qrContainer"></div>';
 
   const questionContainer = utilsService.createElementWithClass('div', 'question');
   questionContainer.innerHTML = '\u00BFC\u00F3mo pagar desde App <b>MODO</b>?';
@@ -25,7 +27,7 @@ function createStep1() {
   imgQr.id = 'img-qr';
   imgQr.src = qrLogo;
   imgQr.alt = 'qrcode';
-  imgQr.classList.add('hide');
+  // imgQr.classList.add('hide');
 
   const toolTipText = utilsService.createElementWithClass('div', 'tooltiptext');
 
@@ -56,10 +58,13 @@ function createStep1() {
   toolTip.appendChild(toolTipText);
   questionContainer.appendChild(toolTip);
 
+  qrContainer.appendChild(imgQr);
+  qrWrapper.appendChild(qrContainer);
+
   step1Div.appendChild(step1Title);
-  step1Div.appendChild(qrContainer);
+  step1Div.appendChild(qrWrapper);
   step1Div.appendChild(questionContainer);
-  step1Div.appendChild(imgQr);
+  // step1Div.appendChild(imgQr);
   return step1Div;
 }
 

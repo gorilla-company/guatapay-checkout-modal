@@ -154,11 +154,12 @@ function showModal(modalObject) {
 async function refreshQr() {
   try {
     loadingService.disableRefreshQrButton();
-
-    const response = await modalProperties.refreshData();
-
-    modalProperties.qrCode = response.qrCode;
-    modalProperties.deeplink.url = response.deeplink;
+    
+    if(modalProperties.refreshData) {
+      const response = await modalProperties.refreshData();
+      modalProperties.qrCode = response.qrCode;
+      modalProperties.deeplink.url = response.deeplink;
+    }
 
     removeModal();
     window.mockStatus = 'CREATED';

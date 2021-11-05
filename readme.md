@@ -22,18 +22,40 @@ When an order is being placed in the ecommerce platform, and the payment method 
 ```
 
 ```js
-
+function createPaymentIntention(){
+    // ... calls ecommerce own backend to create a áyment intetion and returns the data
+}
+var paymentIntention = createPaymentIntention();
 var options = {
-    qrString: '...',
-    checkoutId: '...',
+    qrString: paymentIntention.qr,
+    checkoutId: paymentIntention.id,
     deeplink:  {
         url: '...',
         callbackURL: '...',
         callbackURLSuccess: '...'
     },
-    onSuccess: function() {console.log('onSuccess')},
-    onFailure: function() {console.log('onFailure')},
-    onCancel: function() {console.log('onCancel')},
+    onSuccess: function() {
+        console.log('onSuccess')
+    },
+    onFailure: function() {
+        console.log('onFailure')
+    },
+    onCancel: function() {
+        console.log('onCancel')
+    },
+    refreshData: function() {
+        var paymentIntention = createPaymentIntention();
+        var options = {
+            qrString: paymentIntention.qr,
+            checkoutId: paymentIntention.id,
+            deeplink: {
+                url: paymentIntention.deeplink,
+                callbackURL: failureUrl,
+                callbackURLSuccess: successUrl,
+            }
+        }
+        return options;
+    },
     callbackURL: ''
 }
 
@@ -53,6 +75,7 @@ ModoSDK.modoInitPayment(options);
 |onSuccess|No|Function.|
 |onFailure|No|Function.|
 |onClose|No|Function.|
+|refreshData|No|Function. Executed when user clicks "Generate new QR". Integration must create new Payment Intention and return the new options object|
 |onCancel|No|Function.|
 |callbackURL|No|String. URL to redirect to if payment succeeds.|
 

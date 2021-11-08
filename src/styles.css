@@ -193,7 +193,7 @@ p {
 
 .modal-body-qr-wrapper {
     box-sizing: border-box;
-    padding: 30px;
+    padding: 20px;
     width: 260px;
     height: 260px;
     margin: 32px 0 22px 0;
@@ -449,7 +449,7 @@ p {
 
     /* Position the tooltip */
     position: absolute;
-    z-index: 1;
+    z-index: 1001;
 
     opacity: 0;
     transition: opacity .5s;

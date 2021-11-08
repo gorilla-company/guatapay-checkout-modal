@@ -157,7 +157,7 @@ async function refreshQr() {
     
     if(modalProperties.refreshData) {
       const response = await modalProperties.refreshData();
-      modalProperties.qrCode = response.qrString;
+      modalProperties.qrString = response.qrString;
       modalProperties.deeplink = response.deeplink;
       modalProperties.checkoutId = response.checkoutId;
     }

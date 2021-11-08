@@ -157,9 +157,9 @@ async function refreshQr() {
     
     if(modalProperties.refreshData) {
       const response = await modalProperties.refreshData();
-      modalProperties.qrCode = response.qr;
-      modalProperties.deeplink.url = response.deeplink;
-      modalProperties.checkoutId = response.id;
+      modalProperties.qrCode = response.qrString;
+      modalProperties.deeplink = response.deeplink;
+      modalProperties.checkoutId = response.checkoutId;
     }
 
     removeModal();

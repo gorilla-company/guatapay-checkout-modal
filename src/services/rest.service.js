@@ -11,6 +11,7 @@ async function getData(url = '') {
     referrerPolicy: 'no-referrer',
   };
   console.log('preFetch');
+  console.log('fetch definition:' + fetch);
   const result = await fetch(url, params)
     .then((response) => {
       console.log('postFetch');

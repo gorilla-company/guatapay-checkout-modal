@@ -128,6 +128,7 @@ const getStatus = async () => {
 };
 
 function showModal(modalObject) {
+  console.log(modalObject);
   console.log(deeplinkService.buildDeepLink(modalObject));
   if (detectMobile()) {
     deeplinkService.redirectToDeeplink(modalObject);

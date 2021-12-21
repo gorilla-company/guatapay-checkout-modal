@@ -177,6 +177,7 @@ window.setModalStatus = (status) => {
     return;
   }
   setCurrentStatus(status);
+  console.log('Current status:' + status);
   switch (status) {
     case 'ACCEPTED':
       if (modalProperties.onSuccess) {

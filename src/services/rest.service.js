@@ -18,11 +18,11 @@ async function getData(url = '') {
       throw new TypeError();
     })
     .catch((err) => {
-      console.log('Error fetch:' + err)
       throw err;
     });
   if (!result) return {};
 
+  console.log('result:' + result);
   return result;
 }
 

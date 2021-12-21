@@ -122,14 +122,12 @@ const getStatus = async () => {
   try {
     const response = await restService.getData(buildStatusUrl());
     window.setModalStatus(response.status);
-  } catch(error) {
-    console.log(error);
+  } catch {
     window.setModalStatus('REJECTED');
   }
 };
 
 function showModal(modalObject) {
-  console.log(modalObject);
   console.log(deeplinkService.buildDeepLink(modalObject));
   if (detectMobile()) {
     deeplinkService.redirectToDeeplink(modalObject);
@@ -178,7 +176,6 @@ window.setModalStatus = (status) => {
     return;
   }
   setCurrentStatus(status);
-  console.log('Current status:' + status);
   switch (status) {
     case 'ACCEPTED':
       if (modalProperties.onSuccess) {

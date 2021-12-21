@@ -10,8 +10,11 @@ async function getData(url = '') {
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
   };
+  console.log('preFetch');
   const result = await fetch(url, params)
     .then((response) => {
+      console.log('postFetch');
+
       if (response.ok) {
         return response.json();
       }
@@ -22,7 +25,6 @@ async function getData(url = '') {
     });
   if (!result) return {};
 
-  console.log('result:' + result);
   return result;
 }
 

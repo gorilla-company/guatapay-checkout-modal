@@ -122,7 +122,8 @@ const getStatus = async () => {
   try {
     const response = await restService.getData(buildStatusUrl());
     window.setModalStatus(response.status);
-  } catch {
+  } catch(error) {
+    console.log(error);
     window.setModalStatus('REJECTED');
   }
 };

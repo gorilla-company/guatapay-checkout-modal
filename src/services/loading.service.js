@@ -54,9 +54,11 @@ function setImageLoadedEvents() {
 
   imgArr.forEach((element) => {
     const currentImage = element;
-    currentImage.onload = (event) => {
-      onImageLoaded(event.target.id);
-    };
+    if (currentImage) {
+      currentImage.onload = (event) => {
+        onImageLoaded(event.target.id);
+      };
+    }
   });
 }
 
@@ -74,13 +76,14 @@ function initLoading() {
   qrLoaded = false;
 
   idArray = [
-    'img-question',
+    // 'img-question',
     'img-loading',
     'img-expired',
     'img-error',
     'img-spinner',
     'img-check',
-    'img-qr',
+    // 'img-qr',
+    'img-step1',
   ];
   showLoadingOverlay();
   setImageLoadedEvents();

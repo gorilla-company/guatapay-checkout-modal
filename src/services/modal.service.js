@@ -87,7 +87,10 @@ function finalize() {
 }
 
 function setCloseModalTimeout() {
-  closeModalTimeout = setTimeout(() => finalize(), constants.closeModalAfterSuccessTime);
+  closeModalTimeout = setTimeout(
+    () => finalize(),
+    constants.closeModalAfterSuccessTime
+  );
 }
 
 function initService(props) {
@@ -95,36 +98,39 @@ function initService(props) {
 }
 
 function detectMobile() {
-  return navigator.userAgent.match(/Android/i)
-    || navigator.userAgent.match(/webOS/i)
-    || navigator.userAgent.match(/iPhone/i)
-    || navigator.userAgent.match(/iPad/i)
-    || navigator.userAgent.match(/iPod/i)
-    || navigator.userAgent.match(/BlackBerry/i)
-    || navigator.userAgent.match(/Windows Phone/i);
+  return (
+    navigator.userAgent.match(/Android/i) ||
+    navigator.userAgent.match(/webOS/i) ||
+    navigator.userAgent.match(/iPhone/i) ||
+    navigator.userAgent.match(/iPad/i) ||
+    navigator.userAgent.match(/iPod/i) ||
+    navigator.userAgent.match(/BlackBerry/i) ||
+    navigator.userAgent.match(/Windows Phone/i)
+  );
 }
 
 function buildStatusUrl() {
   let url = process.env.PAYMENT_STATUS_URL.replace(
     '{checkoutId}',
-    modalProperties.checkoutId,
+    modalProperties.checkoutId
   );
   if (process.env.ENV === 'dev') {
     url = `${url}?mocked_status={status}`.replace(
       '{status}',
-      window.mockStatus,
+      window.mockStatus
     );
   }
   return url;
 }
 
 const getStatus = async () => {
-  try {
-    const response = await restService.getData(buildStatusUrl());
-    window.setModalStatus(response.status);
-  } catch {
-    window.setModalStatus('REJECTED');
-  }
+  // try {
+  //   const response = await restService.getData(buildStatusUrl());
+  //   window.setModalStatus(response.status);
+  // } catch {
+  //   window.setModalStatus('REJECTED');
+  // }
+  window.setModalStatus('CREATED');
 };
 
 function showModal(modalObject) {
@@ -142,7 +148,7 @@ function showModal(modalObject) {
       refreshQr, // eslint-disable-line no-use-before-define
       closeModal,
       cancelModal,
-      finalize,
+      finalize
     );
     loadingService.initLoading();
     qrCodeService.generateQr(modalObject.qrString);
@@ -155,8 +161,8 @@ function showModal(modalObject) {
 async function refreshQr() {
   try {
     loadingService.disableRefreshQrButton();
-    
-    if(modalProperties.refreshData) {
+
+    if (modalProperties.refreshData) {
       const response = await modalProperties.refreshData();
       modalProperties.qrString = response.qrString;
       modalProperties.deeplink = response.deeplink;
@@ -172,15 +178,13 @@ async function refreshQr() {
 }
 
 window.setModalStatus = (status) => {
-  if (status === getCurrentStatus()) {
-    return;
-  }
+  if (status === getCurrentStatus()) return;
+
   setCurrentStatus(status);
   switch (status) {
     case 'ACCEPTED':
-      if (modalProperties.onSuccess) {
-        modalProperties.onSuccess();
-      }
+      if (modalProperties.onSuccess) modalProperties.onSuccess();
+
       setCloseModalTimeout();
       clearAsyncInterval();
       break;

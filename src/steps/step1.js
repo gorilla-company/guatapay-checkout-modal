@@ -1,70 +1,58 @@
-import svgQuestion from '../img/question-icon.svg';
-import qrLogo from '../img/qrLogo.png';
+import svgImage from '../img/step0.svg';
 import utilsService from '../services/utils.service';
 
 function createStep1() {
-  const step1Div = utilsService.createElementWithClass('div', 'modal-body-wrapper');
+  const step1Div = utilsService.createElementWithClass(
+    'div',
+    'modal-body-wrapper'
+  );
   step1Div.id = 'step-STARTED';
-  const step1Title = utilsService.createElementWithClass('p', 'paragraph');
-  step1Title.innerHTML = 'Escanea el código QR <br> Con la App MODO o desde tu App bancaria preferida.';
 
-  const qrWrapper = utilsService.createElementWithClass('div', 'modal-body-qr-wrapper');
-  const qrContainer = document.createElement('div');
-  qrContainer.id = 'qrContainer';
-  // qrContainer.innerHTML = '<div id="qrContainer"></div>';
+  // Title
+  const step1Title = utilsService.createElementWithClass('p', 'subtitle');
+  step1Title.innerHTML =
+    '¡Gracias por elegir Guatapay! A continuación te guiaremos a través de 3 sencillos pasos para que puedas realizar tu compra usando tus criptomonedas!';
 
-  const questionContainer = utilsService.createElementWithClass('div', 'question');
-  questionContainer.innerHTML = '\u00BFC\u00F3mo pagar desde App <b>MODO</b>?';
+  // Image
+  const svgIllustration = document.createElement('img');
+  svgIllustration.id = 'img-step1';
+  svgIllustration.src = svgImage;
+  svgIllustration.alt = 'logo';
 
-  const toolTip = utilsService.createElementWithClass('div', 'tooltip');
+  // Callout
+  const callout = utilsService.createElementWithClass('div', 'callout');
+  callout.innerHTML =
+    'Recuerda que si devuelves el producto, el reembolso será por el valor del mismo en moneda local.';
 
-  const imgQuestion = document.createElement('img');
-  imgQuestion.id = 'img-question';
-  imgQuestion.src = svgQuestion;
-  imgQuestion.alt = 'question';
+  // Checkbox with right label
+  const checkbox = utilsService.createElementWithClass('div', 'checkbox-wrapper');
+  const checkboxInput = document.createElement('input');
+  checkboxInput.type = 'checkbox';
+  checkboxInput.id = 'checkbox';
+  checkboxInput.name = 'checkbox';
+  checkboxInput.value = 'checkbox';
+  const checkboxLabel = document.createElement('label');
+  checkboxLabel.htmlFor = 'checkbox';
+  checkboxLabel.innerHTML =
+    'He leido y acepto los <a href="#">Términos y Condiciones</a> y <a href="#">Política de Privacidad</a>';
+  checkbox.appendChild(checkboxInput);
+  checkbox.appendChild(checkboxLabel);
 
-  const imgQr = document.createElement('img');
-  imgQr.id = 'img-qr';
-  imgQr.src = qrLogo;
-  imgQr.alt = 'qrcode';
-  // imgQr.classList.add('hide');
+  // Button
+  const button = document.createElement('button');
+  button.classList.add('guatapay-btn-primary');
+  button.innerHTML = 'Continuar';
+  button.addEventListener('click', () => {
+    alert('Continuar');
+  });
 
-  const toolTipText = utilsService.createElementWithClass('div', 'tooltiptext');
-
-  const questionUl = document.createElement('ul');
-  const questionLi1 = document.createElement('li');
-  questionLi1.innerHTML = 'Descarg\u00E1 <span class="bold">MODO</span> en tu celular desde <span class="bold">App Store o Google Play</span>.';
-
-  const questionLi2 = document.createElement('li');
-  questionLi2.innerHTML = 'Registrate y vincul\u00E1 tus medios de pago.';
-
-  const questionLi3 = document.createElement('li');
-  questionLi3.innerHTML = 'Seleccion\u00E1 la opci\u00F3n \u201CPagar\u201D desde la secci\u00F3n \u201CInicio\u201D en <span class="bold">MODO</span>.';
-
-  const questionLi4 = document.createElement('li');
-  questionLi4.innerHTML = 'Escane\u00E1 el C\u00F3digo QR con tu celular.';
-
-  const questionLi5 = document.createElement('li');
-  questionLi5.innerHTML = 'Confirm\u00E1 el pago y ¡listo!';
-
-  questionUl.appendChild(questionLi1);
-  questionUl.appendChild(questionLi2);
-  questionUl.appendChild(questionLi3);
-  questionUl.appendChild(questionLi4);
-  questionUl.appendChild(questionLi5);
-
-  toolTipText.appendChild(questionUl);
-  toolTip.appendChild(imgQuestion);
-  toolTip.appendChild(toolTipText);
-  questionContainer.appendChild(toolTip);
-
-  qrContainer.appendChild(imgQr);
-  qrWrapper.appendChild(qrContainer);
-
+  // Append elements
+  step1Div.appendChild(svgIllustration);
   step1Div.appendChild(step1Title);
-  step1Div.appendChild(qrWrapper);
-  step1Div.appendChild(questionContainer);
-  // step1Div.appendChild(imgQr);
+  step1Div.appendChild(checkbox);
+  step1Div.appendChild(callout);
+  step1Div.appendChild(button);
+
   return step1Div;
 }
 

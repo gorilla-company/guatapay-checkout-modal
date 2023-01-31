@@ -8,15 +8,11 @@ function createHeader(closeModal) {
   const headerWrapper = utilsService.createElementWithClass('div', 'modal-header-wrapper');
   const logoWrapper = utilsService.createElementWithClass('div', 'modal-logo-wrapper');
 
-  const spanLogo = utilsService.createElementWithClass('span', 'title-header');
-  spanLogo.id = 'title-header';
-  spanLogo.innerHTML = 'Pag\u00E1 con ';
   const imgLogo = document.createElement('img');
   imgLogo.id = 'imgLogo';
   imgLogo.src = svgLogo;
   imgLogo.alt = 'logo';
 
-  logoWrapper.appendChild(spanLogo);
   logoWrapper.appendChild(imgLogo);
 
   const closeButton = document.createElement('button');

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <style>
+    button {
+      display: inline-block;
+      font-weight: 400;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      border: 1px solid transparent;
+      background-color: #EEF2FF;
+      color: #6466E9;
+      padding: .375rem .75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      border-radius: .25rem;
+      cursor: pointer;
+      transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+
+    button:hover {
+      color: #fff;
+      background-color: #6466E9;
+    }
+
+    .btn-container {
+      position: absolute;
+      z-index: 1800;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="btn-container">
+    <button onclick="showModal()">Open Modal</button>
+    <button onclick="setModalStatus('START')">Start</button>
+    <button onclick="setModalStatus('TERMS')">Terms</button>
+    <button onclick="setModalStatus('QUOTATION')">Quotation</button>
+    <button onclick="setModalStatus('SCANNING')">Scanning</button>
+    <button onclick="setModalStatus('EXPIRED')">Expired QR</button>
+    <button onclick="setModalStatus('VALIDATING')">Validating</button>
+    <button onclick="setModalStatus('SUMMARY')">Summary</button>
+    <button onclick="setModalStatus('LOADING')">Loading</button>
+  </div>
+</body>
+
+</html>
+
+<script type="text/javascript" src="../dist/bundle.js" charset="utf-8"></script>
+<script type="text/javascript" src="index.js"></script>
+<script type="text/javascript" src="demoPaymentVariables.js"></script>

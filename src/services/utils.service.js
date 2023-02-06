@@ -10,7 +10,17 @@ function createElementWithId(elementName, id) {
   return element;
 }
 
+function copyToClipboard(text) {
+  const dummy = document.createElement('textarea');
+  document.body.appendChild(dummy);
+  dummy.value = text;
+  dummy.select();
+  document.execCommand('copy');
+  document.body.removeChild(dummy);
+}
+
 export default {
   createElementWithClass,
   createElementWithId,
+  copyToClipboard,
 };

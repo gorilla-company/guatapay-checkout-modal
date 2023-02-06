@@ -1,7 +1,7 @@
 import svgImage from '../img/step0.svg';
 import utilsService from '../services/utils.service';
 
-function createStep1() {
+function createStart() {
   const step1Div = utilsService.createElementWithClass(
     'div',
     'modal-body-wrapper'
@@ -57,5 +57,5 @@ function createStep1() {
 }
 
 export default {
-  createStep1,
+  createStart,
 };

@@ -1,12 +1,14 @@
 import CloseBtn from '../img/close-btn.svg';
-import svgLogo from '../img/modo-logo.svg';
+import svgLogo from '../img/guatapay-logo.svg';
 import utilsService from '../services/utils.service';
 
 function createHeader(closeModal) {
-  const header = utilsService.createElementWithClass('header', 'modal-header-modo');
+  const header = utilsService.createElementWithClass('header', 'modal-header-guatapay hide');
   document.createElement('header');
   const headerWrapper = utilsService.createElementWithClass('div', 'modal-header-wrapper');
   const logoWrapper = utilsService.createElementWithClass('div', 'modal-logo-wrapper');
+
+  header.id = 'header';
 
   const imgLogo = document.createElement('img');
   imgLogo.id = 'imgLogo';

@@ -2,7 +2,7 @@ import {
   setAsyncInterval,
   clearAsyncInterval,
 } from '../services/async-interval.service';
-import constants from '../utils/constants'
+import constants from '../utils/constants';
 
 describe('Async Interval service', () => {
   jest.useFakeTimers();

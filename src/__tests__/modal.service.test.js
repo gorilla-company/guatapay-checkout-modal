@@ -92,11 +92,11 @@ describe('Modal Service', () => {
   it("shouldn't throw exception when no close function is provided", () => {
     modalProperties.onClose = null;
     modalService.initService(modalProperties);
-    document.body.innerHTML = '<div id="modo-overlay"></div> <div id="modal-container"></div>';
+    document.body.innerHTML = '<div id="guatapay-overlay"></div> <div id="modal-container"></div>';
 
     modalService.closeModal();
 
-    const overlay = document.getElementById('modo-overlay');
+    const overlay = document.getElementById('guatapay-overlay');
     const container = document.getElementById('modal-container');
 
     expect(overlay).toBe(null);
@@ -106,10 +106,10 @@ describe('Modal Service', () => {
   it('should remove the modal from the html body when close called', () => {
     modalService.initService(modalProperties);
 
-    document.body.innerHTML = '<div id="modo-overlay"></div> <div id="modal-container"></div>';
+    document.body.innerHTML = '<div id="guatapay-overlay"></div> <div id="modal-container"></div>';
 
     modalService.closeModal();
-    const overlay = document.getElementById('modo-overlay');
+    const overlay = document.getElementById('guatapay-overlay');
     const container = document.getElementById('modal-container');
 
     expect(overlay).toBe(null);
@@ -119,7 +119,7 @@ describe('Modal Service', () => {
   it("shouldn't fail if the modal or overlay html is not present when close called", () => {
     modalService.initService(modalProperties);
     modalService.closeModal();
-    const overlay = document.getElementById('modo-overlay');
+    const overlay = document.getElementById('guatapay-overlay');
     const container = document.getElementById('modal-container');
 
     expect(overlay).toBe(null);
@@ -136,11 +136,11 @@ describe('Modal Service', () => {
   it("shouldn't throw exception when no cancel function is provided", () => {
     modalProperties.onCancel = null;
     modalService.initService(modalProperties);
-    document.body.innerHTML = '<div id="modo-overlay"></div> <div id="modal-container"></div>';
+    document.body.innerHTML = '<div id="guatapay-overlay"></div> <div id="modal-container"></div>';
 
     modalService.cancelModal();
 
-    const overlay = document.getElementById('modo-overlay');
+    const overlay = document.getElementById('guatapay-overlay');
     const container = document.getElementById('modal-container');
 
     expect(overlay).toBe(null);
@@ -150,10 +150,10 @@ describe('Modal Service', () => {
   it('should remove the modal from the html body when cancel called', () => {
     modalService.initService(modalProperties);
 
-    document.body.innerHTML = '<div id="modo-overlay"></div> <div id="modal-container"></div>';
+    document.body.innerHTML = '<div id="guatapay-overlay"></div> <div id="modal-container"></div>';
 
     modalService.cancelModal();
-    const overlay = document.getElementById('modo-overlay');
+    const overlay = document.getElementById('guatapay-overlay');
     const container = document.getElementById('modal-container');
 
     expect(overlay).toBe(null);
@@ -163,7 +163,7 @@ describe('Modal Service', () => {
   it("shouldn't fail if the modal or overlay html is not present when cancel called", () => {
     modalService.initService(modalProperties);
     modalService.cancelModal();
-    const overlay = document.getElementById('modo-overlay');
+    const overlay = document.getElementById('guatapay-overlay');
     const container = document.getElementById('modal-container');
 
     expect(overlay).toBe(null);
@@ -182,7 +182,7 @@ describe('Modal Service', () => {
     modalService.initService(modalProperties);
     modalService.finalize();
 
-    const overlay = document.getElementById('modo-overlay');
+    const overlay = document.getElementById('guatapay-overlay');
     const container = document.getElementById('modal-container');
 
     expect(overlay).toBe(null);

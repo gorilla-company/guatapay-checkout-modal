@@ -1,47 +1,62 @@
-import svgExpired from '../img/expired.svg';
+import bitcoinFlag from '../img/bitcoin-flag.svg';
+import qrRefreshImage from '../img/qr-refresh.svg';
+
+import copyIcon from '../img/copy-icon.svg';
+
 import utilsService from '../services/utils.service';
 
-function createStepExpired(refreshQr, cancelModal) {
-  const step = utilsService.createElementWithClass('div', 'modal-body-wrapper');
-  step.classList.add('hide');
-  step.id = 'step-EXPIRED';
-  const stepTitle = utilsService.createElementWithClass('p', 'subtitle');
-  stepTitle.innerHTML = 'C\u00F3digo QR Expirado';
+function createExpired() {
+  const expiredDiv = utilsService.createElementWithClass(
+    'div',
+    'modal-body-wrapper hide'
+  );
+  expiredDiv.id = 'step-EXPIRED';
 
-  const stepImg = utilsService.createElementWithClass('div', 'svg-icon');
+  expiredDiv.innerHTML = `
+    <p id="scan-expired-title" class="font-bold text-lg hide">¡Código QR expirado!</p>
+    <p id="scan-title" class="text-lg">Actualiza la tasa de cambio para continuar con el pago.</p>
 
-  const imgExpired = document.createElement('img');
-  imgExpired.id = 'img-expired';
-  imgExpired.src = svgExpired;
-  imgExpired.alt = 'expired';
-  stepImg.appendChild(imgExpired);
+    <img id="qr-refresh-code" src="${qrRefreshImage}" alt="qr" />
 
-  const stepTextUpper = document.createElement('p');
-  stepTextUpper.innerHTML = 'Por favor gener\u00E1 un nuevo QR';
-  const stepTextLower = document.createElement('p');
-  stepTextLower.innerHTML = 'para poder pagar.';
+    <p class="text-gray-400">O envía a la siguiente dirección el monto indicado:</p>
 
-  const stepButton = document.createElement('button');
-  stepButton.classList.add('modo-btn-primary');
-  stepButton.classList.add('mt-75');
-  stepButton.classList.add('refresh-button');
-  stepButton.innerHTML = 'Generar nuevo QR';
-  stepButton.onclick = () => refreshQr();
+    <div id="wallet-address">
+      <p class="text-gray-400">1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T</p>
+      <button>
+        <img src="${copyIcon}" alt="copy" />  
+      </button>
+    </div>
 
-  const cancelButton = utilsService.createElementWithClass('button', 'modo-btn-link');
-  cancelButton.innerHTML = 'Cancelar';
-  cancelButton.onclick = () => cancelModal();
+    <div id="transfer-amount">
+      <div class="transfer-amount-wrapper">
+        <p>0,007500 BTC</p>
+        <img src="${bitcoinFlag}" alt="BTC" />
+      </div>
+      <button>
+        <img src="${copyIcon}" alt="copy" />  
+      </button>
+    </div>
 
-  step.appendChild(stepTitle);
-  step.appendChild(stepImg);
-  step.appendChild(stepTextUpper);
-  step.appendChild(stepTextLower);
-  step.appendChild(stepButton);
-  step.appendChild(cancelButton);
+    <button class="guatapay-btn-primary mt-32" id="btn-expired-update">Actualizar cambio</button>
+    `;
 
-  return step;
+  // Add event listener to qr refresh image
+  const qrRefreshImageElement = expiredDiv.querySelector('#qr-refresh-code');
+  qrRefreshImageElement.addEventListener('click', () => {
+    console.log('QR refresh image clicked');
+    window.setModalStatus('SCANNING');
+  });
+
+  // Add event listener to update button
+  const updateButton = expiredDiv.querySelector('#btn-expired-update');
+  updateButton.addEventListener('click', () => {
+    console.log('Update button clicked');
+    window.setModalStatus('SCANNING');
+  });
+
+  return expiredDiv;
 }
 
 export default {
-  createStepExpired,
+  createExpired,
 };

@@ -2,7 +2,10 @@ import utilsService from '../services/utils.service';
 
 function createLoading() {
   const step = utilsService.createElementWithClass('div', 'modal-body-wrapper');
-  const section = utilsService.createElementWithClass('section', 'modal-wrapper');
+  const section = utilsService.createElementWithClass(
+    'section',
+    'modal-wrapper'
+  );
   section.id = 'loading-section';
 
   step.id = 'step-LOADING';

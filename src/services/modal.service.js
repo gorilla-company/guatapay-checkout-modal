@@ -6,39 +6,17 @@ import qrCodeService from './qr-code.service';
 import restService from './rest.service';
 import constants from '../utils/constants';
 
-window.mockStatus = 'CREATED';
-let currentStatus = 'STARTED';
+window.status = 'START';
 let initialized = false;
 let closeModalTimeout = {};
 let modalProperties;
 
-function getCurrentStatus() {
-  return currentStatus;
+function getStatus() {
+  return window.status;
 }
 
-function setCurrentStatus(status) {
-  currentStatus = status;
-}
-
-function getCurrentInternalStatus(status) {
-  switch (status) {
-    case 'CREATED':
-      return 'STARTED';
-    case 'SCANNED':
-      return 'PROCESSING';
-    case 'PROCESSING':
-      return 'PAYING';
-    case 'ACCEPTED':
-      return 'PAYMENT_READY';
-    case 'REJECTED':
-    case 'CANCELLED':
-    case 'ERROR':
-      return 'PAYMENT_DENIED';
-    case 'VOIDED':
-      return 'EXPIRED';
-    default:
-      return 'ERROR';
-  }
+function setStatus(status) {
+  window.status = status;
 }
 
 function setInitializedStatus(status) {
@@ -51,7 +29,7 @@ function getInitializedStatus() {
 
 function removeModal() {
   clearAsyncInterval();
-  const overlay = document.getElementById('modo-overlay');
+  const overlay = document.getElementById('guatapay-overlay');
   const modal = document.getElementById('modal-container');
   if (modal) document.body.removeChild(modal);
   if (overlay) document.body.removeChild(overlay);
@@ -115,34 +93,20 @@ function buildStatusUrl() {
     modalProperties.checkoutId
   );
   if (process.env.ENV === 'dev') {
-    url = `${url}?mocked_status={status}`.replace(
-      '{status}',
-      window.mockStatus
-    );
+    url = `${url}?mocked_status={status}`.replace('{status}', window.status);
   }
   return url;
 }
 
-const getStatus = async () => {
-  // try {
-  //   const response = await restService.getData(buildStatusUrl());
-  //   window.setModalStatus(response.status);
-  // } catch {
-  //   window.setModalStatus('REJECTED');
-  // }
-  window.setModalStatus('CREATED');
-};
-
 function showModal(modalObject) {
-  console.log(deeplinkService.buildDeepLink(modalObject));
+  // console.log(deeplinkService.buildDeepLink(modalObject));
   if (detectMobile()) {
     deeplinkService.redirectToDeeplink(modalObject);
     return;
   }
 
   if (!getInitializedStatus()) {
-    setCurrentStatus('CREATED');
-    window.mockStatus = 'CREATED';
+    setStatus('START');
     initService(modalObject);
     buildHtmlService.buildHtml(
       refreshQr, // eslint-disable-line no-use-before-define
@@ -170,7 +134,7 @@ async function refreshQr() {
     }
 
     removeModal();
-    window.mockStatus = 'CREATED';
+    window.mockStatus = 'START';
     showModal(modalProperties);
   } catch {
     window.setModalStatus('REJECTED');
@@ -178,39 +142,37 @@ async function refreshQr() {
 }
 
 window.setModalStatus = (status) => {
-  if (status === getCurrentStatus()) return;
+  if (status === getStatus()) return;
 
-  setCurrentStatus(status);
+  setStatus(status);
+
+  const header = document.getElementById('header');
+  const stepIndicator = document.getElementById('step-indicator');
   switch (status) {
-    case 'ACCEPTED':
-      if (modalProperties.onSuccess) modalProperties.onSuccess();
-
-      setCloseModalTimeout();
-      clearAsyncInterval();
+    case 'START':
+    case 'TERMS':
+      header.classList.add('hide');
+      stepIndicator.classList.add('hide');
       break;
-    case 'REJECTED':
-    case 'CANCELLED':
-    case 'ERROR':
-      if (modalProperties.onFailure) {
-        modalProperties.onFailure();
-      }
-      clearAsyncInterval();
+    case 'QUOTATION':
+    case 'SCANNING':
+    case 'EXPIRED':
+      header.classList.remove('hide');
+      stepIndicator.classList.remove('hide');
       break;
-    case 'VOIDED':
-      clearAsyncInterval();
+    case 'VALIDATING':
+    case 'SUMMARY':
+      header.classList.remove('hide');
+      stepIndicator.classList.add('hide');
       break;
     default:
       break;
   }
-  const internalStatus = getCurrentInternalStatus(status);
   window.mockStatus = status;
-  buildHtmlService.handleStatusChange(internalStatus);
+  buildHtmlService.handleStatusChange(status);
 };
 
 export default {
-  getCurrentStatus,
-  setCurrentStatus,
-  getCurrentInternalStatus,
   closeModal,
   cancelModal,
   finalize,
@@ -224,4 +186,5 @@ export default {
   buildStatusUrl,
   refreshQr,
   getStatus,
+  setStatus,
 };

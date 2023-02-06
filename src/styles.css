@@ -51,7 +51,7 @@ body {
   display: inline-block;
 }
 
-.modo-overlay {
+.guatapay-overlay {
   position: fixed;
   left: 0;
   top: 0;
@@ -75,12 +75,13 @@ body {
 }
 
 /* Modal Header */
-.modal-header-modo {
+.modal-header-guatapay {
   height: 68px;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin-bottom: 20px;
 }
 
 .modal-header-wrapper {
@@ -112,7 +113,7 @@ body {
 
 .modal-header-wrapper img {
   width: auto;
-  height: 29px;
+  height: 32px;
   position: relative;
   /* left: 79px; */
 }
@@ -141,6 +142,12 @@ nav.wizard {
   padding: 23px;
   position: relative;
   left: -8px;
+}
+
+p.title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
 }
 
 p.subtitle {
@@ -207,7 +214,7 @@ p {
 
 .modal-wrapper {
   font-family: 'Red Hat Display', Arial, Helvetica, sans-serif !important;
-  background-color: #f8f8f8;
+  background-color: #f5f5f5;
   width: 576px;
   min-height: 576px;
   -webkit-border-radius: 20px;
@@ -219,7 +226,7 @@ p {
   flex-direction: column;
   z-index: 1500;
   padding: 24px;
-  box-sizing: border-box;
+  box-sizing: border-box !important;
   box-shadow: 0px 11px 15px -7px rgb(0 0 0 / 20%),
     0px 24px 38px 3px rgb(0 0 0 / 14%), 0px 9px 46px 8px rgb(0 0 0 / 12%);
 }
@@ -244,26 +251,6 @@ p {
   background-color: #d9f4ef;
   color: #6466e9;
   border-radius: 10px;
-}
-
-/* nav */
-
-.modal-nav-ball {
-  width: 6px;
-  height: 6px;
-  margin-left: 13px;
-  background-color: #cecece;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  border-radius: 50%;
-}
-
-.modal-nav-ball-selected {
-  background-color: #6466e9;
-  position: absolute;
-  margin-right: 57px;
-  border-radius: 25px;
-  transition: all 0.3s ease-out;
 }
 
 /* .modal-nav-ball-selected-step-STARTED {  
@@ -322,43 +309,7 @@ p {
   color: #6466e9;
 }
 
-/* Buttons */
-.guatapay-btn-primary {
-  font-family: 'Open Sans', sans-serif !important;
-  font-size: 16px !important;
-  line-height: 17.6px;
-  background-color: #6466e9;
-  padding: 15px;
-  min-width: 150px;
-  border-radius: 8px;
-  color: #fff;
-  margin-top: 32px;
-  cursor: pointer;
-  border: none;
-}
-
-.guatapay-btn-primary:hover,
-.guatapay-btn-primary:hover:focus,
-.guatapay-btn-primary:hover:active,
-.guatapay-btn-primary:hover.active,
-.guatapay-btn-primary:hover:active:focus,
-.guatapay-btn-primary:hover:active:hover,
-.guatapay-btn-primary:hover.active:focus,
-.guatapay-btn-primary:hover:not(:disabled):not(.disabled):active:focus,
-.guatapay-btn-primary:hover:not(:disabled):not(.disabled):active,
-.guatapay-btn-primary:hover:not(:disabled):not(.disabled).active,
-.guatapay-btn-primary:hover:not(:disabled):not(.disabled).active:focus {
-  background-color: #4d4fb8;
-}
-
-.guatapay-btn-primary.disabled,
-.guatapay-btn-primary:disabled,
-.guatapay-btn-primary[disabled] {
-  opacity: 0.5;
-  cursor: default;
-}
-
-.modo-btn-link {
+.guatapay-btn-link {
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   line-height: 17.6px;
@@ -372,23 +323,23 @@ p {
   text-decoration: underline;
 }
 
-.modo-btn-link:hover,
-.modo-btn-link:hover:focus,
-.modo-btn-link:hover:active,
-.modo-btn-link:hover.active,
-.modo-btn-link:hover:active:focus,
-.modo-btn-link:hover:active:hover,
-.modo-btn-link:hover.active:focus,
-.modo-btn-link:hover:not(:disabled):not(.disabled):active:focus,
-.modo-btn-link:hover:not(:disabled):not(.disabled):active,
-.modo-btn-link:hover:not(:disabled):not(.disabled).active,
-.modo-btn-link:hover:not(:disabled):not(.disabled).active:focus {
+.guatapay-btn-link:hover,
+.guatapay-btn-link:hover:focus,
+.guatapay-btn-link:hover:active,
+.guatapay-btn-link:hover.active,
+.guatapay-btn-link:hover:active:focus,
+.guatapay-btn-link:hover:active:hover,
+.guatapay-btn-link:hover.active:focus,
+.guatapay-btn-link:hover:not(:disabled):not(.disabled):active:focus,
+.guatapay-btn-link:hover:not(:disabled):not(.disabled):active,
+.guatapay-btn-link:hover:not(:disabled):not(.disabled).active,
+.guatapay-btn-link:hover:not(:disabled):not(.disabled).active:focus {
   color: #020202;
 }
 
-.modo-btn-link.disabled,
-.modo-btn-link:disabled,
-.modo-btn-link[disabled] {
+.guatapay-btn-link.disabled,
+.guatapay-btn-link:disabled,
+.guatapay-btn-link[disabled] {
   opacity: 0.5;
   cursor: default;
 }
@@ -519,16 +470,159 @@ p {
   position: relative;
 }
 
-#img-qr {
-  position: absolute;
-  height: 56px;
-  width: 56px;
-  left: calc(50% - 28px);
-  top: calc(50% - 31px);
-  z-index: 1000;
+#img-close {
+  width: 28px;
+  height: 28px;
 }
 
-/* Custom */
+/* --- Custom --- */
+
+/* Utility clases */
+.text-gray-400 {
+  color: #737373;
+}
+
+.text-gray-200 {
+  color: #a3a3a3;
+}
+
+.text-lg {
+  font-size: 18px;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.hide {
+  display: none !important;
+}
+
+.mt-16 {
+  margin-top: 16px;
+}
+
+.mt-32 {
+  margin-top: 32px;
+}
+
+.mb-16 {
+  margin-bottom: 16px;
+}
+
+.mb-32 {
+  margin-bottom: 32px;
+}
+
+/* Buttons */
+.guatapay-btn-primary {
+  font-family: 'Open Sans', sans-serif !important;
+  font-size: 16px !important;
+  line-height: 17.6px;
+  background-color: #6466e9;
+  padding: 15px;
+  min-width: 150px;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+}
+
+.guatapay-btn-primary:hover,
+.guatapay-btn-primary:hover:focus,
+.guatapay-btn-primary:hover:active,
+.guatapay-btn-primary:hover.active,
+.guatapay-btn-primary:hover:active:focus,
+.guatapay-btn-primary:hover:active:hover,
+.guatapay-btn-primary:hover.active:focus,
+.guatapay-btn-primary:hover:not(:disabled):not(.disabled):active:focus,
+.guatapay-btn-primary:hover:not(:disabled):not(.disabled):active,
+.guatapay-btn-primary:hover:not(:disabled):not(.disabled).active,
+.guatapay-btn-primary:hover:not(:disabled):not(.disabled).active:focus {
+  background-color: #4d4fb8;
+}
+
+.guatapay-btn-primary.disabled,
+.guatapay-btn-primary:disabled,
+.guatapay-btn-primary[disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.guatapay-btn-secondary {
+  font-family: 'Open Sans', sans-serif !important;
+  font-size: 16px !important;
+  line-height: 17.6px;
+  background-color: #eef2ff;
+  padding: 15px;
+  min-width: 150px;
+  border-radius: 8px;
+  color: #6466e9;
+  cursor: pointer;
+  border: 1px solid #eef2ff;
+}
+
+.guatapay-btn-secondary:hover,
+.guatapay-btn-secondary:hover:focus,
+.guatapay-btn-secondary:hover:active,
+.guatapay-btn-secondary:hover.active,
+.guatapay-btn-secondary:hover:active:focus,
+.guatapay-btn-secondary:hover:active:hover,
+.guatapay-btn-secondary:hover.active:focus,
+.guatapay-btn-secondary:hover:not(:disabled):not(.disabled):active:focus,
+.guatapay-btn-secondary:hover:not(:disabled):not(.disabled):active,
+.guatapay-btn-secondary:hover:not(:disabled):not(.disabled).active,
+.guatapay-btn-secondary:hover:not(:disabled):not(.disabled).active:focus {
+  background-color: #f2f2f2;
+}
+
+.guatapay-btn-secondary.disabled,
+.guatapay-btn-secondary:disabled,
+.guatapay-btn-secondary[disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.guatapay-btn-ghost {
+  font-family: 'Open Sans', sans-serif !important;
+  font-size: 16px !important;
+  line-height: 17.6px;
+  background-color: transparent;
+  padding: 15px;
+  min-width: 150px;
+  border-radius: 8px;
+  color: #6466e9;
+  cursor: pointer;
+  border: 1px solid #eef2ff;
+}
+
+.guatapay-btn-ghost:hover,
+.guatapay-btn-ghost:hover:focus,
+.guatapay-btn-ghost:hover:active,
+.guatapay-btn-ghost:hover.active,
+.guatapay-btn-ghost:hover:active:focus,
+.guatapay-btn-ghost:hover:active:hover,
+.guatapay-btn-ghost:hover.active:focus,
+.guatapay-btn-ghost:hover:not(:disabled):not(.disabled):active:focus,
+.guatapay-btn-ghost:hover:not(:disabled):not(.disabled):active,
+.guatapay-btn-ghost:hover:not(:disabled):not(.disabled).active,
+.guatapay-btn-ghost:hover:not(:disabled):not(.disabled).active:focus {
+  background-color: #f2f2f2;
+  color: #6466e9;
+}
+
+/* Step indicator */
+.modal-nav-ball {
+  width: 10px;
+  height: 10px;
+  margin-left: 13px;
+  background-color: #cecece;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
+
+/* Start */
 .callout {
   font-family: 'Open Sans', sans-serif !important;
   font-size: 14px !important;
@@ -539,7 +633,6 @@ p {
   border-radius: 8px;
   color: #a3a3a3;
   margin-top: 32px;
-  cursor: pointer;
   border: none;
   margin: 0 25px;
 }
@@ -549,10 +642,193 @@ p {
 }
 
 .checkbox-wrapper label {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 a {
   color: #6466e9;
   text-decoration: none;
+}
+
+.active {
+  background-color: #6466e9;
+  border: 5px solid #c9d2fa;
+}
+
+/*  Terms */
+.terms-wrapper {
+  text-align: left !important;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.terms-wrapper .terms-item {
+  margin-bottom: 20px;
+}
+
+.terms-wrapper .terms-header {
+  margin-bottom: 20px;
+}
+
+.terms-wrapper h1 {
+  margin: 0;
+}
+
+.terms-wrapper h4 {
+  margin: 0;
+}
+
+.terms-wrapper p {
+  color: #a3a3a3;
+}
+
+.buttons-left-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+/* Quotation */
+#step-STARTED {
+  display: flex;
+  padding-top: 26px;
+}
+
+#currency-selector {
+  width: 100%;
+  min-width: 350px;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 16px;
+  margin: 12px 0;
+}
+
+#currency-selector .currency-name p:first-child {
+  font-size: 12px;
+  color: #a3a3a3;
+}
+
+#currency-selector .currency-name p:last-child {
+  font-size: 14px;
+  color: #000;
+  font-weight: 700;
+}
+
+#currency-amount h1 {
+  font-weight: 700;
+  font-size: 40px;
+  margin: 8px 0;
+}
+
+#currency-amount p:first-child {
+  font-size: 14px;
+  color: #6466e9;
+}
+
+#currency-amount p:last-child {
+  font-size: 16px;
+  color: #a3a3a3;
+}
+
+#currency-selector .currency-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+#currency-selector .currency-wrapper:first-child {
+  text-align: left;
+}
+
+#currency-selector .currency-wrapper:last-child {
+  text-align: right;
+}
+
+#currency-selector .currency-image {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #f2f2f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#currency-selector .currency-image img {
+  width: 100%;
+  height: 100%;
+}
+
+/* Scanning */
+
+#qr-code {
+  margin: 16px 0;
+}
+
+#wallet-address {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  min-width: 350px;
+  height: 50px;
+  background-color: #fff;
+  border-radius: 16px;
+  margin: 12px 0;
+  padding: 0 16px;
+}
+
+#wallet-address button {
+  background-color: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+}
+
+#transfer-amount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  line-height: 20px;
+  min-width: 350px;
+  height: 50px;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 0 16px;
+}
+
+#transfer-amount button {
+  background-color: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+}
+
+#transfer-amount .transfer-amount-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+#transfer-amount .transfer-amount-wrapper p {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+#transfer-amount .transfer-amount-wrapper img {
+  width: 32px;
+  height: 32px;
+}
+
+/* Expired */
+#qr-refresh-code {
+  cursor: pointer;
+  margin: 16px 0;
 }

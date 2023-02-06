@@ -71,19 +71,19 @@ function disableRefreshQrButton() {
 }
 
 function initLoading() {
-  imagesLoaded = false;
+  imagesLoaded = true;
   fontsLoaded = false;
-  qrLoaded = false;
+  qrLoaded = true;
 
   idArray = [
     // 'img-question',
-    'img-loading',
-    'img-expired',
-    'img-error',
-    'img-spinner',
-    'img-check',
+    // 'img-loading',
+    // 'img-expired',
+    // 'img-error',
+    // 'img-spinner',
+    // 'img-check',
     // 'img-qr',
-    'img-step1',
+    // 'img-step1',
   ];
   showLoadingOverlay();
   setImageLoadedEvents();

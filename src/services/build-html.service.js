@@ -5,6 +5,7 @@ import scanning from '../steps/scanning';
 import expired from '../steps/expired';
 import validating from '../steps/validating';
 import summary from '../steps/summary';
+import processing from '../steps/processing';
 import header from '../steps/header';
 import stepIndicator from '../steps/stepIndicator';
 import loading from '../steps/loading';
@@ -37,7 +38,8 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
   const scanningDiv = scanning.createScanning();
   const expiredDiv = expired.createExpired();
   const validatingDiv = validating.createValidating();
-  const summaryDiv = summary.createSummary();
+  const processingDiv = processing.createProcessing();
+  const summaryDiv = summary.createSummary(finalize);
 
   const stepIndicatorSection = stepIndicator.createNavBar();
 
@@ -54,6 +56,7 @@ function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
   section.appendChild(expiredDiv);
   section.appendChild(validatingDiv);
   section.appendChild(summaryDiv);
+  section.appendChild(processingDiv);
 
   if (loadHeader) {
     section.appendChild(stepIndicatorSection);
@@ -74,6 +77,7 @@ function removeSelectedStep(status) {
     'EXPIRED',
     'VALIDATING',
     'SUMMARY',
+    'PROCESSING',
   ];
   arr = arr.filter((item) => item !== status);
 

@@ -13,7 +13,7 @@ function createValidating() {
     <p class="subtitle">Estamos procesamos tu pago. Realizaremos una validación y te confirmaremos en la brevedad.</p>
     <img src="${svgImage}" alt="logo" class="mb-32" />
    
-    <button id="btn-validating-continue" class="guatapay-btn-primary">Resumen de compa</button>
+    <button id="btn-validating-continue" class="guatapay-btn-primary">Resumen de compra</button>
     <button id="btn-validating-finish" class="guatapay-btn-ghost">Finalizar</button>
     `;
 

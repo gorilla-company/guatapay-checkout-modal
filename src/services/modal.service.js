@@ -162,6 +162,7 @@ window.setModalStatus = (status) => {
       break;
     case 'VALIDATING':
     case 'SUMMARY':
+    case 'PROCESSING':
       header.classList.remove('hide');
       stepIndicator.classList.add('hide');
       break;

@@ -1,6 +1,9 @@
 import colombiaFlag from '../img/colombia-flag.svg';
 import bitcoinFlag from '../img/bitcoin-flag.svg';
+import usdtFlag from '../img/usdt-flag.svg';
+import lightningFlag from '../img/bitcoin-lightning-flag.svg';
 import arrowRight from '../img/arrow-right.svg';
+import chevronDown from '../img/chevron-down.svg';
 import utilsService from '../services/utils.service';
 
 function createQuotation() {
@@ -30,14 +33,34 @@ function createQuotation() {
 
       <div class="currency-wrapper">
         <div class="currency-name">
-          <p>de</p>
-          <p>COP</p>
+          <p>A</p>
+          <div id="currency-name-dropdown-button"> 
+            <p>BTC</p>
+            <img src="${chevronDown}" alt="arrow" />
+          </div>
         </div>
         <div class="currency-img">
-        <img src="${bitcoinFlag}" alt="COP" />
+          <img src="${bitcoinFlag}" alt="COP" />
+        </div>
       </div>
+
+      <div id="currency-selector-dropdown" class="non-visible">
+        <div class="currency-selector-dropdown-item">
+          <p class="font-bold">USDC (USD Coin)</p>
+          <img src="${usdtFlag}" alt="COP" class="currency-selector-dropdown-img" />
+        </div>
+        <div class="currency-selector-dropdown-item">
+          <span>Más rápido y menor comisión</span>
+          <p class="font-bold">BTC Lightning</p>
+          <img src="${lightningFlag}" alt="COP" class="currency-selector-dropdown-img" />
+        </div>
+        <div class="currency-selector-dropdown-item">
+          <p class="font-bold">BTC (Bitcoin)</p>
+          <img src="${bitcoinFlag}" alt="COP" class="currency-selector-dropdown-img" />
+        </div>
       </div>
     </div>
+
     <div id="currency-amount" class="mb-32">
       <p id="currency-amount-quotation">Cotización 1 COP = 0,00000112 BTC</p>
 
@@ -48,6 +71,21 @@ function createQuotation() {
     <button class="guatapay-btn-primary" id="btn-quotation-continue">Continuar 00:59</button>
     `;
 
+  const currencySelector = quotationDiv.querySelector('#currency-selector');
+
+  // Add event listener to currency selector dropdown
+  const currencySelectorDropdown = quotationDiv.querySelector(
+    '#currency-selector-dropdown'
+  );
+  const currencySelectorDropdownButton = quotationDiv.querySelector(
+    '#currency-name-dropdown-button'
+  );
+
+  currencySelectorDropdownButton.addEventListener('click', () => {
+    currencySelectorDropdown.classList.toggle('non-visible');
+    currencySelector.classList.toggle('selector-active');
+  });
+
   // Add event listener to continue button
   const continueButton = quotationDiv.querySelector('#btn-quotation-continue');
   continueButton.addEventListener('click', () => {
@@ -57,6 +95,7 @@ function createQuotation() {
   // Add event listener to update button
   const updateButton = quotationDiv.querySelector('#btn-quotation-update');
 
+  // Start timer
   let timeLeft = 10;
   const intervalId = setInterval(() => {
     timeLeft -= 1;

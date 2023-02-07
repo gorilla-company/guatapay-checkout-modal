@@ -54,7 +54,7 @@ function createScanning() {
     timeLeft -= 1;
     if (timeLeft < 0) {
       clearInterval(intervalId);
-      window.setModalStatus('EXPIRED');
+      // window.setModalStatus('EXPIRED');
     }
   }, 1000);
 

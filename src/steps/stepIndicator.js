@@ -26,6 +26,25 @@ function createNavBar() {
   return navBar;
 }
 
+const setStepIndicator = (step) => {
+  switch (step) {
+    case 'QUOTATION':
+      document.getElementById('step1Ball').classList.add('active');
+      document.getElementById('step2Ball').classList.remove('active');
+      document.getElementById('step3Ball').classList.remove('active');
+      break;
+    case 'SCANNING':
+    case 'EXPIRED':
+      document.getElementById('step1Ball').classList.remove('active');
+      document.getElementById('step1Ball').classList.add('done');
+      document.getElementById('step2Ball').classList.add('active');
+      break;
+    default:
+      break;
+  }
+};
+
 export default {
   createNavBar,
+  setStepIndicator,
 };

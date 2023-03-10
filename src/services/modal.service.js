@@ -1,12 +1,21 @@
-import { clearAsyncInterval, setAsyncInterval } from './async-interval.service';
-import deeplinkService from './deeplink.service';
+import {
+  clearAsyncInterval,
+  // setAsyncInterval
+} from './async-interval.service';
+// import deeplinkService from './deeplink.service';
 import buildHtmlService from './build-html.service';
 import loadingService from './loading.service';
-import qrCodeService from './qr-code.service';
-import restService from './rest.service';
+// import restService from './rest.service';
 import constants from '../utils/constants';
+import scanning from '../steps/scanning';
+import stepIndicatorService from '../steps/stepIndicator';
 
+// Window variables
 window.status = 'START';
+window.walletAddress = '1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T';
+window.quotationTotal = 0.00420001;
+window.quotationCurrency = 'BTC';
+
 let initialized = false;
 let closeModalTimeout = {};
 let modalProperties;
@@ -25,6 +34,18 @@ function setInitializedStatus(status) {
 
 function getInitializedStatus() {
   return initialized;
+}
+
+function setWalletAddress(walletAddress) {
+  window.walletAddress = walletAddress;
+}
+
+function setQuotationTotal(quotationTotal) {
+  window.quotationTotal = quotationTotal;
+}
+
+function setQuotationCurrency(quotationCurrency) {
+  window.quotationCurrency = quotationCurrency;
 }
 
 function removeModal() {
@@ -100,10 +121,10 @@ function buildStatusUrl() {
 
 function showModal(modalObject) {
   // console.log(deeplinkService.buildDeepLink(modalObject));
-  if (detectMobile()) {
-    deeplinkService.redirectToDeeplink(modalObject);
-    return;
-  }
+  // if (detectMobile()) {
+  //   deeplinkService.redirectToDeeplink(modalObject);
+  //   return;
+  // }
 
   if (!getInitializedStatus()) {
     setStatus('START');
@@ -115,9 +136,9 @@ function showModal(modalObject) {
       finalize
     );
     loadingService.initLoading();
-    qrCodeService.generateQr(modalObject.qrString);
+    // qrCodeService.generateQr(modalObject.qrString);
 
-    setAsyncInterval(getStatus, constants.callIntervalTime);
+    // setAsyncInterval(getStatus, constants.callIntervalTime);
     setInitializedStatus(true);
   }
 }
@@ -148,6 +169,8 @@ window.setModalStatus = (status) => {
 
   const header = document.getElementById('header');
   const stepIndicator = document.getElementById('step-indicator');
+  stepIndicatorService.setStepIndicator(status);
+
   switch (status) {
     case 'START':
     case 'TERMS':
@@ -155,10 +178,14 @@ window.setModalStatus = (status) => {
       stepIndicator.classList.add('hide');
       break;
     case 'QUOTATION':
-    case 'SCANNING':
     case 'EXPIRED':
       header.classList.remove('hide');
       stepIndicator.classList.remove('hide');
+      break;
+    case 'SCANNING':
+      header.classList.remove('hide');
+      stepIndicator.classList.remove('hide');
+      scanning.refreshView();
       break;
     case 'VALIDATING':
     case 'SUMMARY':
@@ -188,4 +215,7 @@ export default {
   refreshQr,
   getStatus,
   setStatus,
+  setWalletAddress,
+  setQuotationTotal,
+  setQuotationCurrency,
 };

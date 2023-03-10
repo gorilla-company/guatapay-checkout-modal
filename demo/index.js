@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 async function showModal() {
-  const modalData = await getPaymentIntention();
+  // const modalData = await getPaymentIntention();
+  const modalData = {
+    total: 158.5,
+    currency: 'COP',
+  };
+
   const modalObject = {
-    qrString: modalData.qr,
-    checkoutId: modalData.id,
-    deeplink: {
-      url: modalData.deeplink,
-      callbackURL: 'tienda.com/checkout',
-      callbackURLSuccess: 'tienda.com/success',
-    },
+    total: modalData.total,
+    currency: modalData.currency,
     onSuccess() {
       console.log('onSuccess');
     },
@@ -19,8 +19,6 @@ async function showModal() {
     onCancel() {
       console.log('onCancel');
     },
-    refreshData: getPaymentIntention,
-    callbackURL: '',
   };
 
   GuatapaySDK.InitPayment(modalObject);

@@ -503,6 +503,22 @@ p {
   display: none !important;
 }
 
+.mr-8 {
+  margin-right: 8px;
+}
+
+.ml-8 {
+  margin-left: 8px;
+}
+
+.mr-16 {
+  margin-right: 16px;
+}
+
+.ml-16 {
+  margin-left: 16px;
+}
+
 .mt-16 {
   margin-top: 16px;
 }
@@ -517,6 +533,14 @@ p {
 
 .mb-32 {
   margin-bottom: 32px;
+}
+
+.ml-32 {
+  margin-left: 32px;
+}
+
+.mr-32 {
+  margin-right: 32px;
 }
 
 .flex-ic-jb {
@@ -671,6 +695,10 @@ a {
 .active {
   background-color: #6466e9;
   border: 5px solid #c9d2fa;
+}
+
+.done {
+  background-color: #6466e9;
 }
 
 /*  Terms */
@@ -838,6 +866,8 @@ a {
 #currency-selector .currency-image {
   width: 32px;
   height: 32px;
+  min-width: 32px;
+  min-height: 32px;
   border-radius: 50%;
   background-color: #f2f2f2;
   display: flex;
@@ -854,6 +884,8 @@ a {
 
 #qr-code {
   margin: 16px 0;
+  width: 175px;
+  height: 175px;
 }
 
 #wallet-address {

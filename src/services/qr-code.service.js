@@ -4,15 +4,18 @@ import loadingService from './loading.service';
 
 function loadQr(qrCode) {
   return qrCode.getRawData('jpg').then(() => {
-    qrCode.append(document.getElementById('qrContainer'));
+    // eslint-disable-next-line no-underscore-dangle
+    const qrCodeImageSrc = qrCode._qr.createDataURL();
+    const qrCodeImage = document.querySelector('#qr-code');
+    qrCodeImage.src = qrCodeImageSrc;
     loadingService.onQrLoaded();
   });
 }
 
 function generateQr(qrString) {
   const qrCode = new QRCodeStyling({
-    width: 220,
-    height: 220,
+    width: 400,
+    height: 400,
     data: qrString,
     margin: 0,
     imageOptions: {

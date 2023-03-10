@@ -43,7 +43,13 @@
 
 <body>
   <div class="btn-container">
-    <button onclick="showModal()">Open Modal</button>
+    <button onclick="showModal({
+      total: 659.50,
+      currency: 'COP',
+      onQuotation: (quotation) => {
+        console.log('Quotation', quotation);
+      },
+    })">Open Modal</button>
     <button onclick="setModalStatus('START')">Start</button>
     <button onclick="setModalStatus('TERMS')">Terms</button>
     <button onclick="setModalStatus('QUOTATION')">Quotation</button>
@@ -53,6 +59,7 @@
     <button onclick="setModalStatus('PROCESSING')">Processing</button>
     <button onclick="setModalStatus('SUMMARY')">Summary</button>
   </div>
+
 </body>
 
 </html>

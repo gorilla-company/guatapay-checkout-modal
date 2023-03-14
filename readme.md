@@ -1,6 +1,6 @@
 # Guatapay Modal
 
-Front-end vanilla js component to process Guatapay payment intentions via a modal (on desktop) or deeplink (on mobile)
+Front-end vanilla js component to process Guatapay payment intentions via a modal
 
 Stack: Vanilla JS
 
@@ -8,86 +8,118 @@ Stack: Vanilla JS
 
 Ecommerce platforms that wishes to implement Guatapay payments with this frontend must also make use of the Guatapay ecommerce API from their backend.
 
-When an order is being placed in the ecommerce platform, and the payment method chosen by the user is Guatapay, the ecommerce platform backend must take the folowing actions:
-
-- Obtain an Access Token from the Guatapay API by passing its credentials (username and password) to the `/tokens` endpoint.
-- Create a `payment-intention` in the Guatapay API by passing the order details to the `POST /payment-intention` endpoint.
-- Pass the `qr`, `id` and `deeplink` fields obtained from the created payment-intention back to its frontend, which must implement the code under the "Client Usage" section to present the user with the payment flow.
-- After the payment has been procesed (status is accepted, rejected, etc) Guatapay will send a notification to the ecommerce platform backend, which must in turn send a request back to the Guatapay API in the `GET /payment-intention/{payment-intention-id}` endpoint to verify the status of the transaction and upate its database accordingly.
+When an order is being placed in the ecommerce platform, and the payment method chosen by the user is Guatapay, the ecommerce platform backend must take the following actions:
 
 ## Client Usage
 
+The client must include the following script in the page where the payment modal will be shown and initialized
+
 ```html
-<script src="https://guatapay-modal.conexa.ai/dist/bundle.js" charset="utf-8">
+<script src="http://guatapay-modal.conexa.ai/dist/bundle.js" charset="utf-8">
 ```
 
 ```js
-function createPaymentIntention() {
+function createPaymentIntention(currency) {
   // ... calls ecommerce own backend to create a áyment intetion and returns the data
 }
-var paymentIntention = createPaymentIntention();
-var options = {
-  qrString: paymentIntention.qr,
-  checkoutId: paymentIntention.id,
-  deeplink: {
-    url: "...",
-    callbackURL: "...",
-    callbackURLSuccess: "...",
-  },
-  onSuccess: function () {
-    console.log("onSuccess");
-  },
-  onFailure: function () {
-    console.log("onFailure");
-  },
-  onCancel: function () {
-    console.log("onCancel");
-  },
-  refreshData: function () {
-    var paymentIntention = createPaymentIntention();
-    var options = {
-      qrString: paymentIntention.qr,
-      checkoutId: paymentIntention.id,
-      deeplink: {
-        url: paymentIntention.deeplink,
-        callbackURL: failureUrl,
-        callbackURLSuccess: successUrl,
-      },
-    };
-    return options;
-  },
-  callbackURL: "",
+
+function getQuotation(currency) {
+  // ... calls ecommerce own backend to get a quotation and returns the data
+}
+
+const cartData = {
+  total: 12000,
+  currency: 'COP',
 };
 
-GuatapaySDK.GuatapayInitPayment(options);
+const modalObject = {
+  total: cartData.total,
+  currency: cartData.currency,
+  onSuccess() {
+    console.log('onSuccess');
+  },
+  onFailure() {
+    console.log('onFailure');
+  },
+  onCancel() {
+    console.log('onCancel');
+  },
+  onQuotation: (currency) => {
+    const quotation = getQuotation(currency);
+    const { crypto, fiat } = quotation;
+
+    return {
+      crypto: {
+        amount: crypto.amount,
+        fee: crypto.fee,
+      },
+      fiat: {
+        amount: fiat.amount,
+        fee: fiat.fee,
+      },
+    };
+  },
+  onPayment: (currency) => {
+    const paymentIntention = createPaymentIntention(currency);
+    const { address, crypto, fiat } = paymentIntention;
+
+    return {
+      address,
+      crypto: {
+        amount: crypto.amount,
+        fee: crypto.fee,
+      },
+      fiat: {
+        amount: fiat.amount,
+        fee: fiat.fee,
+      },
+    };
+  },
+};
+
+GuatapaySDK.InitPayment(modalObject);
 ```
 
 ### Options
 
-| Option                      | Required | Description                                                                                                                            |
-| --------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| qrString                    | Yes      | String. Payment Intention's "qr" value.                                                                                                |
-| checkoutId                  | Yes      | String. Payment Intention's "id" value.                                                                                                |
-| deeplink                    | Yes      | Object. Sub-properties will be used on mobile only.                                                                                    |
-| deeplink.url                | Yes      | String. Payment Intention's "deeplink" value.                                                                                          |
-| deeplink.callbackURL        | Yes      | String. URL to redirect to if payment fails.                                                                                           |
-| deeplink.callbackURLSuccess | Yes      | String. URL to redirect to if payment succeeds.                                                                                        |
-| onSuccess                   | No       | Function.                                                                                                                              |
-| onFailure                   | No       | Function.                                                                                                                              |
-| onClose                     | No       | Function.                                                                                                                              |
-| refreshData                 | No       | Function. Executed when user clicks "Generate new QR". Integration must create new Payment Intention and return the new options object |
-| onCancel                    | No       | Function.                                                                                                                              |
-| callbackURL                 | No       | String. URL to redirect to if payment succeeds.                                                                                        |
+| Option      | Required | Description                                                                                                                           |
+| ----------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| total       | Yes      | Total amount of the order                                                                                                             |
+| currency    | Yes      | Currency of the order. Must be one of the following: `COP`                                                                            |
+| onSuccess   | Yes      | Callback function to be executed when the payment is successful                                                                       |
+| onFailure   | Yes      | Callback function to be executed when the payment fails                                                                               |
+| onCancel    | Yes      | Callback function to be executed when the user cancels the payment                                                                    |
+| onQuotation | Yes      | Callback function to be executed when the user selects a currency. It must return a quotation object. See below for quotation object. |
+| onPayment   | Yes      | Callback function to be executed when the user selects a currency. It must return a payment intention object. See below for object.   |
 
-# Development
+### Quotation Object
 
-## Install & Build
+| Option | Required | Description |
+| --------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------- | |
+| crypto | Yes | Object containing the crypto amount and fee |
+| crypto.amount | Yes | Amount of crypto to be sent |
+| crypto.fee | Yes | Fee of the crypto transaction |
+| fiat | Yes | Object containing the fiat amount and fee |
+| fiat.amount | Yes | Amount of fiat to be sent |
+| fiat.fee | Yes | Fee of the fiat transaction |
 
+### Payment Intention Object
+
+| Option  | Required | Description                                 |
+| ------- | -------- | ------------------------------------------- |
+| address | Yes      | Address to send the payment to              |
+| crypto  | Yes      | Object containing the crypto amount and fee |
+
+## Development
+
+### Install dependencies
+
+```bash
+npm install
 ```
-$ npm i
-$ cp .env.example .env.production
-# Fill in PAYMENT_STATUS_URL in .env.production with the URL of the /payment-intention/{intention-id} endpoint.
-$ npm run build
-```
 
-Serve the `/dist` directory via https with CORS enabled for the `GET` method.
+### Build
+
+```bash
+npm run build:watch
+```

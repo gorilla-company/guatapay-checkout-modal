@@ -18,7 +18,6 @@ function generateUUID() {
 }
 
 async function showModal() {
-  // const modalData = await getPaymentIntention();
   const modalData = {
     total: 12000,
     currency: 'COP',
@@ -55,6 +54,14 @@ async function showModal() {
 
       return {
         address: generateUUID(),
+        crypto: {
+          amount: 0.00012786,
+          fee: 0.00004,
+        },
+        fiat: {
+          amount: 12000,
+          fee: 85,
+        },
       };
     },
   };

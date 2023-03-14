@@ -94,14 +94,14 @@ GuatapaySDK.InitPayment(modalObject);
 
 ### Quotation Object
 
-| Option | Required | Description |
-| --------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------- | |
-| crypto | Yes | Object containing the crypto amount and fee |
-| crypto.amount | Yes | Amount of crypto to be sent |
-| crypto.fee | Yes | Fee of the crypto transaction |
-| fiat | Yes | Object containing the fiat amount and fee |
-| fiat.amount | Yes | Amount of fiat to be sent |
-| fiat.fee | Yes | Fee of the fiat transaction |
+| Option        | Required | Description                                 |
+| ------------- | -------- | ------------------------------------------- |
+| crypto        | Yes      | Object containing the crypto amount and fee |
+| crypto.amount | Yes      | Amount of crypto to be sent                 |
+| crypto.fee    | Yes      | Fee of the crypto transaction               |
+| fiat          | Yes      | Object containing the fiat amount and fee   |
+| fiat.amount   | Yes      | Amount of fiat to be sent                   |
+| fiat.fee      | Yes      | Fee of the fiat transaction                 |
 
 ### Payment Intention Object
 

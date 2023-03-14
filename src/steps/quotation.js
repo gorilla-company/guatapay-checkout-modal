@@ -6,6 +6,8 @@ import arrowRight from '../img/arrow-right.svg';
 import chevronDown from '../img/chevron-down.svg';
 import utilsService from '../services/utils.service';
 
+const INITIAL_TIME = 59;
+
 export const currencies = {
   USDC: {
     symbol: 'USDC',
@@ -24,6 +26,65 @@ export const currencies = {
   },
 };
 
+const timeIntervals = [];
+let timeLeft;
+
+const timerIntervalFunction = (intervalId) => {
+  const continueButton = document.querySelector('#btn-quotation-continue');
+  const updateButton = document.querySelector('#btn-quotation-update');
+
+  const formattedTime = timeLeft < 10 ? `0${timeLeft}` : timeLeft;
+
+  continueButton.innerHTML = `Continuar 00:${formattedTime}`;
+  if (timeLeft < 1) {
+    clearInterval(intervalId);
+    continueButton.classList.add('hide');
+    updateButton.classList.remove('hide');
+  }
+  timeLeft -= 1;
+};
+
+function refreshView() {
+  const continueButton = document.querySelector('#btn-quotation-continue');
+  const updateButton = document.querySelector('#btn-quotation-update');
+  timeLeft = INITIAL_TIME;
+
+  const newQuotation = window.onQuotation('btc');
+  console.log(newQuotation);
+  window.lastQuotation = newQuotation;
+  window.quotationTotal = newQuotation.crypto.amount;
+  const currencyAmountTo = document.querySelector('#currency-amount-to');
+  currencyAmountTo.innerHTML = `${parseFloat(
+    newQuotation.crypto.amount + newQuotation.crypto.fee
+  ).toFixed(8)} ${window.quotationCurrency}`;
+
+  const currencyAmountFrom = document.querySelector('#currency-amount-from');
+  currencyAmountFrom.innerHTML = `≈  ${newQuotation.fiat.fee + window.total} ${
+    window.currency
+  }`;
+
+  const currencyAmountQuotation = document.querySelector(
+    '#currency-amount-quotation'
+  );
+  currencyAmountQuotation.innerHTML = `Cotización 1 ${
+    window.currency
+  } = ${parseFloat(
+    (newQuotation.crypto.amount + newQuotation.crypto.fee) / window.total
+  ).toFixed(8)} ${window.quotationCurrency}`;
+
+  continueButton.innerHTML = 'Continuar 01:00';
+  continueButton.classList.remove('hide');
+  updateButton.classList.add('hide');
+
+  // Start timer
+  timeIntervals.forEach((intervalId) => clearInterval(intervalId));
+  const startIntervalId = setInterval(
+    () => timerIntervalFunction(startIntervalId),
+    1000
+  );
+  timeIntervals.push(startIntervalId);
+}
+
 function setActiveCurrency(symbol) {
   const currencyName = document.querySelector('#currency-name');
   const currencyImage = document.querySelector('#currency-image');
@@ -32,8 +93,7 @@ function setActiveCurrency(symbol) {
   currencyImage.src = currencies[symbol].flag;
   window.quotationCurrency = symbol;
 
-  const currencyAmountTo = document.querySelector('#currency-amount-to');
-  currencyAmountTo.innerHTML = `${window.quotationTotal} ${window.quotationCurrency}`;
+  refreshView();
 }
 
 function createQuotation() {
@@ -43,9 +103,8 @@ function createQuotation() {
   );
   quotationDiv.id = 'step-QUOTATION';
 
+  //  <p id="payment-amount-text">Pagas 623.23 COP</p>;
   quotationDiv.innerHTML = `
-    <p>Pagas 623.23 COP</p>
-
     <div id="currency-selector">
       <div class="currency-wrapper">
         <div class="currency-img">
@@ -92,7 +151,7 @@ function createQuotation() {
     </div>
 
     <div id="currency-amount" class="mb-32">
-      <p id="currency-amount-quotation">Cotización 1 COP = 0,00000592  ${window.quotationCurrency}</p>
+      <p id="currency-amount-quotation">Cotización 1 COP = 0,0000062  ${window.quotationCurrency}</p>
 
       <h1 id="currency-amount-to">${window.quotationTotal} ${window.quotationCurrency}</h1>
       <p id="currency-amount-from">≈ 616.327,99 COP</p>
@@ -125,59 +184,8 @@ function createQuotation() {
   // Add event listener to update button
   const updateButton = quotationDiv.querySelector('#btn-quotation-update');
 
-  // Start timer
-  let timeLeft = 59;
-  const intervalId = setInterval(() => {
-    const formattedTime = timeLeft < 10 ? `0${timeLeft}` : timeLeft;
-
-    continueButton.innerHTML = `Continuar 00:${formattedTime}`;
-    if (timeLeft < 1) {
-      clearInterval(intervalId);
-      continueButton.classList.add('hide');
-      updateButton.classList.remove('hide');
-    }
-    timeLeft -= 1;
-  }, 1000);
-
   updateButton.addEventListener('click', () => {
-    // Reset timer
-    timeLeft = 59;
-
-    const formattedTime = timeLeft < 10 ? `0${timeLeft}` : timeLeft;
-    continueButton.innerHTML = `Continuar 00:${formattedTime}`;
-    continueButton.classList.remove('hide');
-    updateButton.classList.add('hide');
-
-    // Restart timer
-    const intervalIdRestart = setInterval(() => {
-      const formattedTimeRestart = timeLeft < 10 ? `0${timeLeft}` : timeLeft;
-
-      continueButton.innerHTML = `Continuar 00:${formattedTimeRestart}`;
-      if (timeLeft < 1) {
-        clearInterval(intervalIdRestart);
-        continueButton.classList.add('hide');
-        updateButton.classList.remove('hide');
-      }
-      timeLeft -= 1;
-    }, 1000);
-
-    // Set new quotation
-    const newQuotation = 0.000042024;
-    const newQuotationFrom = 0.0064;
-    const newQuotationTo = 26.327;
-
-    const currencyAmountQuotation = quotationDiv.querySelector(
-      '#currency-amount-quotation'
-    );
-    currencyAmountQuotation.innerHTML = `Cotización 1 COP = ${newQuotation} BTC`;
-
-    const currencyAmountFrom = quotationDiv.querySelector(
-      '#currency-amount-from'
-    );
-    currencyAmountFrom.innerHTML = `≈ ${newQuotationFrom} COP`;
-
-    const currencyAmountTo = quotationDiv.querySelector('#currency-amount-to');
-    currencyAmountTo.innerHTML = `${newQuotationTo} BTC`;
+    refreshView();
   });
 
   // Dropdown item clicks
@@ -199,4 +207,5 @@ function createQuotation() {
 
 export default {
   createQuotation,
+  refreshView,
 };

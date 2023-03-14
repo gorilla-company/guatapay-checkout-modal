@@ -1,6 +1,38 @@
 import utilsService from '../services/utils.service';
 import copyIcon from '../img/copy-icon.svg';
 
+function refreshView() {
+  const { lastQuotation } = window;
+
+  const totalFiat = document.querySelector('#total-fiat');
+  totalFiat.innerHTML = `$ ${parseFloat(
+    lastQuotation.fiat.amount + lastQuotation.fiat.fee
+  ).toFixed(2)}`;
+
+  const totalCrypto = document.querySelector('#total-crypto');
+  totalCrypto.innerHTML = `${parseFloat(
+    lastQuotation.crypto.amount + lastQuotation.crypto.fee
+  ).toFixed(8)} ${window.quotationCurrency}`;
+
+  const totalCryptoFee = document.querySelector('#fee-crypto');
+  totalCryptoFee.innerHTML = `${parseFloat(lastQuotation.crypto.fee).toFixed(
+    8
+  )} ${window.quotationCurrency}`;
+
+  const totalFiatFee = document.querySelector('#fee-fiat');
+  totalFiatFee.innerHTML = `$ ${parseFloat(lastQuotation.fiat.fee).toFixed(2)}`;
+
+  const subtotalFiat = document.querySelector('#subtotal-fiat');
+  subtotalFiat.innerHTML = `$ ${parseFloat(lastQuotation.fiat.amount).toFixed(
+    2
+  )}`;
+
+  const subtotalCrypto = document.querySelector('#subtotal-crypto');
+  subtotalCrypto.innerHTML = `${parseFloat(lastQuotation.crypto.amount).toFixed(
+    8
+  )} ${window.quotationCurrency}`;
+}
+
 function createSummary(finalize) {
   const summaryDiv = utilsService.createElementWithClass(
     'div',
@@ -16,7 +48,9 @@ function createSummary(finalize) {
         <p class="text-gray-200">Id de Transacción</p>
         <div class="flex-ic-jb">
           <p class="text-gray-400">123456789</p>
-          <img src="${copyIcon}" alt="copy" />  
+          <button id="btn-copy-transaction-id">
+            <img src="${copyIcon}" alt="copy" />  
+          </button>
         </div>
       </div>
 
@@ -24,24 +58,24 @@ function createSummary(finalize) {
         <div class="details-item mb-16">
           <div class="flex-ic-jb">
             <p>Subtotal:</p>
-            <p>$100.000</p>
+            <p id="subtotal-fiat">$100.000</p>
           </div>
-          <p class="text-right text-gray-200">0.60 BTC</p>
+          <p id="subtotal-crypto" class="text-right text-gray-200">0.60 BTC</p>
         </div>
         <div class="details-item mb-16">
           <div class="flex-ic-jb">
             <p>IVA 19%</p>
-            <p>$100.000</p>
+            <p id="fee-fiat">$100.000</p>
           </div>
-          <p class="text-right text-gray-200">0.60 BTC</p>
+          <p id="fee-crypto" class="text-right text-gray-200">0.60 BTC</p>
         </div>
         
         <div class="details-item mb-16">
           <div class="flex-ic-jb">
             <p class="font-bold">Total</p>
-            <p class="font-bold">$100.000</p>
+            <p id="total-fiat" class="font-bold">$${window.total}</p>
           </div>
-          <p class="text-right text-gray-200">0.60 BTC</p>
+          <p id="total-crypto" class="text-right text-gray-200">0.60 BTC</p>
         </div>        
       </div>
     </div>
@@ -55,9 +89,16 @@ function createSummary(finalize) {
     finalize();
   });
 
+  // Add event listener to copy button
+  const copyButton = summaryDiv.querySelector('#btn-copy-transaction-id');
+  copyButton.addEventListener('click', () => {
+    utilsService.copyToClipboard('123456789');
+  });
+
   return summaryDiv;
 }
 
 export default {
   createSummary,
+  refreshView,
 };

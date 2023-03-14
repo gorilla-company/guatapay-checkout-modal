@@ -5,53 +5,50 @@ import utilsService from '../services/utils.service';
 import qrCodeService from '../services/qr-code.service';
 import { currencies } from './quotation';
 
-window.scanningTimeLeft = 59;
-
-function copyToClipboard(str) {
-  const el = document.createElement('textarea'); // Create a temporary textarea element
-  el.value = str; // Set the value of the textarea to the string
-  el.setAttribute('readonly', ''); // Make the textarea readonly
-  el.style.position = 'absolute'; // Position the textarea off-screen
-  el.style.left = '-9999px';
-  document.body.appendChild(el); // Append the textarea to the document body
-  el.select(); // Select the contents of the textarea
-  document.execCommand('copy'); // Copy the selected text to the clipboard
-  document.body.removeChild(el); // Remove the temporary textarea from the document body
-}
+const timeIntervals = [];
+let timeLeft = 59;
 
 const intervalFunction = (intervalId) => {
-  const formattedTime =
-    window.scanningTimeLeft < 10
-      ? `0${window.scanningTimeLeft}`
-      : window.scanningTimeLeft;
+  const formattedTime = timeLeft < 10 ? `0${timeLeft}` : timeLeft;
 
   const continueButton = document.querySelector('#btn-scanning-continue');
 
   continueButton.innerHTML = `Ya transferí 00:${formattedTime}`;
-  if (window.scanningTimeLeft < 1) {
+  if (timeLeft < 1) {
     clearInterval(intervalId);
     continueButton.innerHTML = 'Ya transferí 01:00';
-    window.scanningTimeLeft = 59;
+    timeLeft = 59;
     window.setModalStatus('EXPIRED');
   }
-  window.scanningTimeLeft -= 1;
+  timeLeft -= 1;
 };
 
 function refreshView() {
+  timeLeft = 59;
+
+  const continueButton = document.querySelector('#btn-scanning-continue');
+  continueButton.innerHTML = 'Ya transferí 01:00';
+
+  const paymentIntention = window.onPayment(window.quotationCurrency);
+  window.walletAddress = paymentIntention.address;
+
   const walletAddressText = document.querySelector('#wallet-address-text');
   walletAddressText.innerHTML = window.walletAddress;
 
   const transferAmountText = document.querySelector('#transfer-amount-text');
-  transferAmountText.innerHTML = `${window.quotationTotal} ${window.quotationCurrency}`;
+  transferAmountText.innerHTML = `${parseFloat(
+    window.lastQuotation.crypto.amount + window.lastQuotation.crypto.fee
+  ).toFixed(8)} ${window.quotationCurrency}`;
 
   const transferAmountImage = document.querySelector('#transfer-amount-image');
   transferAmountImage.src = currencies[window.quotationCurrency].flag;
 
   qrCodeService.generateQr(window.walletAddress);
 
-  if (window.scanningTimeLeft > 1 && window.scanningTimeLeft !== 59) return;
+  timeIntervals.forEach((intervalId) => clearInterval(intervalId));
 
   const intervalId = setInterval(() => intervalFunction(intervalId), 1000);
+  timeIntervals.push(intervalId);
 }
 
 function createScanning() {
@@ -99,7 +96,7 @@ function createScanning() {
     '#btn-copy-wallet-address'
   );
   copyWalletAddressButton.addEventListener('click', () => {
-    copyToClipboard(window.walletAddress);
+    utilsService.copyToClipboard(window.walletAddress);
   });
 
   // Add event listener to copy transfer amount button
@@ -108,7 +105,9 @@ function createScanning() {
   );
 
   copyTransferAmountButton.addEventListener('click', () => {
-    copyToClipboard(window.quotationTotal);
+    utilsService.copyToClipboard(
+      window.lastQuotation.crypto.amount + window.lastQuotation.crypto.fee
+    );
   });
 
   return scanningDiv;

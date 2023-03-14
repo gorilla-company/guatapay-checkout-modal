@@ -28,7 +28,7 @@ function createValidating() {
   // Add event listener to finish button
   const finishButton = stepValidating.querySelector('#btn-validating-finish');
   finishButton.addEventListener('click', () => {
-    alert('Finish');
+    window.closeModal();
   });
 
   return stepValidating;

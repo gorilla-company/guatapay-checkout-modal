@@ -231,6 +231,14 @@ p {
     0px 24px 38px 3px rgb(0 0 0 / 14%), 0px 9px 46px 8px rgb(0 0 0 / 12%);
 }
 
+@media (max-width: 576px) {
+  .modal-wrapper {
+    width: 95%;
+    box-shadow: none;
+    padding: 18px;
+  }
+}
+
 .owner-pay {
   font-size: 18px;
   font-weight: 600;
@@ -664,6 +672,15 @@ p {
   border-radius: 50%;
 }
 
+.active {
+  background-color: #6466e9;
+  border: 5px solid #c9d2fa;
+}
+
+.done {
+  background-color: #6466e9;
+}
+
 /* Start */
 .callout {
   font-family: 'Open Sans', sans-serif !important;
@@ -692,13 +709,15 @@ a {
   text-decoration: none;
 }
 
-.active {
-  background-color: #6466e9;
-  border: 5px solid #c9d2fa;
-}
+@media (max-width: 768px) {
+  #step-START img {
+    width: 90%;
+    max-width: 300px;
+  }
 
-.done {
-  background-color: #6466e9;
+  #step-START .callout {
+    margin: 0;
+  }
 }
 
 /*  Terms */
@@ -737,14 +756,18 @@ a {
   width: 100%;
 }
 
-/* Quotation */
-#step-STARTED {
-  display: flex;
-  padding-top: 26px;
+@media (max-width: 768px) {
+  .buttons-left-wrapper {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
+
+/* Quotation */
 
 #currency-selector {
   width: 100%;
+  max-width: 350px;
   min-width: 350px;
   padding: 16px 32px;
   display: flex;
@@ -775,7 +798,7 @@ a {
   position: absolute;
   width: 100%;
   background-color: #fff;
-  top: 110px;
+  top: 90px;
   left: 0;
   border-radius: 16px;
   overflow: hidden;
@@ -863,11 +886,7 @@ a {
   text-align: right;
 }
 
-#currency-selector .currency-image {
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  min-height: 32px;
+#currency-selector .currency-img {
   border-radius: 50%;
   background-color: #f2f2f2;
   display: flex;
@@ -875,9 +894,32 @@ a {
   align-items: center;
 }
 
-#currency-selector .currency-image img {
-  width: 100%;
-  height: 100%;
+#currency-selector .currency-img img {
+  width: 50px;
+  height: 50px;
+}
+
+@media (max-width: 768px) {
+  .currency-selector-dropdown-img {
+    width: 25px;
+    height: 25px;
+  }
+
+  #currency-amount h1 {
+    font-weight: 700;
+    font-size: 30px;
+    margin: 8px 0;
+  }
+
+  #currency-selector .currency-img img {
+    width: 30px;
+    height: 30px;
+  }
+
+  #currency-selector {
+    min-width: 0;
+    padding: 16px;
+  }
 }
 
 /* Scanning */
@@ -886,6 +928,12 @@ a {
   margin: 16px 0;
   width: 175px;
   height: 175px;
+}
+
+@media (max-width: 768px) {
+  #qr-code {
+    display: none;
+  }
 }
 
 #wallet-address {
@@ -944,6 +992,29 @@ a {
   height: 32px;
 }
 
+@media (max-width: 768px) {
+  #transfer-amount .transfer-amount-wrapper img {
+    width: 25px;
+    height: 25px;
+  }
+
+  #wallet-address {
+    min-width: 0;
+  }
+
+  #transfer-amount {
+    min-width: 0;
+  }
+}
+
+/* Validating */
+@media (max-width: 768px) {
+  #step-VALIDATING img {
+    width: 90%;
+    max-width: 300px;
+  }
+}
+
 /* Expired */
 #qr-refresh-code {
   cursor: pointer;
@@ -987,4 +1058,25 @@ a {
   width: 150px;
   height: 150px;
   animation: spin 2s linear infinite;
+}
+
+#btn-copy-transaction-id {
+  background-color: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  .guatapay-btn-primary {
+    width: fit-content;
+    padding: 12px;
+    font-size: 14px !important;
+  }
+  .guatapay-btn-secondary {
+    width: fit-content;
+    padding: 12px;
+    font-size: 14px !important;
+  }
 }

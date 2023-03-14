@@ -9,12 +9,21 @@ import loadingService from './loading.service';
 import constants from '../utils/constants';
 import scanning from '../steps/scanning';
 import stepIndicatorService from '../steps/stepIndicator';
+import quotation from '../steps/quotation';
+import summary from '../steps/summary';
+import expired from '../steps/expired';
 
 // Window variables
 window.status = 'START';
+window.currency = 'COP';
+window.total = 0;
 window.walletAddress = '1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T';
 window.quotationTotal = 0.00420001;
 window.quotationCurrency = 'BTC';
+window.lastQuotation = {};
+window.onQuotation = () => {};
+window.onPayment = () => {};
+window.closeModal = () => {};
 
 let initialized = false;
 let closeModalTimeout = {};
@@ -125,6 +134,11 @@ function showModal(modalObject) {
   //   deeplinkService.redirectToDeeplink(modalObject);
   //   return;
   // }
+  window.onQuotation = modalObject.onQuotation;
+  window.onPayment = modalObject.onPayment;
+  window.total = modalObject.total;
+  window.currency = modalObject.currency;
+  window.closeModal = closeModal;
 
   if (!getInitializedStatus()) {
     setStatus('START');
@@ -178,9 +192,14 @@ window.setModalStatus = (status) => {
       stepIndicator.classList.add('hide');
       break;
     case 'QUOTATION':
+      header.classList.remove('hide');
+      stepIndicator.classList.remove('hide');
+      quotation.refreshView();
+      break;
     case 'EXPIRED':
       header.classList.remove('hide');
       stepIndicator.classList.remove('hide');
+      expired.refreshView();
       break;
     case 'SCANNING':
       header.classList.remove('hide');
@@ -188,10 +207,14 @@ window.setModalStatus = (status) => {
       scanning.refreshView();
       break;
     case 'VALIDATING':
-    case 'SUMMARY':
     case 'PROCESSING':
       header.classList.remove('hide');
       stepIndicator.classList.add('hide');
+      break;
+    case 'SUMMARY':
+      header.classList.remove('hide');
+      stepIndicator.classList.add('hide');
+      summary.refreshView();
       break;
     default:
       break;

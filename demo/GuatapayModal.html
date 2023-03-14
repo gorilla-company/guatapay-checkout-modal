@@ -35,6 +35,7 @@
       width: 100%;
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
       gap: 10px;
       top: 10px;
     }
@@ -43,13 +44,7 @@
 
 <body>
   <div class="btn-container">
-    <button onclick="showModal({
-      total: 659.50,
-      currency: 'COP',
-      onQuotation: (quotation) => {
-        console.log('Quotation', quotation);
-      },
-    })">Open Modal</button>
+    <button onclick="showModal()">Open Modal</button>
     <button onclick="setModalStatus('START')">Start</button>
     <button onclick="setModalStatus('TERMS')">Terms</button>
     <button onclick="setModalStatus('QUOTATION')">Quotation</button>
@@ -66,4 +61,3 @@
 
 <script type="text/javascript" src="../dist/bundle.js" charset="utf-8"></script>
 <script type="text/javascript" src="index.js"></script>
-<script type="text/javascript" src="demoPaymentVariables.js"></script>

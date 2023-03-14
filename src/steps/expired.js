@@ -4,6 +4,26 @@ import qrRefreshImage from '../img/qr-refresh.svg';
 import copyIcon from '../img/copy-icon.svg';
 
 import utilsService from '../services/utils.service';
+import { currencies } from './quotation';
+
+function refreshView() {
+  const walletAddressText = document.querySelector(
+    '#expired-wallet-address-text'
+  );
+  walletAddressText.innerHTML = window.walletAddress;
+
+  const transferAmountText = document.querySelector(
+    '#expired-transfer-amount-text'
+  );
+  transferAmountText.innerHTML = `${parseFloat(
+    window.lastQuotation.crypto.amount + window.lastQuotation.crypto.fee
+  ).toFixed(8)} ${window.quotationCurrency}`;
+
+  const transferAmountImage = document.querySelector(
+    '#expired-transfer-amount-image'
+  );
+  transferAmountImage.src = currencies[window.quotationCurrency].flag;
+}
 
 function createExpired() {
   const expiredDiv = utilsService.createElementWithClass(
@@ -21,18 +41,18 @@ function createExpired() {
     <p class="text-gray-400">O envía a la siguiente dirección el monto indicado:</p>
 
     <div id="wallet-address">
-      <p class="text-gray-400">1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T</p>
-      <button>
+      <p id="expired-wallet-address-text" class="text-gray-400">1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T</p>
+      <button id="expired-btn-copy-wallet-address">
         <img src="${copyIcon}" alt="copy" />  
       </button>
     </div>
 
     <div id="transfer-amount">
       <div class="transfer-amount-wrapper">
-        <p>0,007500 BTC</p>
-        <img src="${bitcoinFlag}" alt="BTC" />
+        <p id="expired-transfer-amount-text">0,007500 BTC</p>
+        <img id="expired-transfer-amount-image" src="${bitcoinFlag}" alt="BTC" />
       </div>
-      <button>
+      <button id="expired-btn-copy-transfer-amount">
         <img src="${copyIcon}" alt="copy" />  
       </button>
     </div>
@@ -54,9 +74,30 @@ function createExpired() {
     window.setModalStatus('SCANNING');
   });
 
+  // Add event listener to copy wallet address button
+  const copyWalletAddressButton = expiredDiv.querySelector(
+    '#expired-btn-copy-wallet-address'
+  );
+  copyWalletAddressButton.addEventListener('click', () => {
+    console.log('Copy wallet address button clicked');
+    utilsService.copyToClipboard(window.walletAddress);
+  });
+
+  // Add event listener to copy transfer amount button
+  const copyTransferAmountButton = expiredDiv.querySelector(
+    '#expired-btn-copy-transfer-amount'
+  );
+  copyTransferAmountButton.addEventListener('click', () => {
+    console.log('Copy transfer amount button clicked');
+    utilsService.copyToClipboard(
+      window.lastQuotation.crypto.amount + window.lastQuotation.crypto.fee
+    );
+  });
+
   return expiredDiv;
 }
 
 export default {
   createExpired,
+  refreshView,
 };

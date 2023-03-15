@@ -1,7 +1,7 @@
 {
-  "name": "modal-modo",
+  "name": "modal-guatapay",
   "version": "0.0.1",
-  "description": "Front-end vanila js component to process Modo payment intentions via a modal (on desktop) or deeplink (on mobile)",
+  "description": "Front-end vanila js component to process Guatapay payment intentions via a modal (on desktop) or deeplink (on mobile)",
   "main": "index.js",
   "scripts": {
     "test": "jest --env=jsdom",
@@ -16,9 +16,9 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://gitlab.com/guatapay/modo/issues"
+    "url": "https://gitlab.com/guatapay/modal/issues"
   },
-  "homepage": "https://gitlab.com/guatapay/modo#readme",
+  "homepage": "https://gitlab.com/guatapay/modal#readme",
   "devDependencies": {
     "@babel/core": "^7.15.0",
     "@babel/preset-env": "^7.15.0",

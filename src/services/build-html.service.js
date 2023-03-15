@@ -11,7 +11,7 @@ import stepIndicator from '../steps/stepIndicator';
 import loading from '../steps/loading';
 import utilsService from './utils.service';
 
-function buildHtml(refreshQr, closeModal, cancelModal, finalize) {
+function buildHtml(closeModal, cancelModal, finalize) {
   const overlay = utilsService.createElementWithClass(
     'div',
     'guatapay-overlay'
@@ -85,8 +85,6 @@ function removeSelectedStep(status) {
 }
 
 function handleStatusChange(status) {
-  console.log(status);
-
   const stepsToHide = removeSelectedStep(status);
   stepsToHide.forEach((element) => {
     const step = document.getElementById(`step-${element}`);
@@ -98,8 +96,6 @@ function handleStatusChange(status) {
   });
   document.getElementById(`step-${status}`).className =
     'modal-body-wrapper show';
-
-  // document.getElementById('step-START').className = 'modal-body-wrapper show';
 }
 
 export default {

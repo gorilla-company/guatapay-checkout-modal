@@ -1,12 +1,5 @@
-import {
-  clearAsyncInterval,
-  // setAsyncInterval
-} from './async-interval.service';
-// import deeplinkService from './deeplink.service';
 import buildHtmlService from './build-html.service';
 import loadingService from './loading.service';
-// import restService from './rest.service';
-import constants from '../utils/constants';
 import scanning from '../steps/scanning';
 import stepIndicatorService from '../steps/stepIndicator';
 import quotation from '../steps/quotation';
@@ -26,7 +19,6 @@ window.onPayment = () => {};
 window.closeModal = () => {};
 
 let initialized = false;
-let closeModalTimeout = {};
 let modalProperties;
 
 function getStatus() {
@@ -58,7 +50,6 @@ function setQuotationCurrency(quotationCurrency) {
 }
 
 function removeModal() {
-  clearAsyncInterval();
   const overlay = document.getElementById('guatapay-overlay');
   const modal = document.getElementById('modal-container');
   if (modal) document.body.removeChild(modal);
@@ -81,12 +72,7 @@ function cancelModal() {
   }
 }
 
-function clearCloseModalTimeout() {
-  clearTimeout(closeModalTimeout);
-}
-
 function finalize() {
-  clearCloseModalTimeout();
   if (modalProperties.callbackURL) {
     window.location.href = modalProperties.callbackURL;
   } else {
@@ -94,46 +80,11 @@ function finalize() {
   }
 }
 
-function setCloseModalTimeout() {
-  closeModalTimeout = setTimeout(
-    () => finalize(),
-    constants.closeModalAfterSuccessTime
-  );
-}
-
 function initService(props) {
   modalProperties = props;
 }
 
-function detectMobile() {
-  return (
-    navigator.userAgent.match(/Android/i) ||
-    navigator.userAgent.match(/webOS/i) ||
-    navigator.userAgent.match(/iPhone/i) ||
-    navigator.userAgent.match(/iPad/i) ||
-    navigator.userAgent.match(/iPod/i) ||
-    navigator.userAgent.match(/BlackBerry/i) ||
-    navigator.userAgent.match(/Windows Phone/i)
-  );
-}
-
-function buildStatusUrl() {
-  let url = process.env.PAYMENT_STATUS_URL.replace(
-    '{checkoutId}',
-    modalProperties.checkoutId
-  );
-  if (process.env.ENV === 'dev') {
-    url = `${url}?mocked_status={status}`.replace('{status}', window.status);
-  }
-  return url;
-}
-
 function showModal(modalObject) {
-  // console.log(deeplinkService.buildDeepLink(modalObject));
-  // if (detectMobile()) {
-  //   deeplinkService.redirectToDeeplink(modalObject);
-  //   return;
-  // }
   window.onQuotation = modalObject.onQuotation;
   window.onPayment = modalObject.onPayment;
   window.total = modalObject.total;
@@ -143,77 +94,65 @@ function showModal(modalObject) {
   if (!getInitializedStatus()) {
     setStatus('START');
     initService(modalObject);
-    buildHtmlService.buildHtml(
-      refreshQr, // eslint-disable-line no-use-before-define
-      closeModal,
-      cancelModal,
-      finalize
-    );
+    buildHtmlService.buildHtml(closeModal, cancelModal, finalize);
     loadingService.initLoading();
-    // qrCodeService.generateQr(modalObject.qrString);
 
-    // setAsyncInterval(getStatus, constants.callIntervalTime);
     setInitializedStatus(true);
   }
 }
 
-async function refreshQr() {
-  try {
-    loadingService.disableRefreshQrButton();
+function showHeaderAndStepIndicator() {
+  const header = document.getElementById('header');
+  const stepIndicator = document.getElementById('step-indicator');
 
-    if (modalProperties.refreshData) {
-      const response = await modalProperties.refreshData();
-      modalProperties.qrString = response.qrString;
-      modalProperties.deeplink = response.deeplink;
-      modalProperties.checkoutId = response.checkoutId;
-    }
+  header.classList.remove('hide');
+  stepIndicator.classList.remove('hide');
+}
 
-    removeModal();
-    window.mockStatus = 'START';
-    showModal(modalProperties);
-  } catch {
-    window.setModalStatus('REJECTED');
-  }
+function showHeaderHideStepIndicator() {
+  const header = document.getElementById('header');
+  const stepIndicator = document.getElementById('step-indicator');
+
+  header.classList.remove('hide');
+  stepIndicator.classList.add('hide');
+}
+
+function hideHeaderAndStepIndicator() {
+  const header = document.getElementById('header');
+  const stepIndicator = document.getElementById('step-indicator');
+
+  header.classList.add('hide');
+  stepIndicator.classList.add('hide');
 }
 
 window.setModalStatus = (status) => {
   if (status === getStatus()) return;
-
   setStatus(status);
-
-  const header = document.getElementById('header');
-  const stepIndicator = document.getElementById('step-indicator');
   stepIndicatorService.setStepIndicator(status);
 
   switch (status) {
     case 'START':
     case 'TERMS':
-      header.classList.add('hide');
-      stepIndicator.classList.add('hide');
+      hideHeaderAndStepIndicator();
       break;
     case 'QUOTATION':
-      header.classList.remove('hide');
-      stepIndicator.classList.remove('hide');
+      showHeaderAndStepIndicator();
       quotation.refreshView();
       break;
     case 'EXPIRED':
-      header.classList.remove('hide');
-      stepIndicator.classList.remove('hide');
+      showHeaderAndStepIndicator();
       expired.refreshView();
       break;
     case 'SCANNING':
-      header.classList.remove('hide');
-      stepIndicator.classList.remove('hide');
+      showHeaderAndStepIndicator();
       scanning.refreshView();
       break;
     case 'VALIDATING':
     case 'PROCESSING':
-      header.classList.remove('hide');
-      stepIndicator.classList.add('hide');
+      showHeaderHideStepIndicator();
       break;
     case 'SUMMARY':
-      header.classList.remove('hide');
-      stepIndicator.classList.add('hide');
+      showHeaderHideStepIndicator();
       summary.refreshView();
       break;
     default:
@@ -229,13 +168,9 @@ export default {
   finalize,
   setInitializedStatus,
   getInitializedStatus,
-  setCloseModalTimeout,
   initService,
   removeModal,
-  detectMobile,
   showModal,
-  buildStatusUrl,
-  refreshQr,
   getStatus,
   setStatus,
   setWalletAddress,

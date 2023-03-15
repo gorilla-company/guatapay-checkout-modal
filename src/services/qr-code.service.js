@@ -1,6 +1,4 @@
 import QRCodeStyling from 'qr-code-styling';
-import qrLogo from '../img/qrLogo.png';
-import loadingService from './loading.service';
 
 function loadQr(qrCode) {
   return qrCode.getRawData('jpg').then(() => {
@@ -8,7 +6,6 @@ function loadQr(qrCode) {
     const qrCodeImageSrc = qrCode._qr.createDataURL();
     const qrCodeImage = document.querySelector('#qr-code');
     qrCodeImage.src = qrCodeImageSrc;
-    loadingService.onQrLoaded();
   });
 }
 
@@ -31,7 +28,6 @@ function generateQr(qrString) {
     backgroundOptions: {
       color: '#ffffff',
     },
-    image: qrLogo,
     dotsOptionsHelper: {
       colorType: {
         single: true,

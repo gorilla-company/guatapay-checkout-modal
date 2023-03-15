@@ -1,7 +1,6 @@
 let idArray = [];
 let imagesLoaded = false;
 let fontsLoaded = false;
-let qrLoaded = false;
 
 function showLoadingOverlay() {
   const step = document.getElementById('main_modal');
@@ -19,21 +18,16 @@ function removeLoadingOverlay() {
   stepLoading.classList.add('hide');
 }
 
-function onElementLoadingCompleted(img, fonts, qr) {
-  if (img && fonts && qr) {
+function onElementLoadingCompleted(img, fonts) {
+  if (img && fonts) {
     removeLoadingOverlay();
   }
-}
-
-function onQrLoaded() {
-  qrLoaded = true;
-  onElementLoadingCompleted(imagesLoaded, fontsLoaded, qrLoaded);
 }
 
 function setFontsLoadedEvents() {
   document.fonts.ready.then(() => {
     fontsLoaded = true;
-    onElementLoadingCompleted(imagesLoaded, fontsLoaded, qrLoaded);
+    onElementLoadingCompleted(imagesLoaded, fontsLoaded);
   });
 }
 
@@ -41,7 +35,7 @@ function onImageLoaded(id) {
   const filteredArr = idArray.filter((e) => e !== id);
   if (filteredArr.length === 0) {
     imagesLoaded = true;
-    onElementLoadingCompleted(imagesLoaded, fontsLoaded, qrLoaded);
+    onElementLoadingCompleted(imagesLoaded, fontsLoaded);
   }
   idArray = filteredArr;
 }
@@ -62,18 +56,9 @@ function setImageLoadedEvents() {
   });
 }
 
-function disableRefreshQrButton() {
-  const buttons = document.getElementsByClassName('refresh-button');
-
-  for (let i = 0; i < buttons.length; i += 1) {
-    buttons[i].disabled = true;
-  }
-}
-
 function initLoading() {
   imagesLoaded = true;
   fontsLoaded = false;
-  qrLoaded = true;
 
   idArray = [
     // 'img-question',
@@ -92,11 +77,9 @@ function initLoading() {
 
 export default {
   initLoading,
-  onQrLoaded,
   showLoadingOverlay,
   removeLoadingOverlay,
   onElementLoadingCompleted,
   onImageLoaded,
-  disableRefreshQrButton,
   imagesLoaded,
 };

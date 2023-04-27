@@ -1,0 +1,52 @@
+{
+  "name": "modal-guatapay",
+  "version": "0.0.1",
+  "description": "Front-end vanila js component to process Guatapay payment intentions via a modal (on desktop) or deeplink (on mobile)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --env=jsdom",
+    "build": "npx webpack --env environment=production --env mode=production",
+    "build:watch": "npx webpack --env environment=production --env mode=production --watch",
+    "dev": "npx webpack --env environment=development --env mode=development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/guatapay/modal.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/guatapay/modal/issues"
+  },
+  "homepage": "https://gitlab.com/guatapay/modal#readme",
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "css-loader": "^5.2.6",
+    "dotenv-webpack": "^7.0.3",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.2",
+    "jest": "^27.0.6",
+    "style-loader": "^3.0.0",
+    "webpack": "^5.41.1",
+    "webpack-cli": "^4.10.0"
+  },
+  "dependencies": {
+    "identity-obj-proxy": "^3.0.0",
+    "qr-code-styling": "^1.6.0-rc.0",
+    "regenerator-runtime": "^0.13.9"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/jest/setup/jest.setup.js",
+      "\\.(css|less)$": "identity-obj-proxy"
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/jest/setup/jest.setup.js",
+      "<rootDir>/src/jest/env/setEnvVars.js"
+    ]
+  }
+}

@@ -61,10 +61,11 @@ const modalObject = {
   },
   onPayment: async (currency) => {
     const paymentIntention = await createPaymentIntention(currency);
-    const { address, crypto, fiat } = paymentIntention;
+    const { qrString, paymentId, crypto, fiat } = paymentIntention;
 
     return {
-      address,
+      qrString,
+      paymentId,
       crypto: {
         amount: crypto.amount,
         fee: crypto.fee,

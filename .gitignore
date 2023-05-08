@@ -1,0 +1,7 @@
+node_modules
+dist
+/coverage
+/.env
+demo/demoPaymentVariables.js
+.env.development
+.env.production

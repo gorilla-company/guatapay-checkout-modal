@@ -49,6 +49,8 @@ function buildHtml(closeModal, cancelModal, finalize) {
   if (loadHeader) {
     section.appendChild(headerSection);
   }
+
+  window.quotationCurrency = 'BTC';
   section.appendChild(startDiv);
   section.appendChild(termsDiv);
   section.appendChild(quotationDiv);

@@ -29,7 +29,7 @@ function refreshView() {
   const continueButton = document.querySelector('#btn-scanning-continue');
   continueButton.innerHTML = 'Ya transferí 01:00';
 
-  const paymentIntention = window.onPayment(window.quotationCurrency);
+  const paymentIntention = window.onPayment(window.quotationCurrency, window.total);
   window.walletAddress = paymentIntention.address;
 
   const walletAddressText = document.querySelector('#wallet-address-text');

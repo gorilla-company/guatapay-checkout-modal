@@ -44,8 +44,8 @@ const modalObject = {
   onCancel() {
     console.log('onCancel');
   },
-  onQuotation: (currency) => {
-    const quotation = getQuotation(currency);
+  onQuotation: (currency, total) => {
+    const quotation = getQuotation(currency, total);
     const { crypto, fiat } = quotation;
 
     return {
@@ -59,7 +59,7 @@ const modalObject = {
       },
     };
   },
-  onPayment: (currency) => {
+  onPayment: (currency, total) => {
     const paymentIntention = createPaymentIntention(currency);
     const { address, crypto, fiat } = paymentIntention;
 

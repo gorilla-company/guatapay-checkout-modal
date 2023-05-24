@@ -14,8 +14,8 @@ export const currencies = {
     name: 'USD Coin',
     flag: usdtFlag,
   },
-  LTC: {
-    symbol: 'LTC',
+  LN: {
+    symbol: 'LN',
     name: 'BTC Lightning',
     flag: lightningFlag,
   },
@@ -49,7 +49,7 @@ function refreshView() {
   const updateButton = document.querySelector('#btn-quotation-update');
   timeLeft = INITIAL_TIME;
 
-  const newQuotation = window.onQuotation('btc');
+  const newQuotation = window.onQuotation(window.quotationCurrency, window.total);
   console.log(newQuotation);
   window.lastQuotation = newQuotation;
   window.quotationTotal = newQuotation.crypto.amount;
@@ -111,7 +111,7 @@ function createQuotation() {
         <img src="${colombiaFlag}" alt="COP" />
         </div>
         <div class="currency-name">
-          <p>de</p>
+          <p>DE</p>
           <p>COP</p>
         </div>
       </div>
@@ -138,7 +138,7 @@ function createQuotation() {
           <p class="font-bold">USDC (USD Coin)</p>
           <img src="${usdtFlag}" alt="COP" class="currency-selector-dropdown-img" />
         </div>
-        <div class="currency-selector-dropdown-item" id="LTC">
+        <div class="currency-selector-dropdown-item" id="LN">
           <span>Más rápido y menor comisión</span>
           <p class="font-bold">BTC Lightning</p>
           <img src="${lightningFlag}" alt="COP" class="currency-selector-dropdown-img" />

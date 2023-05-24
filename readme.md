@@ -44,8 +44,8 @@ const modalObject = {
   onCancel() {
     console.log('onCancel');
   },
-  onQuotation: (currency, total) => {
-    const quotation = getQuotation(currency, total);
+  onQuotation: async (currency) => {
+    const quotation = await getQuotation(currency);
     const { crypto, fiat } = quotation;
 
     return {
@@ -59,12 +59,13 @@ const modalObject = {
       },
     };
   },
-  onPayment: (currency, total) => {
-    const paymentIntention = createPaymentIntention(currency);
-    const { address, crypto, fiat } = paymentIntention;
+  onPayment: async (currency) => {
+    const paymentIntention = await createPaymentIntention(currency);
+    const { qrString, paymentId, crypto, fiat } = paymentIntention;
 
     return {
-      address,
+      qrString,
+      paymentId,
       crypto: {
         amount: crypto.amount,
         fee: crypto.fee,
@@ -105,10 +106,16 @@ GuatapaySDK.InitPayment(modalObject);
 
 ### Payment Intention Object
 
-| Option  | Required | Description                                 |
-| ------- | -------- | ------------------------------------------- |
-| address | Yes      | Address to send the payment to              |
-| crypto  | Yes      | Object containing the crypto amount and fee |
+| Option        | Required | Description                                       |
+| ------------- | -------- | ------------------------------------------------- |
+| qrString      | Yes      | QR string to be shown to the user                 |
+| paymentId     | Yes      | Payment ID to be used in the payment status check |
+| crypto        | Yes      | Object containing the crypto amount and fee       |
+| crypto.amount | Yes      | Amount of crypto to be sent                       |
+| crypto.fee    | Yes      | Fee of the crypto transaction                     |
+| fiat          | Yes      | Object containing the fiat amount and fee         |
+| fiat.amount   | Yes      | Amount of fiat to be sent                         |
+| fiat.fee      | Yes      | Fee of the fiat transaction                       |
 
 ## Development
 

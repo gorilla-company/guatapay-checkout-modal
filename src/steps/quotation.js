@@ -85,14 +85,15 @@ async function refreshView() {
 }
 
 async function setActiveCurrency(symbol) {
+  window.quotationCurrency = symbol;
+
+  await refreshView();
+
   const currencyName = document.querySelector('#currency-name');
   const currencyImage = document.querySelector('#currency-image');
 
   currencyName.innerHTML = currencies[symbol].name;
   currencyImage.src = currencies[symbol].flag;
-  window.quotationCurrency = symbol;
-
-  await refreshView();
 }
 
 function createQuotation() {
@@ -194,9 +195,9 @@ function createQuotation() {
 
   dropdownItems.forEach((item) => {
     item.addEventListener('click', async () => {
-      const currencySymbol = item.id;
       currencySelectorDropdown.classList.toggle('non-visible');
       currencySelector.classList.toggle('selector-active');
+      const currencySymbol = item.id;
       await setActiveCurrency(currencySymbol);
     });
   });

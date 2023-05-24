@@ -5,6 +5,7 @@ import stepIndicatorService from '../steps/stepIndicator';
 import quotation from '../steps/quotation';
 import summary from '../steps/summary';
 import expired from '../steps/expired';
+import processing from '../steps/processing';
 
 // Window variables
 window.status = 'START';
@@ -150,7 +151,10 @@ window.setModalStatus = async (status) => {
       showHeaderAndStepIndicator();
       break;
     case 'VALIDATING':
+      showHeaderHideStepIndicator();
+      break;
     case 'PROCESSING':
+      await processing.refreshView();
       showHeaderHideStepIndicator();
       break;
     case 'SUMMARY':

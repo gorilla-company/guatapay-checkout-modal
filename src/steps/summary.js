@@ -50,11 +50,7 @@ function createSummary(finalize) {
       <div id="transaction-id-wrapper">
         <p class="text-gray-200">Id de Transacción</p>
         <div class="flex-ic-jb">
-<<<<<<< HEAD
           <p id="transaction-id" class="text-gray-400">123456789</p>
-=======
-          <p class="text-gray-400">123456789</p>
->>>>>>> feat/final-fixes-2
           <button id="btn-copy-transaction-id">
             <img src="${copyIcon}" alt="copy" />  
           </button>
@@ -99,7 +95,7 @@ function createSummary(finalize) {
   // Add event listener to copy button
   const copyButton = summaryDiv.querySelector('#btn-copy-transaction-id');
   copyButton.addEventListener('click', () => {
-    utilsService.copyToClipboard('123456789');
+    utilsService.copyToClipboard(window.paymentId);
   });
 
   return summaryDiv;

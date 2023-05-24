@@ -24,6 +24,7 @@ const intervalFunction = async (intervalId) => {
         break;
       case 'completed':
         window.setModalStatus('SUMMARY');
+        clearInterval(intervalId);
         break;
       default:
         break;

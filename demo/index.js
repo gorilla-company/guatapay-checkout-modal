@@ -18,6 +18,22 @@ async function generateQuotation() {
   });
 }
 
+function generateUUID() {
+  let uuid = '';
+  const hexValues = '0123456789abcdef';
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < 36; i++) {
+    if (i === 8 || i === 13 || i === 18 || i === 23) {
+      uuid += '-';
+    } else if (i === 14) {
+      uuid += '4';
+    } else {
+      uuid += hexValues[Math.floor(Math.random() * hexValues.length)];
+    }
+  }
+  return uuid;
+}
+
 async function showModal() {
   const modalData = {
     total: 12000,

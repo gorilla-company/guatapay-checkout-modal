@@ -50,7 +50,11 @@ function createSummary(finalize) {
       <div id="transaction-id-wrapper">
         <p class="text-gray-200">Id de Transacción</p>
         <div class="flex-ic-jb">
+<<<<<<< HEAD
           <p id="transaction-id" class="text-gray-400">123456789</p>
+=======
+          <p class="text-gray-400">123456789</p>
+>>>>>>> feat/final-fixes-2
           <button id="btn-copy-transaction-id">
             <img src="${copyIcon}" alt="copy" />  
           </button>

@@ -85,6 +85,7 @@ function createExpired() {
     '#expired-btn-copy-transfer-amount'
   );
   copyTransferAmountButton.addEventListener('click', () => {
+    console.log('Copy transfer amount button clicked');
     utilsService.copyToClipboard(
       window.lastQuotation.crypto.amount + window.lastQuotation.crypto.fee
     );

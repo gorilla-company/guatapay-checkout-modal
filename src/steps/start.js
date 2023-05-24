@@ -13,9 +13,9 @@ function createStart() {
     <p class="subtitle">¡Gracias por elegir Guatapay! A continuación te guiaremos a través de 3 sencillos pasos para que puedas realizar tu compra usando tus criptomonedas!</p>
     <div class="checkbox-wrapper">
       <input type="checkbox" id="checkbox" name="checkbox" value="checkbox">
-      <label for="checkbox">He leido y acepto los <a href="#">Términos y Condiciones</a> y <a href="#">Política de Privacidad</a></label>
+      <label for="checkbox">He leído y acepto los <a href="#">Términos y Condiciones</a> y <a href="#">Política de Privacidad</a></label>
     </div>
-    <div class="callout">Recuerda que si devuelves el producto, el reembolso será por el valor del mismo en moneda local.</div>
+    <div class="callout">Recuerda que si devuelves el producto, el reembolso será por el mismo valor de tu compra en tu moneda local</div>
     <button disabled id="start-continue" class="guatapay-btn-primary">Continuar</button>
   `;
 

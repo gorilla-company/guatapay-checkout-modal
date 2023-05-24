@@ -14,8 +14,8 @@ export const currencies = {
     name: 'USD Coin',
     flag: usdtFlag,
   },
-  LTC: {
-    symbol: 'BTC',
+  LN: {
+    symbol: 'LN',
     name: 'BTC Lightning',
     flag: lightningFlag,
   },
@@ -110,7 +110,7 @@ function createQuotation() {
         <img src="${colombiaFlag}" alt="COP" />
         </div>
         <div class="currency-name">
-          <p>De</p>
+          <p>DE</p>
           <p>COP</p>
         </div>
       </div>
@@ -137,7 +137,7 @@ function createQuotation() {
           <p class="font-bold">USDC (USD Coin)</p>
           <img src="${usdtFlag}" alt="COP" class="currency-selector-dropdown-img" />
         </div>
-        <div class="currency-selector-dropdown-item" id="LTC">
+        <div class="currency-selector-dropdown-item" id="LN">
           <span>Más rápido y menor comisión</span>
           <p class="font-bold">BTC Lightning</p>
           <img src="${lightningFlag}" alt="COP" class="currency-selector-dropdown-img" />

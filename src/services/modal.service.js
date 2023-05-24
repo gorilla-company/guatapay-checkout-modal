@@ -129,6 +129,7 @@ function hideHeaderAndStepIndicator() {
 window.setModalStatus = async (status) => {
   if (status === getStatus()) return;
   setStatus(status);
+  stepIndicatorService.setStepIndicator(status);
 
   switch (status) {
     case 'START':
@@ -160,7 +161,6 @@ window.setModalStatus = async (status) => {
       break;
   }
   window.mockStatus = status;
-  stepIndicatorService.setStepIndicator(status);
   buildHtmlService.handleStatusChange(status);
 };
 

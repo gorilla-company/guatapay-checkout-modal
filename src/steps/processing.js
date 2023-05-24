@@ -42,6 +42,10 @@ function createProcessing() {
           break;
       }
     }
+
+    if (window.status !== 'PROCESSING') {
+      clearInterval(interval);
+    }
   }, 1000);
 
   return processingDiv;

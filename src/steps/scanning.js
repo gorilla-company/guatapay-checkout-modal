@@ -29,7 +29,10 @@ async function refreshView() {
   const continueButton = document.querySelector('#btn-scanning-continue');
   continueButton.innerHTML = 'Ya transferí 01:00';
 
-  const paymentIntention = await window.onPayment(window.quotationCurrency);
+  const paymentIntention = await window.onPayment(window.quotationCurrency, window.total);
+
+  console.log('Generated payment intention: ', paymentIntention);
+
   const walletAddress = paymentIntention.qrString.split(':')[1].split('?')[0];
   window.walletAddress = walletAddress;
   window.paymentId = paymentIntention.paymentId;
@@ -55,10 +58,7 @@ async function refreshView() {
 }
 
 function createScanning() {
-  const scanningDiv = utilsService.createElementWithClass(
-    'div',
-    'modal-body-wrapper hide'
-  );
+  const scanningDiv = utilsService.createElementWithClass('div', 'modal-body-wrapper hide');
   scanningDiv.id = 'step-SCANNING';
 
   scanningDiv.innerHTML = `
@@ -95,17 +95,13 @@ function createScanning() {
   });
 
   // Add event listener to copy wallet address button
-  const copyWalletAddressButton = scanningDiv.querySelector(
-    '#btn-copy-wallet-address'
-  );
+  const copyWalletAddressButton = scanningDiv.querySelector('#btn-copy-wallet-address');
   copyWalletAddressButton.addEventListener('click', () => {
     utilsService.copyToClipboard(window.walletAddress);
   });
 
   // Add event listener to copy transfer amount button
-  const copyTransferAmountButton = scanningDiv.querySelector(
-    '#btn-copy-transfer-amount'
-  );
+  const copyTransferAmountButton = scanningDiv.querySelector('#btn-copy-transfer-amount');
 
   copyTransferAmountButton.addEventListener('click', () => {
     utilsService.copyToClipboard(
@@ -118,5 +114,5 @@ function createScanning() {
 
 export default {
   createScanning,
-  refreshView,
+  refreshView
 };

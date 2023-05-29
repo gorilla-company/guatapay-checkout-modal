@@ -11,6 +11,8 @@ const intervalFunction = async (intervalId) => {
     const response = await fetch(`${GET_STATUS_URL}/${window.paymentId}`);
     const paymentStatus = await response.json();
 
+    console.log('Obtained payment status: ', paymentStatus);
+
     if (response.status === 404) {
       window.setModalStatus('EXPIRED');
       clearInterval(intervalId);
@@ -36,18 +38,12 @@ const intervalFunction = async (intervalId) => {
 
 function refreshView() {
   currentInvervals.forEach((intervalId) => clearInterval(intervalId));
-  const startIntervalId = setInterval(
-    () => intervalFunction(startIntervalId),
-    INTERVAL_TIME
-  );
+  const startIntervalId = setInterval(() => intervalFunction(startIntervalId), INTERVAL_TIME);
   currentInvervals.push(startIntervalId);
 }
 
 function createProcessing() {
-  const processingDiv = utilsService.createElementWithClass(
-    'div',
-    'modal-body-wrapper hide'
-  );
+  const processingDiv = utilsService.createElementWithClass('div', 'modal-body-wrapper hide');
   processingDiv.id = 'step-PROCESSING';
 
   processingDiv.innerHTML = `
@@ -64,5 +60,5 @@ function createProcessing() {
 
 export default {
   createProcessing,
-  refreshView,
+  refreshView
 };

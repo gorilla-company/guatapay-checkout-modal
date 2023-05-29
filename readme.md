@@ -44,8 +44,8 @@ const modalObject = {
   onCancel() {
     console.log('onCancel');
   },
-  onQuotation: async (currency) => {
-    const quotation = await getQuotation(currency);
+  onQuotation: async (currency, total) => {
+    const quotation = await getQuotation(currency, total);
     const { crypto, fiat } = quotation;
 
     return {
@@ -59,8 +59,8 @@ const modalObject = {
       },
     };
   },
-  onPayment: async (currency) => {
-    const paymentIntention = await createPaymentIntention(currency);
+  onPayment: async (currency, total) => {
+    const paymentIntention = await createPaymentIntention(currency, total);
     const { qrString, paymentId, crypto, fiat } = paymentIntention;
 
     return {

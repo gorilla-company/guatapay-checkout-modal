@@ -12,18 +12,18 @@ export const currencies = {
   USDC: {
     symbol: 'USDC',
     name: 'USD Coin',
-    flag: usdtFlag,
+    flag: usdtFlag
   },
   LN: {
     symbol: 'LN',
     name: 'BTC Lightning',
-    flag: lightningFlag,
+    flag: lightningFlag
   },
   BTC: {
     symbol: 'BTC',
     name: 'Bitcoin',
-    flag: bitcoinFlag,
-  },
+    flag: bitcoinFlag
+  }
 };
 
 const timeIntervals = [];
@@ -49,7 +49,10 @@ async function refreshView() {
   const updateButton = document.querySelector('#btn-quotation-update');
   timeLeft = INITIAL_TIME;
 
-  const newQuotation = await window.onQuotation('btc');
+  const newQuotation = await window.onQuotation(window.quotationCurrency, window.total);
+
+  console.log('Obtained new quotation: ', newQuotation);
+
   window.lastQuotation = newQuotation;
   window.quotationTotal = newQuotation.crypto.amount;
   const currencyAmountTo = document.querySelector('#currency-amount-to');
@@ -58,16 +61,10 @@ async function refreshView() {
   ).toFixed(8)} ${window.quotationCurrency}`;
 
   const currencyAmountFrom = document.querySelector('#currency-amount-from');
-  currencyAmountFrom.innerHTML = `≈  ${newQuotation.fiat.fee + window.total} ${
-    window.currency
-  }`;
+  currencyAmountFrom.innerHTML = `≈  ${newQuotation.fiat.fee + window.total} ${window.currency}`;
 
-  const currencyAmountQuotation = document.querySelector(
-    '#currency-amount-quotation'
-  );
-  currencyAmountQuotation.innerHTML = `Cotización 1 ${
-    window.currency
-  } = ${parseFloat(
+  const currencyAmountQuotation = document.querySelector('#currency-amount-quotation');
+  currencyAmountQuotation.innerHTML = `Cotización 1 ${window.currency} = ${parseFloat(
     (newQuotation.crypto.amount + newQuotation.crypto.fee) / window.total
   ).toFixed(8)} ${window.quotationCurrency}`;
 
@@ -77,10 +74,7 @@ async function refreshView() {
 
   // Start timer
   timeIntervals.forEach((intervalId) => clearInterval(intervalId));
-  const startIntervalId = setInterval(
-    () => timerIntervalFunction(startIntervalId),
-    1000
-  );
+  const startIntervalId = setInterval(() => timerIntervalFunction(startIntervalId), 1000);
   timeIntervals.push(startIntervalId);
 }
 
@@ -97,10 +91,7 @@ async function setActiveCurrency(symbol) {
 }
 
 function createQuotation() {
-  const quotationDiv = utilsService.createElementWithClass(
-    'div',
-    'modal-body-wrapper hide'
-  );
+  const quotationDiv = utilsService.createElementWithClass('div', 'modal-body-wrapper hide');
   quotationDiv.id = 'step-QUOTATION';
 
   //  <p id="payment-amount-text">Pagas 623.23 COP</p>;
@@ -163,12 +154,8 @@ function createQuotation() {
   const currencySelector = quotationDiv.querySelector('#currency-selector');
 
   // Add event listener to currency selector dropdown
-  const currencySelectorDropdown = quotationDiv.querySelector(
-    '#currency-selector-dropdown'
-  );
-  const currencySelectorDropdownButton = quotationDiv.querySelector(
-    '#to-currency-wrapper'
-  );
+  const currencySelectorDropdown = quotationDiv.querySelector('#currency-selector-dropdown');
+  const currencySelectorDropdownButton = quotationDiv.querySelector('#to-currency-wrapper');
 
   currencySelectorDropdownButton.addEventListener('click', () => {
     currencySelectorDropdown.classList.toggle('non-visible');
@@ -189,9 +176,7 @@ function createQuotation() {
   });
 
   // Dropdown item clicks
-  const dropdownItems = quotationDiv.querySelectorAll(
-    '.currency-selector-dropdown-item'
-  );
+  const dropdownItems = quotationDiv.querySelectorAll('.currency-selector-dropdown-item');
 
   dropdownItems.forEach((item) => {
     item.addEventListener('click', async () => {
@@ -218,5 +203,5 @@ function createQuotation() {
 
 export default {
   createQuotation,
-  refreshView,
+  refreshView
 };

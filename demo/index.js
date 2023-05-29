@@ -7,12 +7,12 @@ async function generateQuotation() {
       resolve({
         crypto: {
           amount: 0.0001,
-          fee: 0.00001,
+          fee: 0.00001
         },
         fiat: {
           amount: 10000,
-          fee: 1000,
-        },
+          fee: 1000
+        }
       });
     }, 2000);
   });
@@ -37,7 +37,7 @@ function generateUUID() {
 async function showModal() {
   const modalData = {
     total: 12000,
-    currency: 'COP',
+    currency: 'COP'
   };
 
   const modalObject = {
@@ -52,21 +52,21 @@ async function showModal() {
     onCancel() {
       console.log('onCancel');
     },
-    onQuotation: async (currency) => {
-      console.log('Quotation', currency);
+    onQuotation: async (currency, total) => {
+      console.log('Getting new quotation', { currency, total });
       const quotation = await generateQuotation(currency);
       return quotation;
     },
-    onPayment: async (payment) => {
-      console.log('Payment', payment);
+    onPayment: async (payment, total) => {
+      console.log('Generating payment', { payment, total });
       const quotation = await generateQuotation(currency);
 
       return {
         qrString: 'bitcoin:1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2?amount=0.0001',
         paymentId: '642d6d8c47b735aad4170b2e',
-        ...quotation,
+        ...quotation
       };
-    },
+    }
   };
 
   GuatapaySDK.InitPayment(modalObject);

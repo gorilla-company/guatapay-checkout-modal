@@ -51,6 +51,33 @@
   src: url('./font/Inter-ExtraBold.ttf');
 }
 
+@font-face {
+  font-family: 'DMSans Regular';
+  src: url('./font/DMSans-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'DMSans Bold';
+  src: url('./font/DMSans-Bold.ttf');
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #bbb;
+}
+
 body {
   /* background-color: rgb(247, 119, 119); */
   /* display:flex;
@@ -64,7 +91,7 @@ body {
   /* padding-top: 10vh;
     padding-bottom: 25px; */
   margin: 0;
-  font-family: 'OpenSans Regular', sans-serif !important;
+  font-family: 'DMSans Regular', sans-serif !important;
 }
 
 /* Buttons Delete */
@@ -241,8 +268,7 @@ p {
 }
 
 .modal-wrapper {
-  /* font-family: 'OpenSans Regular', sans-serif !important; */
-  font-family: 'Red Hat Display', Arial, Helvetica, sans-serif !important;
+  font-family: 'DMSans Regular', sans-serif !important;
   background-color: #f5f5f5;
   width: 576px;
   min-height: 576px;
@@ -317,7 +343,7 @@ p {
 }
 
 .guatapay-btn-link {
-  font-family: 'OpenSans', sans-serif;
+  font-family: 'DMSans Regular', sans-serif;
   font-size: 16px;
   line-height: 17.6px;
   background-color: transparent;
@@ -458,7 +484,7 @@ p {
 .tooltiptext ul {
   list-style-type: circle;
   text-align: left;
-  font-family: 'OpenSans Fina', Arial, Helvetica, sans-serif;
+  font-family: 'DMSans Regular', Arial, Helvetica, sans-serif;
   font-size: 14px;
   line-height: 22px;
   padding: 0 0px 0 24px;
@@ -466,7 +492,7 @@ p {
 }
 
 .tooltiptext ul li .bold {
-  font-family: 'OpenSans Bold', Arial, Helvetica, sans-serif;
+  font-family: 'DMSans Bold', Arial, Helvetica, sans-serif;
 }
 
 .loading-paragraph {
@@ -505,7 +531,7 @@ p {
 
 .font-bold {
   font-weight: 700;
-  font-family: 'OpenSans Bold', Arial, Helvetica, sans-serif;
+  font-family: 'DMSans Bold', Arial, Helvetica, sans-serif;
 }
 
 .text-right {
@@ -576,7 +602,7 @@ p {
 
 /* Buttons */
 .guatapay-btn-primary {
-  font-family: 'OpenSans Regular', sans-serif !important;
+  font-family: 'DMSans Regular', sans-serif !important;
   font-size: 16px !important;
   line-height: 17.6px;
   background-color: #6466e9;
@@ -610,7 +636,7 @@ p {
 }
 
 .guatapay-btn-secondary {
-  font-family: 'OpenSans Regular', sans-serif !important;
+  font-family: 'DMSans Regular', sans-serif !important;
   font-size: 16px !important;
   line-height: 17.6px;
   background-color: #eef2ff;
@@ -644,7 +670,7 @@ p {
 }
 
 .guatapay-btn-ghost {
-  font-family: 'OpenSans Regular', sans-serif !important;
+  font-family: 'DMSans Regular', sans-serif !important;
   font-size: 16px !important;
   line-height: 17.6px;
   background-color: transparent;
@@ -693,7 +719,7 @@ p {
 
 /* Start */
 .callout {
-  font-family: 'OpenSans Regular', sans-serif !important;
+  font-family: 'DMSans Regular', sans-serif !important;
   font-size: 14px !important;
   line-height: 20px;
   background-color: #fff;

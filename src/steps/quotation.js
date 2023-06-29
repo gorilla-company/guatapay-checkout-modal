@@ -1,12 +1,12 @@
-import colombiaFlag from '../img/colombia-flag.svg';
-import bitcoinFlag from '../img/bitcoin-flag.svg';
-import usdtFlag from '../img/usdt-flag.svg';
-import lightningFlag from '../img/bitcoin-lightning-flag.svg';
-import arrowRight from '../img/arrow-right.svg';
-import chevronDown from '../img/chevron-down.svg';
-import utilsService from '../services/utils.service';
+import colombiaFlag from '../img/colombia-flag.svg'
+import bitcoinFlag from '../img/bitcoin-flag.svg'
+import usdtFlag from '../img/usdt-flag.svg'
+import lightningFlag from '../img/bitcoin-lightning-flag.svg'
+import arrowRight from '../img/arrow-right.svg'
+import chevronDown from '../img/chevron-down.svg'
+import utilsService from '../services/utils.service'
 
-const INITIAL_TIME = 59;
+const INITIAL_TIME = 59
 
 export const currencies = {
   USDC: {
@@ -24,75 +24,71 @@ export const currencies = {
     name: 'Bitcoin',
     flag: bitcoinFlag
   }
-};
+}
 
-const timeIntervals = [];
-let timeLeft;
+const timeIntervals = []
+let timeLeft
 
 const timerIntervalFunction = (intervalId) => {
-  const continueButton = document.querySelector('#btn-quotation-continue');
-  const updateButton = document.querySelector('#btn-quotation-update');
+  const continueButton = document.querySelector('#btn-quotation-continue')
+  const updateButton = document.querySelector('#btn-quotation-update')
 
-  const formattedTime = timeLeft < 10 ? `0${timeLeft}` : timeLeft;
+  const formattedTime = timeLeft < 10 ? `0${timeLeft}` : timeLeft
 
-  continueButton.innerHTML = `Continuar 00:${formattedTime}`;
+  continueButton.innerHTML = `Continuar 00:${formattedTime}`
   if (timeLeft < 1) {
-    clearInterval(intervalId);
-    continueButton.classList.add('hide');
-    updateButton.classList.remove('hide');
+    clearInterval(intervalId)
+    continueButton.classList.add('hide')
+    updateButton.classList.remove('hide')
   }
-  timeLeft -= 1;
-};
+  timeLeft -= 1
+}
 
 async function refreshView() {
-  const continueButton = document.querySelector('#btn-quotation-continue');
-  const updateButton = document.querySelector('#btn-quotation-update');
-  timeLeft = INITIAL_TIME;
+  const continueButton = document.querySelector('#btn-quotation-continue')
+  const updateButton = document.querySelector('#btn-quotation-update')
+  timeLeft = INITIAL_TIME
 
-  const newQuotation = await window.onQuotation(window.quotationCurrency, window.total);
+  const newQuotation = await window.onQuotation(window.quotationCurrency, window.total)
 
-  console.log('Obtained new quotation: ', newQuotation);
+  console.log('Obtained new quotation: ', newQuotation)
 
-  window.lastQuotation = newQuotation;
-  window.quotationTotal = newQuotation.crypto.amount;
-  const currencyAmountTo = document.querySelector('#currency-amount-to');
-  currencyAmountTo.innerHTML = `${parseFloat(
-    newQuotation.crypto.amount + newQuotation.crypto.fee
-  ).toFixed(8)} ${window.quotationCurrency}`;
+  window.lastQuotation = newQuotation
+  window.quotationTotal = newQuotation.crypto.amount
+  const currencyAmountTo = document.querySelector('#currency-amount-to')
+  currencyAmountTo.innerHTML = `${parseFloat(newQuotation.crypto.amount + newQuotation.crypto.fee).toFixed(8)} ${window.quotationCurrency}`
 
-  const currencyAmountFrom = document.querySelector('#currency-amount-from');
-  currencyAmountFrom.innerHTML = `≈  ${newQuotation.fiat.fee + window.total} ${window.currency}`;
+  const currencyAmountFrom = document.querySelector('#currency-amount-from')
+  currencyAmountFrom.innerHTML = `≈  ${newQuotation.fiat.fee + window.total} ${window.currency}`
 
-  const currencyAmountQuotation = document.querySelector('#currency-amount-quotation');
-  currencyAmountQuotation.innerHTML = `Cotización 1 ${window.currency} = ${parseFloat(
-    (newQuotation.crypto.amount + newQuotation.crypto.fee) / window.total
-  ).toFixed(8)} ${window.quotationCurrency}`;
+  const currencyAmountQuotation = document.querySelector('#currency-amount-quotation')
+  currencyAmountQuotation.innerHTML = `Cotización 1 ${window.currency} = ${parseFloat((newQuotation.crypto.amount + newQuotation.crypto.fee) / window.total).toFixed(8)} ${window.quotationCurrency}`
 
-  continueButton.innerHTML = 'Continuar 01:00';
-  continueButton.classList.remove('hide');
-  updateButton.classList.add('hide');
+  continueButton.innerHTML = 'Continuar 01:00'
+  continueButton.classList.remove('hide')
+  updateButton.classList.add('hide')
 
   // Start timer
-  timeIntervals.forEach((intervalId) => clearInterval(intervalId));
-  const startIntervalId = setInterval(() => timerIntervalFunction(startIntervalId), 1000);
-  timeIntervals.push(startIntervalId);
+  timeIntervals.forEach((intervalId) => clearInterval(intervalId))
+  const startIntervalId = setInterval(() => timerIntervalFunction(startIntervalId), 1000)
+  timeIntervals.push(startIntervalId)
 }
 
 async function setActiveCurrency(symbol) {
-  window.quotationCurrency = symbol;
+  window.quotationCurrency = symbol
 
-  await refreshView();
+  await refreshView()
 
-  const currencyName = document.querySelector('#currency-name');
-  const currencyImage = document.querySelector('#currency-image');
+  const currencyName = document.querySelector('#currency-name')
+  const currencyImage = document.querySelector('#currency-image')
 
-  currencyName.innerHTML = currencies[symbol].name;
-  currencyImage.src = currencies[symbol].flag;
+  currencyName.innerHTML = currencies[symbol].name
+  currencyImage.src = currencies[symbol].flag
 }
 
 function createQuotation() {
-  const quotationDiv = utilsService.createElementWithClass('div', 'modal-body-wrapper hide');
-  quotationDiv.id = 'step-QUOTATION';
+  const quotationDiv = utilsService.createElementWithClass('div', 'modal-body-wrapper hide')
+  quotationDiv.id = 'step-QUOTATION'
 
   //  <p id="payment-amount-text">Pagas 623.23 COP</p>;
   quotationDiv.innerHTML = `
@@ -114,7 +110,7 @@ function createQuotation() {
       <div class="currency-wrapper" id="to-currency-wrapper">
         <div class="currency-name">
           <p class="text-right" style="margin-left: 20px;">A</p>
-          <div id="currency-name-dropdown-button"> 
+          <div id="currency-name-dropdown-button">
             <p  id="currency-name">Bitcoin</p>
             <img  src="${chevronDown}" alt="arrow" />
           </div>
@@ -149,59 +145,56 @@ function createQuotation() {
     </div>
     <button class="guatapay-btn-primary hide" id="btn-quotation-update">Actualizar cambio</button>
     <button class="guatapay-btn-primary" id="btn-quotation-continue">Continuar 01:00</button>
-    `;
+    `
 
-  const currencySelector = quotationDiv.querySelector('#currency-selector');
+  const currencySelector = quotationDiv.querySelector('#currency-selector')
 
   // Add event listener to currency selector dropdown
-  const currencySelectorDropdown = quotationDiv.querySelector('#currency-selector-dropdown');
-  const currencySelectorDropdownButton = quotationDiv.querySelector('#to-currency-wrapper');
+  const currencySelectorDropdown = quotationDiv.querySelector('#currency-selector-dropdown')
+  const currencySelectorDropdownButton = quotationDiv.querySelector('#to-currency-wrapper')
 
   currencySelectorDropdownButton.addEventListener('click', () => {
-    currencySelectorDropdown.classList.toggle('non-visible');
-    currencySelector.classList.toggle('selector-active');
-  });
+    currencySelectorDropdown.classList.toggle('non-visible')
+    currencySelector.classList.toggle('selector-active')
+  })
 
   // Add event listener to continue button
-  const continueButton = quotationDiv.querySelector('#btn-quotation-continue');
+  const continueButton = quotationDiv.querySelector('#btn-quotation-continue')
   continueButton.addEventListener('click', async () => {
-    await window.setModalStatus('SCANNING');
-  });
+    await window.setModalStatus('SCANNING')
+  })
 
   // Add event listener to update button
-  const updateButton = quotationDiv.querySelector('#btn-quotation-update');
+  const updateButton = quotationDiv.querySelector('#btn-quotation-update')
 
   updateButton.addEventListener('click', () => {
-    refreshView();
-  });
+    refreshView()
+  })
 
   // Dropdown item clicks
-  const dropdownItems = quotationDiv.querySelectorAll('.currency-selector-dropdown-item');
+  const dropdownItems = quotationDiv.querySelectorAll('.currency-selector-dropdown-item')
 
   dropdownItems.forEach((item) => {
     item.addEventListener('click', async () => {
-      currencySelectorDropdown.classList.toggle('non-visible');
-      currencySelector.classList.toggle('selector-active');
-      const currencySymbol = item.id;
-      await setActiveCurrency(currencySymbol);
-    });
-  });
+      currencySelectorDropdown.classList.toggle('non-visible')
+      currencySelector.classList.toggle('selector-active')
+      const currencySymbol = item.id
+      await setActiveCurrency(currencySymbol)
+    })
+  })
 
   // Add event listener to document
   document.addEventListener('click', (event) => {
     // Check if target element is outside currency-selector-dropdown
-    if (
-      !currencySelectorDropdown.contains(event.target) &&
-      !currencySelectorDropdownButton.contains(event.target)
-    ) {
-      currencySelectorDropdown.classList.add('non-visible');
+    if (!currencySelectorDropdown.contains(event.target) && !currencySelectorDropdownButton.contains(event.target)) {
+      currencySelectorDropdown.classList.add('non-visible')
     }
-  });
+  })
 
-  return quotationDiv;
+  return quotationDiv
 }
 
 export default {
   createQuotation,
   refreshView
-};
+}

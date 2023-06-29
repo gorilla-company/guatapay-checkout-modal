@@ -50,8 +50,12 @@ const modalObject = {
   },
   onPayment: (currency) => {
     return {
+<<<<<<< HEAD
       qrString: 'bitcoin:1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2?amount=0.0001',
       paymentId: '642d6d8c47b735aad4170b2e',
+=======
+      address: '123abc456def',
+>>>>>>> local
       crypto: { amount: 0, fee: 0 },
       fiat: { amount: 0, fee: 0 },
     };
@@ -84,8 +88,13 @@ When the user selects a currency, the Guatapay Modal will call the **`onQuotatio
 Here's an example of what the **`onQuotation`** callback function might look like:
 
 ```jsx
+<<<<<<< HEAD
 onQuotation: (currency, total) => {
   const quotation = getQuotation(currency, total);
+=======
+onQuotation: (currency) => {
+  const quotation = getQuotation(currency);
+>>>>>>> local
   const { crypto, fiat } = quotation;
 
   return {
@@ -136,8 +145,13 @@ When the user clicks the "Continue" button in the modal, the Guatapay Modal will
 Here's an example of what the **`onPayment`** callback function might look like:
 
 ```jsx
+<<<<<<< HEAD
 onPayment: (currency, total) => {
   const paymentIntention = createPaymentIntention(currency, total);
+=======
+onPayment: (currency) => {
+  const paymentIntention = createPaymentIntention(currency);
+>>>>>>> local
   const { qrString, paymentId, crypto, fiat } = paymentIntention;
 
   return {

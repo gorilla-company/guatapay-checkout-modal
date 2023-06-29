@@ -1,12 +1,9 @@
-import svgImage from '../img/step0.svg';
-import utilsService from '../services/utils.service';
+import svgImage from '../img/step0.svg'
+import utilsService from '../services/utils.service'
 
 function createStart() {
-  const stepStart = utilsService.createElementWithClass(
-    'div',
-    'modal-body-wrapper'
-  );
-  stepStart.id = 'step-START';
+  const stepStart = utilsService.createElementWithClass('div', 'modal-body-wrapper')
+  stepStart.id = 'step-START'
 
   stepStart.innerHTML = `
     <img src="${svgImage}" alt="logo" />
@@ -17,35 +14,35 @@ function createStart() {
     </div>
     <div class="callout">Recuerda que si devuelves el producto, el reembolso será por el mismo valor de tu compra en tu moneda local</div>
     <button disabled id="start-continue" class="guatapay-btn-primary">Continuar</button>
-  `;
+  `
 
   // Add event listener to terms and conditions link
-  const termsLink = stepStart.querySelectorAll('a[href="#"]');
+  const termsLink = stepStart.querySelectorAll('a[href="#"]')
   termsLink.forEach((link) => {
     link.addEventListener('click', () => {
-      window.setModalStatus('TERMS');
-    });
-  });
+      window.setModalStatus('TERMS')
+    })
+  })
 
-  const continueButton = stepStart.querySelector('#start-continue');
+  const continueButton = stepStart.querySelector('#start-continue')
   continueButton.addEventListener('click', async () => {
-    const checkbox = stepStart.querySelector('#checkbox');
+    const checkbox = stepStart.querySelector('#checkbox')
     if (!checkbox.checked) {
-      window.setModalStatus('TERMS');
+      window.setModalStatus('TERMS')
     } else {
-      await window.setModalStatus('QUOTATION');
+      await window.setModalStatus('QUOTATION')
     }
-  });
+  })
 
   // Add event listener to checkbox to enable continue button or disable continue button
-  const checkbox = stepStart.querySelector('#checkbox');
+  const checkbox = stepStart.querySelector('#checkbox')
   checkbox.addEventListener('change', () => {
-    continueButton.disabled = !checkbox.checked;
-  });
+    continueButton.disabled = !checkbox.checked
+  })
 
-  return stepStart;
+  return stepStart
 }
 
 export default {
-  createStart,
-};
+  createStart
+}

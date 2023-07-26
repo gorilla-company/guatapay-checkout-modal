@@ -1,15 +1,15 @@
-import { currencies } from './quotation'
 import copyIcon from '../img/copy-icon.svg'
+import currencies from '../utils/currencies'
 import bitcoinFlag from '../img/bitcoin-flag.svg'
 import qrRefreshImage from '../img/qr-refresh.svg'
 import utilsService from '../services/utils.service'
 
 function refreshView() {
   const walletAddressText = document.querySelector('#expired-wallet-address-text')
-  walletAddressText.innerHTML = window.walletAddress
+  walletAddressText.innerHTML = '-'
 
   const transferAmountText = document.querySelector('#expired-transfer-amount-text')
-  transferAmountText.innerHTML = `${parseFloat(window.lastQuotation.crypto.amount + window.lastQuotation.crypto.fee).toFixed(8)} ${window.quotationCurrency}`
+  transferAmountText.innerHTML = `- ${currencies[window.quotationCurrency].symbol}`
 
   const transferAmountImage = document.querySelector('#expired-transfer-amount-image')
   transferAmountImage.src = currencies[window.quotationCurrency].flag
@@ -20,15 +20,12 @@ function createExpired() {
   expiredDiv.id = 'step-EXPIRED'
 
   expiredDiv.innerHTML = `
-    <p id="scan-expired-title" class="font-bold text-lg hide">¡Código QR expirado!</p>
+    <p id="scan-expired-title" class="font-bold text-lg">¡Código QR expirado!</p>
     <p id="scan-title" class="text-lg">Actualiza la tasa de cambio para continuar con el pago.</p>
-
     <img id="qr-refresh-code" src="${qrRefreshImage}" alt="qr" />
-
-    <p class="text-gray-400 text-md my-2">O envía a la siguiente dirección el monto indicado:</p>
-
+    <!--<p class="text-gray-400 text-md my-2">O envía a la siguiente dirección el monto indicado:</p>-->
     <div id="wallet-address">
-      <p id="expired-wallet-address-text" class="text-gray-400">1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T</p>
+      <p id="expired-wallet-address-text" class="text-gray-400">-</p>
       <button id="expired-btn-copy-wallet-address">
         <img src="${copyIcon}" alt="copy" />
       </button>
@@ -36,7 +33,7 @@ function createExpired() {
 
     <div id="transfer-amount">
       <div class="transfer-amount-wrapper">
-        <p id="expired-transfer-amount-text">0,007500 BTC</p>
+        <p id="expired-transfer-amount-text">- BTC</p>
         <img id="expired-transfer-amount-image" src="${bitcoinFlag}" alt="BTC" />
       </div>
       <button id="expired-btn-copy-transfer-amount">
@@ -44,32 +41,28 @@ function createExpired() {
       </button>
     </div>
 
-    <button class="guatapay-btn-primary mt-32" id="btn-expired-update">Actualizar cambio</button>
-    `
+    <div style="display: flex; justify-content: space-between;">
+      <button class="guatapay-btn-primary mt-32" id="btn-expired-update" style="width: 100%; margin-right: 8px;">Actualizar pago</button>
+      <button class="guatapay-btn-primary mt-32" id="btn-scanning-continue" style="width: 100%; margin-left: 8px;">Ya transferí</button>
+    </div>
+  `
 
   // Add event listener to qr refresh image
   const qrRefreshImageElement = expiredDiv.querySelector('#qr-refresh-code')
   qrRefreshImageElement.addEventListener('click', async () => {
-    await window.setModalStatus('SCANNING')
+    window.setModalStatus('SCANNING')
   })
 
   // Add event listener to update button
   const updateButton = expiredDiv.querySelector('#btn-expired-update')
   updateButton.addEventListener('click', async () => {
-    await window.setModalStatus('SCANNING')
+    window.setModalStatus('SCANNING')
   })
 
-  // Add event listener to copy wallet address button
-  const copyWalletAddressButton = expiredDiv.querySelector('#expired-btn-copy-wallet-address')
-  copyWalletAddressButton.addEventListener('click', () => {
-    utilsService.copyToClipboard(window.walletAddress)
-  })
-
-  // Add event listener to copy transfer amount button
-  const copyTransferAmountButton = expiredDiv.querySelector('#expired-btn-copy-transfer-amount')
-  copyTransferAmountButton.addEventListener('click', () => {
-    console.log('Copy transfer amount button clicked')
-    utilsService.copyToClipboard(window.lastQuotation.crypto.amount + window.lastQuotation.crypto.fee)
+  // Add event listener to continue button
+  const continueButton = expiredDiv.querySelector('#btn-scanning-continue')
+  continueButton.addEventListener('click', () => {
+    window.setModalStatus('INSERT_TXID')
   })
 
   return expiredDiv

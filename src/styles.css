@@ -125,7 +125,7 @@ body {
   position: fixed;
   width: 100%;
   top: 0;
-  z-index: 1500;
+  z-index: 15000;
 }
 
 /* Modal Header */
@@ -194,9 +194,10 @@ body {
 nav.wizard {
   display: flex;
   align-items: center;
-  padding: 23px;
+  padding: 23px 23px 0px;
   position: relative;
-  left: -8px;
+  width: 100%;
+  justify-content: center;
 }
 
 p.title {
@@ -209,6 +210,7 @@ p.subtitle {
   font-size: 18px;
   font-weight: 500;
   line-height: 24px;
+  margin: 0px 25px;
 }
 
 p.paragraph {
@@ -244,10 +246,32 @@ p {
 }
 
 .modal-body-wrapper {
+  height: 100%;
+  display: flex;
+  /* overflow-y: auto;
+  overflow-x: hidden; */
+  overflow: hidden;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.modal-body-wrapper-block {
+  height: 100%;
+  display: block;
+  overflow-y: auto;
+  padding: 0px 15px;
+  overflow-x: hidden;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.modal-body-loader {
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   height: 100%;
 }
@@ -331,6 +355,10 @@ p {
 
 .show {
   display: flex;
+}
+
+.show-block {
+  display: block;
 }
 
 /* Colors */
@@ -547,6 +575,14 @@ p {
   margin-bottom: 2px;
 }
 
+.mt-12 {
+  margin-top: 12px;
+}
+
+.mb-12 {
+  margin-bottom: 12px;
+}
+
 .mr-8 {
   margin-right: 8px;
 }
@@ -701,7 +737,8 @@ p {
 .modal-nav-ball {
   width: 10px;
   height: 10px;
-  margin-left: 13px;
+  /* margin-left: 13px; */
+  margin: 0px 6px;
   background-color: #cecece;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -734,10 +771,17 @@ p {
 
 .checkbox-wrapper {
   font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .checkbox-wrapper label {
   margin-left: 10px;
+}
+
+.checkbox-wrapper input {
+  margin: 0px;
 }
 
 a {
@@ -763,6 +807,11 @@ a {
   height: 100%;
   overflow-y: auto;
   max-height: 500px;
+}
+
+.terms-subtitle {
+  font-weight: bold;
+  color: #000000;
 }
 
 .terms-wrapper .terms-item {
@@ -848,6 +897,7 @@ a {
   background-color: #fff;
   top: 90px;
   left: 0;
+  z-index: 1;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid #e5e5e5;
@@ -975,8 +1025,8 @@ a {
 
 #qr-code {
   margin: 16px 0;
-  width: 175px;
-  height: 175px;
+  /* width: 200px;
+  height: 200px; */
 }
 
 @media (max-width: 768px) {
@@ -987,6 +1037,7 @@ a {
 
 #wallet-address {
   display: flex;
+  cursor: pointer;
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
@@ -1013,6 +1064,7 @@ a {
 
 #transfer-amount {
   display: flex;
+  cursor: pointer;
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
@@ -1112,13 +1164,24 @@ a {
 
 /* Processing */
 #step-PROCESSING {
-  justify-content: start;
+  justify-content: center;
 }
 
 #loading-spinner {
   width: 150px;
   height: 150px;
   animation: spin 2s linear infinite;
+}
+
+#loading-spinner-small {
+  width: 80px;
+  height: 80px;
+  margin-top: 15px;
+  animation: spin 2s linear infinite;
+}
+
+.loading-small-text {
+  color: #300056 !important;
 }
 
 #btn-copy-transaction-id {
@@ -1140,4 +1203,181 @@ a {
     padding: 12px;
     font-size: 14px !important;
   }
+}
+
+.form-error-message {
+  color: red;
+}
+
+[data-tooltip]{
+  cursor: pointer;
+  position: relative;
+  display:inline-block;
+}
+
+[data-tooltip]:before,
+[data-tooltip]:after {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 99;
+
+  left: 50%;
+  bottom: 100%;
+  transition: all 0.1s linear;
+}
+
+[data-tooltip]:hover::before,
+[data-tooltip]:hover::after,
+[data-tooltip]:focus::before,
+[data-tooltip]:focus::after {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(-6px);
+}
+
+[data-tooltip]::before {
+  margin-bottom: -7px;
+  content: '';
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent;
+  border-top-color: #444140;
+}
+
+[data-tooltip]::after {
+  height: 22px;
+  padding: 8px 8px 4px;
+  margin-left: -20px;
+  margin-bottom: 5px;
+  border-radius: 8px;
+  font-size: 14px;
+  content: attr(data-tooltip);
+  white-space: nowrap;
+  background-color: #444140;
+  color: #ecf0f1;
+}
+
+#quotation-error-message {
+  padding: 0px 24px;
+  margin-top: 8px;
+}
+
+#quotation-error-message > p {
+  font-family: 'DMSans Regular', sans-serif !important;
+  color:  #EF4444 !important;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.modal-footer-guatapay {
+  margin-top: 15px;
+  font-size: 10px;
+  color: #a3a3a3;
+}
+
+.guatapay-ad-container {
+  width: calc(100% - 50px);
+}
+
+.guatapay-ad {
+  gap: 16px;
+  width: 100%;
+  display: flex;
+  padding: 16px 24px;
+  border-radius: 16px;
+  align-items: center;
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #E1E7FD;
+}
+
+.guatapay-ad-text {
+  font-family: 'DMSans Regular', sans-serif !important;
+  align-self: stretch;
+  color:  #6466E9;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.guatapay-ad-stores {
+  display: flex;
+  justify-content: space-around;
+}
+
+.error-color {
+  color: #EF4444;
+}
+
+.guatapay-full-input-container {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 50px);
+}
+
+.guatapay-input-container {
+  display: flex;
+  position: relative;
+  align-items: center;
+}
+
+.guatapay-input {
+  width: 100%;
+  display: flex;
+  outline: none;
+  font-size: 14px;
+  line-height: 150%;
+  border-radius: 6px;
+  flex-direction: row;
+  box-sizing: border-box;
+  align-items: flex-start;
+  background-color: #fff;
+  justify-content: flex-start;
+  border: 1px solid #e5e5e5;
+  padding: 10px 36px 10px 12px;
+  font-family: 'DMSans Regular', sans-serif !important;
+}
+
+.guatapay-input:hover {
+  background-color: #fafafa;
+}
+
+.guatapay-input:focus {
+  box-sizing: border-box;
+  border: 1px solid #6466e9;
+  box-shadow: 0 0 0 4px rgba(90, 56, 253, 0.1);
+}
+
+.guatapay-input-error {
+  border: 1px solid #EF4444;
+  box-shadow: 0px 0px 0px 4px rgba(239, 68, 68, 0.25);
+}
+
+#btn-paste-tx-id, #btn-cancel-tx-id {
+  right: 0px;
+  padding: 4px 12px;
+  position: absolute;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+#guatapay-input-error-container {
+  font-family: 'DMSans Regular', sans-serif !important;
+  color: #EF4444;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  font-style: normal;
+  margin-top: 8px;
+  text-align: left;
+  padding-left: 6px;
+  box-sizing: border-box;
 }

@@ -48,15 +48,16 @@ function createProcessing() {
 
   processingDiv.innerHTML = `
     <p class="font-bold text-lg">Procesando...</p>
-    <p class="text-lg"> Aguarda un momento por favor.</p>
+    <p class="text-lg" style="margin-top: 20px;"> Aguarda un momento por favor.</p>
+    <p class="text-lg" style="font-size: 12px; line-height: 150%; margin: 5px 25px;">Por favor no recargues la página, ni cierres esta ventana, se puede perder la referencia del pago</p>
 
     <div class="flex-ic-jc mt-32">
       <img src="${loadingSpinner}" alt="loading" id="loading-spinner" />
     </div>
-    `
+  `
 
   // Create inverval to check if the payment was completed
-  const interval = setInterval(async () => {
+  /* const interval = setInterval(async () => {
     if (window.paymentId && window.status === 'PROCESSING') {
       const response = await fetch(`${GET_STATUS_URL}/${window.paymentId}`)
 
@@ -78,7 +79,7 @@ function createProcessing() {
           break
       }
     }
-  }, 1000)
+  }, 1000) */
 
   return processingDiv
 }

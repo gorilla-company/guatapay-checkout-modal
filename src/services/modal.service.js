@@ -1,27 +1,31 @@
+import { io } from 'socket.io-client'
 import summary from '../steps/summary'
 import expired from '../steps/expired'
 import scanning from '../steps/scanning'
 import quotation from '../steps/quotation'
 import processing from '../steps/processing'
 import loadingService from './loading.service'
+import paymentError from '../steps/payment-error'
 import buildHtmlService from './build-html.service'
 import stepIndicatorService from '../steps/stepIndicator'
+import serverRequestsService from './server-requests.service'
 
 // Window variables
+window.total = 0
+window.paymentId = ''
+window.merchantId = ''
 window.status = 'START'
 window.currency = 'COP'
-window.total = 0
-window.walletAddress = '1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T'
-window.paymentId = ''
-window.quotationTotal = 0.00420001
-window.quotationCurrency = 'BTC'
 window.lastQuotation = {}
-window.onQuotation = () => {}
 window.onPayment = () => {}
 window.closeModal = () => {}
+window.onQuotation = () => {}
+window.quotationCurrency = 'BTC'
+window.quotationTotal = 0.00420001
+window.walletAddress = '1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T'
 
 let initialized = false
-let modalProperties
+let modalProperties, socket, guatapayMarketQuote, guatapayPaymentIntention
 
 function getStatus() {
   return window.status
@@ -61,7 +65,12 @@ function removeModal() {
 }
 
 function closeModal() {
+  if (socket && window.merchantId && window.paymentId) {
+    socket.emit('disconnected', { merchantId: window.merchantId, paymentId: window.paymentId })
+  }
+
   removeModal()
+  window.sessionStorage.removeItem('guatapayPaymentData')
   if (modalProperties.onClose) {
     modalProperties.onClose()
   }
@@ -86,16 +95,16 @@ function initService(props) {
   modalProperties = props
 }
 
-function showModal(modalObject) {
-  window.onQuotation = modalObject.onQuotation
-  window.onPayment = modalObject.onPayment
-  window.total = modalObject.total
-  window.currency = modalObject.currency
+function showModal(guatapayPaymentData) {
+  /* window.onQuotation = modalObject.onQuotation
+  window.onPayment = modalObject.onPayment */
+  window.total = guatapayPaymentData.total
+  window.currency = guatapayPaymentData.currency
   window.closeModal = closeModal
 
   if (!getInitializedStatus()) {
     setStatus('START')
-    initService(modalObject)
+    initService(guatapayPaymentData)
     buildHtmlService.buildHtml(closeModal, cancelModal, finalize)
     loadingService.initLoading()
 
@@ -138,28 +147,49 @@ window.setModalStatus = async (status) => {
       hideHeaderAndStepIndicator()
       break
     case 'QUOTATION':
-      await quotation.refreshView()
+      buildHtmlService.handleStatusChange()
+      guatapayMarketQuote = await serverRequestsService.generateQuotation(true)
+      await quotation.refreshView(guatapayMarketQuote)
       showHeaderAndStepIndicator()
-
-      break
-    case 'EXPIRED':
-      showHeaderAndStepIndicator()
-      expired.refreshView()
       break
     case 'SCANNING':
-      await scanning.refreshView()
+      buildHtmlService.handleStatusChange()
+      socket = io('http://localhost:81')
+      guatapayPaymentIntention = await serverRequestsService.generatePaymentIntention(true)
+
+      if (guatapayPaymentIntention.error) {
+        buildHtmlService.handleStatusChange()
+        window.setModalStatus('PAYMENT_ERROR')
+        return
+      }
+
+      await scanning.refreshView(guatapayPaymentIntention, socket)
+      showHeaderAndStepIndicator()
+      break
+    case 'EXPIRED':
+      expired.refreshView(guatapayPaymentIntention, socket)
+      showHeaderAndStepIndicator()
+      break
+    case 'PAYMENT_ERROR':
+      paymentError.refreshView()
       showHeaderAndStepIndicator()
       break
     case 'VALIDATING':
       showHeaderHideStepIndicator()
       break
+    case 'SUCCESS':
+      showHeaderHideStepIndicator()
+      break
     case 'PROCESSING':
-      await processing.refreshView()
+      // await processing.refreshView()
+      showHeaderHideStepIndicator()
+      break
+    case 'INSERT_TXID':
       showHeaderHideStepIndicator()
       break
     case 'SUMMARY':
-      showHeaderHideStepIndicator()
       summary.refreshView()
+      showHeaderHideStepIndicator()
       break
     default:
       break
